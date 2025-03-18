@@ -2,23 +2,26 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div>
-      <div
+    <div >
+      <div 
         style={{
+          marginTop:"100px",
           height: "100px",
           width: "100%",
           backgroundColor: "#796F57",
-          position: "fixed",
+          position: "relative",
           bottom: "0",
           zIndex: "1",
+         
         }}
       >
-        <img
+        <img 
           style={{
             width: "100%",
             position: "absolute",
             bottom: "10px",
             zIndex: "-1",
+            marginTop:"50px"
           }}
           src="https://www.shjpolice.gov.ae/images/curves/lg-curve.png"
           alt=""

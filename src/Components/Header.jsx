@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [show, setShow] = useState(false);
@@ -67,13 +68,13 @@ const Header = () => {
           <i class="fa-solid fa-bell"></i>
         </button>
 
-        <button
+       <Link to={'/local'}> <button
           className="btn-white rounded-3"
           style={{ width: "300px", height: "45px" }}
         >
           <i className="fa-solid fa-fingerprint me-3"> </i> sign in with ID
           Proof
-        </button>
+        </button></Link>
 
 
         <div ref={ref}>
