@@ -1,5 +1,5 @@
 import React from "react";
-
+import Flogo from "../assets/Flogo.png"
 const Footer = () => {
   return (
     <div >
@@ -37,7 +37,7 @@ const Footer = () => {
         <img
           className="img-fluid"
           width={"60px"}
-          src="https://t4.ftcdn.net/jpg/07/29/34/35/360_F_729343514_Vd1VfwOsVmsvhMiR32V11yINk9Szo2Yq.jpg"
+          src={Flogo}
           alt=""
         />
       </div>
@@ -59,7 +59,7 @@ const Footer = () => {
             >
               <li>Disclaimer</li>|<li>Copyright</li>|<li>Privacy polict</li>|
               <li>Site map</li>|
-              <li>Indian government promises for future service</li>|
+              <li>We promises for future service</li>|
               <li>Accessibility</li>|<li>Terms and conditions</li>|
             </ul>
           </div>

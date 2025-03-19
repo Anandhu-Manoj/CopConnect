@@ -4,7 +4,9 @@ import Button from "react-bootstrap/Button";
 import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
 import { Link } from "react-router-dom";
-
+import LogoL from "../assets/sideLogo.png"
+import LogoR from "../assets/logo.png"
+import Flogo from "../assets/Flogo.png"
 const Header = () => {
   const [show, setShow] = useState(false);
   const [target, setTarget] = useState(null);
@@ -21,13 +23,13 @@ const Header = () => {
         <img
           className="ms-5"
           height={"100px"}
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAiIl9R-ixmJXHs4VMw3ixOxzYRZ5qThHwjg&s"
+          src={LogoL}
           alt=""
         />
         <img
-          className="img-fluid "
+          className="img-fluid mt-3 "
           style={{ position: "absolute", right: "100px", height: "100px" }}
-          src="https://cdn.archive.siasat.com/wp-content/uploads/2020/09/kerala-police.jpg"
+          src={LogoR}
           alt=""
         />
       </div>
