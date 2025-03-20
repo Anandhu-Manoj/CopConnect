@@ -4,7 +4,8 @@ import Footer from "../Components/Footer";
 
 const Localac = () => {
   return (
-    <div>
+    <div style={{ margin: "0px",
+      padding: '0px',boxSizing:"border-box"}}>
       <div
         className="d-flex justify-content-center align-items-center flex-column text-center gap-3 mt-3"
         style={{ height: "110vh", marginTop: "100px" }}

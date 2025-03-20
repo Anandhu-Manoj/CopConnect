@@ -6,7 +6,8 @@ import Header from '../Components/Header'
 const Local = () => {
   return (
     
-    <div  >
+    <div style={{ margin: "0px",
+      padding: '0px',boxSizing:"border-box"}}>
         
         <div className='d-flex justify-content-center align-items-center flex-column text-center gap-3 mt-3' style={{height:"70vh",marginTop:"-100px"}}>
             <h2 ><i className="fa-solid fa-fingerprint fs-1 fw-bolder"></i></h2>

@@ -2,7 +2,8 @@ import React from "react";
 import Flogo from "../assets/Flogo.png"
 const Footer = () => {
   return (
-    <div >
+    <div style={{ margin: "0px",
+      padding: '0px',boxSizing:"border-box"}}>
       <div 
         style={{
           marginTop:"100px",

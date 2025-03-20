@@ -18,7 +18,8 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <div style={{ margin: "0px",
+      padding: '0px',boxSizing:"border-box"}}>
       <div style={{ height: "100px", width: "100%", backgroundColor: "white" }}>
         <img
           className="ms-5"
