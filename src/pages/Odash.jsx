@@ -1,52 +1,140 @@
 import React from "react";
 import Footer from "../Components/Footer";
 import Logo from "../assets/sideLogo.png";
+import sideLogo from "../assets/logo.png";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Odash = () => {
   return (
-    <div className="m-0 overflow-hidden" >
+    <div className="m-0 overflow-hidden">
       <div
         style={{
           minHeight: "100vh",
-          backgroundColor: "",
+          // backgroundColor: "#EAD196",
           backgroundPosition: "center",
           backgroundSize: "cover",
           display: "flex",
           flexDirection: "column",
-
         }}
       >
-        <nav
-          className="navbar"
-          style={{
-            backgroundColor: "#796F57",
-            height: "100px",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <div className="container-fluid d-flex justify-content-between align-items-center">
-            <div
-              className="img-fluid"
-              style={{ height: "70px", width: "70px" }}
-            >
-              <img style={{ width: "100%" }} src={Logo} alt="Logo" />
-            </div>
-            <div className="d-flex gap-3">
-              <Button variant="light">Punch IN</Button>
-              <Button variant="light">Apply Leave</Button>
-            </div>
-          </div>
-        </nav>
-        <center>
-          <h2
-            style={{ backgroundColor: "#543A14", padding: "10px 0" }}
-            className="fs-1 fw-bold text-white"
+        <div>
+          <div
+            style={{ margin: "0px", padding: "0px", boxSizing: "border-box" }}
           >
-            OFFICER PORT <i className="fa-solid fa-building-shield"></i>
+            <div
+              style={{
+                height: "100px",
+                width: "100%",
+                backgroundColor: "white",
+              }}
+            >
+              <img className="ms-5" height={"100px"} src={Logo} alt="" />
+              <img
+                className="img-fluid mt-3"
+                style={{
+                  position: "absolute",
+                  right: "100px",
+                  height: "100px",
+                }}
+                src={sideLogo}
+                alt=""
+              />
+            </div>
+            <header
+              style={{
+                height:"75px",
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "16px 32px",
+                backgroundColor: "#796F57",
+                position: "sticky",
+                top: 0,
+                zIndex: 1000,
+              }}
+            >
+              <h1
+                style={{
+                  fontSize: "26px",
+                  fontWeight: "bold",
+                  color: "#F1F1F1",
+                  letterSpacing: "1px",
+                }}
+              >
+                CopConnect
+                <i className="fa-solid fa-bars-staggered"></i>
+              </h1>
+              <button
+                className="btn btn-white text-white"
+                style={{
+                  fontSize: "20px",
+                  position: "absolute",
+                  left: "300px",
+                  backgroundColor: "#6D6249",
+                }}
+              >
+                <i className="fa-solid fa-bell"></i>
+              </button>
+
+              <div className="d-flex align-content-center ms-5">
+          <h2
+            style={{  padding: "10px " }}
+            className="fs-1 fw-bold text-white ms-5 "
+          >
+            OFFICER PORTAL <i className="fa-solid fa-building-shield"></i>
           </h2>
-        </center>
+        </div >
+
+              <nav>
+                <ul
+                  style={{
+                    display: "flex",
+                    gap: "20px",
+                    listStyle: "none",
+                    margin: 0,
+                    padding: 0,
+                    fontSize: "18px",
+                  }}
+                >
+                  <li
+                    style={{
+                      cursor: "pointer",
+                      color: "white",
+                      transition: "color 0.3s",
+                    }}
+                  >
+                    <button
+                      style={{ backgroundColor: "#6D6249" }}
+                      className="btn text-white"
+                    >
+                      {" "}
+                      Punch in <i className="fa-solid fa-house"></i>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      style={{ backgroundColor: "#6D6249" }}
+                      className="btn text-white"
+                    >
+                      Apply Leave{" "}
+                      <i className="fa-solid fa-right-to-bracket"></i>
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </header>
+            <marquee behavior="" direction="">
+            Welcome to CopConnect - Your Digital Police Service Portal | File
+            Complaints | Book Appointments | Manage Criminal Data | Secure &
+            Transparent Policing{" "}
+          </marquee>
+          </div>
+        </div>
+        
+
+      
 
         <div className="container mt-4">
           <div className="row">
@@ -130,7 +218,6 @@ const Odash = () => {
               style={{
                 backgroundColor: "#d9d9d9",
                 borderColor: "#796F57",
-                // borderRadius: "10px",
                 overflow: "hidden",
               }}
             >
@@ -156,7 +243,16 @@ const Odash = () => {
 
               <tbody>
                 <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td className="p-3 img-fluid  " style={{height:"100px",width:"00px"}} ><img style={{width:"100%"}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s" alt="" /></td>
+                  <td
+                    className="p-3 img-fluid"
+                    style={{ height: "100px", width: "100px" }}
+                  >
+                    <img
+                      style={{ width: "100%" }}
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s"
+                      alt=""
+                    />
+                  </td>
                   <td className="p-3">Thomas</td>
                   <td className="p-3">Shebly</td>
                   <td className="p-3">Scratch on forehead</td>
@@ -186,7 +282,6 @@ const Odash = () => {
               style={{
                 backgroundColor: "#d9d9d9",
                 borderColor: "#796F57",
-                // borderRadius: "10px",
                 overflow: "hidden",
               }}
             >
@@ -207,7 +302,7 @@ const Odash = () => {
                   <th className="p-3">Date of visit</th>
                   <th className="p-3">Reason for visit</th>
                   <th className="p-3">Time allotted</th>
-                  <th className="p-3">Approv/Reject</th>
+                  <th className="p-3">Approve/Reject</th>
                 </tr>
               </thead>
 
@@ -217,16 +312,16 @@ const Odash = () => {
                   <td className="p-3">Ajith</td>
                   <td className="p-3">808045533357</td>
                   <td className="p-3">Thomas</td>
-                  <td className="p-3">10-5-2010</td>
                   <td className="p-3">Friend</td>
+                  <td className="p-3">10-5-2010</td>
                   <td className="p-3">Casual visit</td>
                   <td className="p-3">10-05-2010</td>
                   <td className="p-3">
                     <Button className="btn m-2 bg-success border-0">
-                      Approve <i class="fa-solid fa-check"></i>
+                      Approve <i className="fa-solid fa-check"></i>
                     </Button>
                     <Button className="bg-danger border-0">
-                      Reject <i class="fa-solid fa-square-xmark"></i>
+                      Reject <i className="fa-solid fa-square-xmark"></i>
                     </Button>
                   </td>
                 </tr>
