@@ -1,24 +1,26 @@
 import React from "react";
 import Logo from "../assets/sideLogo.png";
 import sideLogo from "../assets/logo.png";
+import Video from "../assets/Jbg.mp4";
 import Footer from "../Components/Footer";
+import { Button } from "react-bootstrap";
 
 const Jdash = () => {
   return (
-    <div>
-
-        {/* header  */}
+    <div className="relative min-h-screen overflow-hidden " style={{height:"100%"}}>
+      {/* header  */}
       <div
+        className="overflow-hidden"
         style={{
           minHeight: "100vh",
-          // backgroundColor: "#EAD196",
+
           backgroundPosition: "center",
           backgroundSize: "cover",
           display: "flex",
           flexDirection: "column",
         }}
       >
-        <div>
+        <div >
           <div
             style={{ margin: "0px", padding: "0px", boxSizing: "border-box" }}
           >
@@ -43,7 +45,7 @@ const Jdash = () => {
             </div>
             <header
               style={{
-                height:"75px",
+                height: "75px",
                 width: "100%",
                 display: "flex",
                 justifyContent: "space-between",
@@ -83,7 +85,8 @@ const Jdash = () => {
                   style={{ padding: "10px " }}
                   className="fs-1 fw-bold text-white ms-5 "
                 >
-                  ADMINISTRATION PORTAL <i className="fa-solid fa-scale-balanced"></i>
+                  ADMINISTRATION PORTAL{" "}
+                  <i className="fa-solid fa-scale-balanced"></i>
                 </h2>
               </div>
 
@@ -118,7 +121,7 @@ const Jdash = () => {
                       style={{ backgroundColor: "#6D6249" }}
                       className="btn text-white"
                     >
-                      Apply Leave{" "}
+                      Crime Records{" "}
                       <i className="fa-solid fa-right-to-bracket"></i>
                     </button>
                   </li>
@@ -126,17 +129,244 @@ const Jdash = () => {
               </nav>
             </header>
             <marquee behavior="" direction="">
-            Welcome to CopConnect - Your Digital Police Service Portal | File
-            Complaints | Book Appointments | Manage Criminal Data | Secure &
-            Transparent Policing{" "}
-          </marquee>
+              Welcome to CopConnect - Your Digital Police Service Portal | File
+              Complaints | Book Appointments | Manage Criminal Data | Secure &
+              Transparent Policing{" "}
+            </marquee>
           </div>
+        </div>
+
+
+
+
+          <div>
+            <div  className="row ms-5 mb-5">
+            <div
+              className=" d-flex align-items-center justify-content-center col-2"
+              style={{
+                height: "250px",
+                width: "450px",
+                // position: "absolute",
+                // top: "250px",
+                background:
+                  "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+              }}
+            >
+              <div style={{ height: "200px", width: "200px" }}>
+                <img
+                  style={{ width: "100%" }}
+                  src="https://img.freepik.com/premium-vector/supreme-court-with-judges-illustration_7737-1699.jpg"
+                  alt=""
+                />
+              </div>
+              <h3 className="mb-5 fw-bold fs-2  " style={{ color: " #796F57" }}>
+                Welcome
+              </h3>
+            </div>
+            <div className="col-8 table-responsive me-2">
+              {" "}
+              <table
+                className=" table-bordered text-center ms-3 me-5"
+                style={{
+                  backgroundColor: "#d9d9d9",
+                  borderColor: "#796F57",
+                  overflow: "hidden",
+                  
+                 
+                  borderCollapse: "collapse",
+                }}
+              >
+                <thead
+                  className="rounded-3 mb-4"
+                  style={{
+                    backgroundColor: "#796F57",
+                    color: "white",
+                    fontSize: "18px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <tr>
+                    <th style={{ padding: "10px" }}>Petition Number</th>
+                    <th style={{ padding: "10px" }}>Date of Submission</th>
+                    <th style={{ padding: "10px" }}>Status</th>
+                    <th style={{ padding: "10px" }}>Officer Assigned</th>
+                    <th style={{ padding: "10px" }}>Decision</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
+                    <td style={{ padding: "10px" }}>156</td>
+                    <td style={{ padding: "10px" }}>2-5-2018</td>
+                    <td style={{ padding: "10px" }}>
+                      <button
+                        style={{ marginRight: "5px" }}
+                        className="btn btn-danger"
+                      >
+                        Reject <i className="fa-solid fa-square-xmark"></i>
+                      </button>
+                      <button className="btn btn-primary mt-2">
+                        Review <i className="fa-solid fa-eye"></i>
+                      </button>
+                    </td>
+                    <td style={{ padding: "10px" }}>Sarath</td>
+                    <td style={{ padding: "10px" }}>
+                      <button
+                        className="btn btn-success"
+                        style={{ marginBottom: "5px" }}
+                      >
+                        Case Closed <i class="fa-solid fa-check"></i>
+                      </button>{" "}
+                      <br />
+                      <button className="btn btn-warning p-2">
+                        Postponed for Further Review{" "}
+                        <i className="fa-solid fa-timeline"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            </div>
+      
+
+          <section
+            className="container mt-5"
+           
+          >
+            <div className="text-center">
+              <h2
+                className="fw-bold text-white p-3 rounded-3"
+                style={{ backgroundColor: "#796F57" }}
+              >
+                OFFICERS RECORDS
+              </h2>     <button className="btn btn-light shadow ">ADD OFFICERS</button>
+            </div>
+
+            <div className="table-responsive mt-4">
+              <table
+                className="table table-bordered text-center"
+                style={{
+                  backgroundColor: "#796F57",
+                  borderColor: "#796F57",
+                  overflow: "hidden",
+                }}
+              >
+                <thead
+                  style={{
+                    backgroundColor: "#796F57",
+                    color: "white",
+                    fontSize: "18px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <tr>
+                    <th className="p-3">Name</th>
+                    <th className="p-3">Fathers Name</th>
+                    <th className="p-3">Batch Number</th>
+                    <th className="p-3">Phone number</th>
+                    <th className="p-3">Designation</th>
+                    <th className="p-3">Circle of Duty</th>
+                    <th className="p-3">Service period</th>
+                    <th className="p-3">Review</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
+                    <td className="p-3">Arun</td>
+                    <td className="p-3">Nath</td>
+                    <td className="p-3">10</td>
+                    <td className="p-3">808045457721</td>
+                    <td className="p-3">SI</td>
+                    <td className="p-3">PATTOM</td>
+                    <td className="p-3">10</td>
+                    <td className="p-3">
+                      {" "}
+                      <button
+                        style={{ marginRight: "5px" }}
+                        className="btn btn-danger"
+                      >
+                        Remove <i className="fa-solid fa-square-xmark"></i>
+                      </button>
+                      <button className="btn btn-primary mt-2">
+                        Review <i className="fa-solid fa-eye"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+
+          
+       
+
+
+          <section
+            className="container mt-5"
+           
+          >
+            <div className="text-center">
+              <h2
+                className="fw-bold text-white p-3 rounded-3"
+                style={{ backgroundColor: "#796F57" }}
+              >
+                Leave Requests
+              </h2>
+            </div>
+
+            <div className="table-responsive mt-4">
+              <table
+                className="table table-bordered text-center"
+                style={{
+                  backgroundColor: "#796F57",
+                  borderColor: "#796F57",
+                  overflow: "hidden",
+                }}
+              >
+                <thead
+                  style={{
+                    backgroundColor: "#796F57",
+                    color: "white",
+                    fontSize: "18px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <tr>
+                    <th className="p-3">Name</th>
+                    <th className="p-3">Batch Number</th>
+                    <th className="p-3">Reason</th>
+                    <th className="p-3">Reporting Officer</th>
+                    <th className="p-3">Circle of Duty</th>
+                    <th className="p-3">Leaves Remaining</th>
+                    <th className="p-3">Approve/reject</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
+                    <td className="p-3">Arun</td>
+                    <td className="p-3">12</td>
+                    <td className="p-3">Sick Leave</td>
+                    <td className="p-3">Sarath</td>
+                    <td className="p-3">PATTOM</td>
+                    <td className="p-3">10</td>
+                     <td className="p-3">
+                    <Button className="btn m-2 bg-success border-0">
+                      Approve <i className="fa-solid fa-check"></i>
+                    </Button>
+                    <Button className="bg-danger border-0">
+                      Reject <i className="fa-solid fa-square-xmark"></i>
+                    </Button>
+                  </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
         </div>
       </div>
 
-
-
-      <Footer/>
+      <Footer />
     </div>
   );
 };
