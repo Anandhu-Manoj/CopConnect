@@ -223,7 +223,7 @@ const Home = () => {
                   style={{ backgroundColor: "#796F57", border: "0px" }}
                   className="mt-3"
                 >
-                  Go somewhere
+                  Apply
                 </Button>
               </Card.Body>
             </Card>
@@ -245,7 +245,7 @@ const Home = () => {
                   style={{ backgroundColor: "#796F57", border: "0px" }}
                   className="mt-3"
                 >
-                  Go somewhere
+                  Apply
                 </Button>
               </Card.Body>
             </Card>
@@ -261,13 +261,13 @@ const Home = () => {
                 <Card.Title style={{ fontSize: "50px", color: "#796F57" }}>
                   <i class="fa-solid fa-volleyball"></i>
                 </Card.Title>
-                <h4>Officers Clud Facility Bookings</h4>
+                <h4>Officers Club Facility Bookings</h4>
                 <Card.Text></Card.Text>
                 <Button
                   style={{ backgroundColor: "#796F57", border: "0px" }}
                   className="mt-3"
                 >
-                  Go somewhere
+                  Apply
                 </Button>
               </Card.Body>
             </Card>
@@ -289,7 +289,7 @@ const Home = () => {
                   style={{ backgroundColor: "#796F57", border: "0px" }}
                   className="mt-4"
                 >
-                  Go somewhere
+                  Apply
                 </Button>
               </Card.Body>
             </Card>
@@ -311,7 +311,7 @@ const Home = () => {
                   style={{ backgroundColor: "#796F57", border: "0px" }}
                   className="mt-4"
                 >
-                  Go somewhere
+                  Apply
                 </Button>
               </Card.Body>
             </Card>

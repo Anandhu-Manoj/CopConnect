@@ -160,12 +160,12 @@ const Header = () => {
               //   onMouseOver={(e) => e.target.style.color = "#FF4C29"}
               //   onMouseOut={(e) => e.target.style.color = "#F1F1F1"}
             >
-              <button
+             <Link to={'/login'}> <button
                 style={{ backgroundColor: "#6D6249" }}
                 className="btn  text-white"
               >
                 Login <i class="fa-solid fa-right-to-bracket"></i>
-              </button>
+              </button></Link>
             </li>
           </ul>
         </nav>

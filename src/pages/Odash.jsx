@@ -119,9 +119,25 @@ const Odash = () => {
                       className="btn text-white"
                     >
                       Apply Leave{" "}
-                      <i className="fa-solid fa-right-to-bracket"></i>
+                      <i className="fa-solid fa-couch"></i>
                     </button>
                   </li>
+                  <Link to={'/login'}
+                    style={{
+                      cursor: "pointer",
+                      color: "white",
+                      transition: "color 0.3s",
+                    }}
+                  >
+                    <button
+                      style={{ backgroundColor: "#6D6249" }}
+                      className="btn text-white"
+                    >
+                      {" "}
+                      Log out <i class="fa-solid fa-door-open"></i>
+                    </button>
+                  </Link>
+                 
                 </ul>
               </nav>
             </header>
@@ -193,6 +209,9 @@ const Odash = () => {
                   <span>Station Of Duty: </span>Pattom
                 </p>
                 <p className="fs-5 fw-bold">
+                  <span>Casses Assigned : </span><button className="btn  w-25 text-white" style={{backgroundColor:"#6D6249"}}>View <i class="fa-solid fa-eye"></i></button>
+                </p>
+                <p className="fs-5 fw-bold">
                   <span>Service period: </span>10
                 </p>
               </div>
@@ -206,7 +225,7 @@ const Odash = () => {
           <center>
             <h2
               className="fw-bold text-white p-3 rounded-3"
-              style={{ backgroundColor: "#543A14" }}
+              style={{ backgroundColor: "#796F57" }}
             >
               Criminal Records
             </h2>
@@ -270,7 +289,7 @@ const Odash = () => {
           <center>
             <h2
               className="fw-bold text-white p-3 rounded-3"
-              style={{ backgroundColor: "#543A14" }}
+              style={{ backgroundColor: "#796F57" }}
             >
               Visitors Application Data
             </h2>

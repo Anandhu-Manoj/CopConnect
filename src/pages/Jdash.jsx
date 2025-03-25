@@ -4,6 +4,7 @@ import sideLogo from "../assets/logo.png";
 import Video from "../assets/Jbg.mp4";
 import Footer from "../Components/Footer";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Jdash = () => {
   return (
@@ -116,14 +117,31 @@ const Jdash = () => {
                       Punch in <i className="fa-solid fa-house"></i>
                     </button>
                   </li>
-                  <li>
-                    <button
+                  <Link to={'/login'}
+                    style={{
+                      cursor: "pointer",
+                      color: "white",
+                      transition: "color 0.3s",
+                    }}
+                  >
+                    <button 
                       style={{ backgroundColor: "#6D6249" }}
                       className="btn text-white"
                     >
-                      Crime Records{" "}
-                      <i className="fa-solid fa-right-to-bracket"></i>
+                      {" "}
+                      Log out <i class="fa-solid fa-door-open"></i>
                     </button>
+                  </Link>
+                  <li>
+
+                    <Link to={'/cr'}>  <button
+                      style={{ backgroundColor: "#6D6249" }}
+                      className="btn text-white"
+                    >
+                      Crime Records{""}
+                      <i className="fa-solid fa-right-to-bracket"></i>
+                    </button></Link>
+                  
                   </li>
                 </ul>
               </nav>
@@ -159,7 +177,7 @@ const Jdash = () => {
                   alt=""
                 />
               </div>
-              <h3 className="mb-5 fw-bold fs-2  " style={{ color: " #796F57" }}>
+              <h3 className="mb-5 fw-bold fs-2 ms-5  " style={{ color: " #796F57" }}>
                 Welcome
               </h3>
             </div>
@@ -365,6 +383,8 @@ const Jdash = () => {
           </section>
         </div>
       </div>
+
+       
 
       <Footer />
     </div>
