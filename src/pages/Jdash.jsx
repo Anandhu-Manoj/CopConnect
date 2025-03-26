@@ -503,7 +503,7 @@ const Jdash = () => {
                     <th className="p-3">Reason</th>
                     <th className="p-3">Reporting Officer</th>
                     <th className="p-3">Circle of Duty</th>
-                    <th className="p-3">Leaves Remaining</th>
+                    {/* <th className="p-3">Leaves Remaining</th> */}
                     <th className="p-3">Approve/reject</th>
                   </tr>
                 </thead>
@@ -514,7 +514,7 @@ const Jdash = () => {
                     <td className="p-3">Sick Leave</td>
                     <td className="p-3">Sarath</td>
                     <td className="p-3">PATTOM</td>
-                    <td className="p-3">10</td>
+                    {/* <td className="p-3">10</td> */}
                     <td className="p-3">
                       <Button className="btn m-2 bg-success border-0">
                         Approve <i className="fa-solid fa-check"></i>

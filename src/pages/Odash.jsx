@@ -7,12 +7,22 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Card from "react-bootstrap/Card";
+import {  useRef } from 'react';
+import Overlay from 'react-bootstrap/Overlay';
+import Popover from 'react-bootstrap/Popover';
 
 const Odash = () => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [showMod, setShowMod] = useState(false);
+
+  const handleCloseMod = () => setShowMod(false);
+  const handleShowMod = () => setShowMod(true);
+
+
+  
 
   return (
     <div className="m-0 overflow-hidden">
@@ -86,10 +96,11 @@ const Odash = () => {
                 <i className="fa-solid fa-bell"></i>
               </button>
 
-              <div className="d-flex align-content-center ms-5">
+              <div className="d-flex align-content-center ms-5" style={{position:"absolute",left:"400px"}}>
                 <h2
                   style={{ padding: "10px " }}
                   className="fs-1 fw-bold text-white ms-5 "
+                
                 >
                   OFFICER PORTAL <i className="fa-solid fa-building-shield"></i>
                 </h2>
@@ -122,13 +133,49 @@ const Odash = () => {
                     </button>
                   </li>
                   <li>
-                    <button
+                    <button onClick={handleShowMod}
                       style={{ backgroundColor: "#6D6249" }}
                       className="btn text-white"
                     >
                       Apply Leave <i className="fa-solid fa-couch"></i>
                     </button>
                   </li>
+                  <Modal size="lg"  centered show={showMod} onHide={handleCloseMod}>
+                    <Modal.Header closeButton  style={{ background:
+                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
+                      <Modal.Title className="ms-5">Leave Application <i className="fa-solid fa-couch"></i>
+                      </Modal.Title>
+                    </Modal.Header >
+                    <Modal.Body style={{ background:
+                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",height:"400px"}} className="d-flex flex-column gap-3 justify-content-center align-items-center">
+
+                      <select className="form-control mt-3" name="" id="">
+                        <option value="" selected disabled>choose leave type</option>
+                        <option value="">Casual Leave</option>
+                        <option value="">Sick Leave</option>
+                        <option value="">Meternity/Paternity  Leave</option>
+                        <option value="">Bevarement Leave</option>
+                      </select>
+                      <input className="form-control" type="text" placeholder="reporting officers name" />
+                      <input className="form-control" type="text"  placeholder="circle of duty"/>
+                      <input className="form-control" type="text"  placeholder="Batch number"/>
+
+
+                      <textarea placeholder="reason for the leave" type="text" className="form-control" name="" id="" />
+                      <button className="btn text-white w-50 mt-3 " style={{backgroundColor:"#796F57"}}>APPLY</button>
+                      
+                     
+                       
+                    
+                    </Modal.Body>
+                    <Modal.Footer style={{ background:
+                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
+                      <Button variant="secondary" onClick={handleCloseMod}>
+                        Close
+                      </Button>
+                     
+                    </Modal.Footer>
+                  </Modal>
                   <li
                     style={{
                       cursor: "pointer",
