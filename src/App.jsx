@@ -9,6 +9,7 @@ import Odash from './pages/Odash'
 import Jdash from './pages/Jdash'
 import Crimerecords from './pages/Crimerecords'
 import Login from './pages/Login'
+import Services from './pages/Services'
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Route path="/jd" element={<Jdash/>}></Route>
       <Route path="/cr" element={<Crimerecords/>}></Route>
       <Route path="/login" element={<Login/>}></Route>
+      <Route path="/services" element={<Services/>}></Route>
       
      </Routes>
 

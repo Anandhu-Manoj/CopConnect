@@ -4,8 +4,16 @@ import Logo from "../assets/sideLogo.png";
 import sideLogo from "../assets/logo.png";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import Card from "react-bootstrap/Card";
 
 const Odash = () => {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <div className="m-0 overflow-hidden">
       <div
@@ -43,7 +51,7 @@ const Odash = () => {
             </div>
             <header
               style={{
-                height:"75px",
+                height: "75px",
                 width: "100%",
                 display: "flex",
                 justifyContent: "space-between",
@@ -79,13 +87,13 @@ const Odash = () => {
               </button>
 
               <div className="d-flex align-content-center ms-5">
-          <h2
-            style={{  padding: "10px " }}
-            className="fs-1 fw-bold text-white ms-5 "
-          >
-            OFFICER PORTAL <i className="fa-solid fa-building-shield"></i>
-          </h2>
-        </div >
+                <h2
+                  style={{ padding: "10px " }}
+                  className="fs-1 fw-bold text-white ms-5 "
+                >
+                  OFFICER PORTAL <i className="fa-solid fa-building-shield"></i>
+                </h2>
+              </div>
 
               <nav>
                 <ul
@@ -118,11 +126,99 @@ const Odash = () => {
                       style={{ backgroundColor: "#6D6249" }}
                       className="btn text-white"
                     >
-                      Apply Leave{" "}
-                      <i className="fa-solid fa-couch"></i>
+                      Apply Leave <i className="fa-solid fa-couch"></i>
                     </button>
                   </li>
-                  <Link to={'/login'}
+                  <li
+                    style={{
+                      cursor: "pointer",
+                      color: "white",
+                      transition: "color 0.3s",
+                    }}
+                  >
+                    <button
+                      onClick={handleShow}
+                      style={{ backgroundColor: "#6D6249" }}
+                      className="btn text-white"
+                    >
+                      {" "}
+                      Book services <i class="fa-solid fa-server"></i>
+                    </button>
+                  </li>
+                  <Modal size="lg"  centered show={show} onHide={handleClose}>
+                    <Modal.Header closeButton >
+                      <Modal.Title className="ms-5">SERVICES <i class="fa-solid fa-server"></i></Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{ height: "300px" }} className="d-flex  gap-3 justify-content-center align-items-center">
+                      {" "}
+                      <Card
+                        className="card d-flex flex-column justify-content-center align-items-center"
+                        style={{
+                          width: "18rem",
+                          background:
+                            "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                        }}
+                      >
+                        <Card.Body className="d-flex flex-column justify-content-center align-items-center text-center">
+                          <Card.Title
+                            style={{ fontSize: "50px", color: "#796F57" }}
+                          >
+                            <i class="fa-solid fa-volleyball"></i>
+                          </Card.Title>
+                          <h4>Officers Club Facility Bookings</h4>
+                          <Card.Text></Card.Text>
+                         
+                            <Button
+                              style={{
+                                backgroundColor: "#796F57",
+                                border: "0px",
+                              }}
+                              className="mt-3"
+                            >
+                              Apply
+                            </Button>
+                         
+                        </Card.Body>
+                      </Card>
+                      <Card
+                        className="card"
+                        style={{
+                          width: "18rem",
+                          background:
+                            "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                        }}
+                      >
+                        <Card.Body className="d-flex flex-column justify-content-center align-items-center text-center">
+                        <Card.Title
+                            style={{ fontSize: "50px", color: "#796F57" }}
+                          >
+                            <i class="fa-solid fa-square-poll-vertical"></i>
+                          </Card.Title>
+                          <h4>Request statics and Data</h4>
+                          <Card.Text></Card.Text>
+                         
+                            <Button
+                              style={{
+                                backgroundColor: "#796F57",
+                                border: "0px",
+                              }}
+                              className="mt-3"
+                            >
+                              Apply
+                            </Button>
+                        
+                        </Card.Body>
+                      </Card>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={handleClose}>
+                        Close
+                      </Button>
+                     
+                    </Modal.Footer>
+                  </Modal>
+                  <Link
+                    to={"/login"}
                     style={{
                       cursor: "pointer",
                       color: "white",
@@ -137,20 +233,16 @@ const Odash = () => {
                       Log out <i class="fa-solid fa-door-open"></i>
                     </button>
                   </Link>
-                 
                 </ul>
               </nav>
             </header>
             <marquee behavior="" direction="">
-            Welcome to CopConnect - Your Digital Police Service Portal | File
-            Complaints | Book Appointments | Manage Criminal Data | Secure &
-            Transparent Policing{" "}
-          </marquee>
+              Welcome to CopConnect - Your Digital Police Service Portal | File
+              Complaints | Book Appointments | Manage Criminal Data | Secure &
+              Transparent Policing{" "}
+            </marquee>
           </div>
         </div>
-        
-
-      
 
         <div className="container mt-4">
           <div className="row">
@@ -209,7 +301,13 @@ const Odash = () => {
                   <span>Station Of Duty: </span>Pattom
                 </p>
                 <p className="fs-5 fw-bold">
-                  <span>Casses Assigned : </span><button className="btn  w-25 text-white" style={{backgroundColor:"#6D6249"}}>View <i class="fa-solid fa-eye"></i></button>
+                  <span>Casses Assigned : </span>
+                  <button
+                    className="btn  w-25 text-white"
+                    style={{ backgroundColor: "#6D6249" }}
+                  >
+                    View <i class="fa-solid fa-eye"></i>
+                  </button>
                 </p>
                 <p className="fs-5 fw-bold">
                   <span>Service period: </span>10

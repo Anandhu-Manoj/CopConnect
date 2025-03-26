@@ -5,10 +5,20 @@ import Video from "../assets/Jbg.mp4";
 import Footer from "../Components/Footer";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useState } from 'react';
+import Modal from 'react-bootstrap/Modal';
 
 const Jdash = () => {
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   return (
-    <div className="relative min-h-screen overflow-hidden " style={{height:"100%"}}>
+    <div
+      className="relative min-h-screen overflow-hidden "
+      style={{ height: "100%" }}
+    >
       {/* header  */}
       <div
         className="overflow-hidden"
@@ -21,7 +31,7 @@ const Jdash = () => {
           flexDirection: "column",
         }}
       >
-        <div >
+        <div>
           <div
             style={{ margin: "0px", padding: "0px", boxSizing: "border-box" }}
           >
@@ -81,10 +91,13 @@ const Jdash = () => {
                 <i className="fa-solid fa-bell"></i>
               </button>
 
-              <div className="d-flex align-content-center ms-5">
+              <div
+                className="d-flex align-content-center ms-5"
+                style={{ position: "absolute", left: "400px" }}
+              >
                 <h2
                   style={{ padding: "10px " }}
-                  className="fs-1 fw-bold text-white ms-5 "
+                  className="fs-1 fw-bold text-white   "
                 >
                   ADMINISTRATION PORTAL{" "}
                   <i className="fa-solid fa-scale-balanced"></i>
@@ -117,14 +130,15 @@ const Jdash = () => {
                       Punch in <i className="fa-solid fa-house"></i>
                     </button>
                   </li>
-                  <Link to={'/login'}
+                  <Link
+                    to={"/login"}
                     style={{
                       cursor: "pointer",
                       color: "white",
                       transition: "color 0.3s",
                     }}
                   >
-                    <button 
+                    <button
                       style={{ backgroundColor: "#6D6249" }}
                       className="btn text-white"
                     >
@@ -133,15 +147,16 @@ const Jdash = () => {
                     </button>
                   </Link>
                   <li>
-
-                    <Link to={'/cr'}>  <button
-                      style={{ backgroundColor: "#6D6249" }}
-                      className="btn text-white"
-                    >
-                      Crime Records{""}
-                      <i className="fa-solid fa-right-to-bracket"></i>
-                    </button></Link>
-                  
+                    <Link to={"/cr"}>
+                      {" "}
+                      <button
+                        style={{ backgroundColor: "#6D6249" }}
+                        className="btn text-white"
+                      >
+                        Crime Records{""}
+                        <i className="fa-solid fa-right-to-bracket"></i>
+                      </button>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -154,11 +169,8 @@ const Jdash = () => {
           </div>
         </div>
 
-
-
-
-          <div>
-            <div  className="row ms-5 mb-5">
+        <div>
+          <div className="row ms-5 mb-5">
             <div
               className=" d-flex align-items-center justify-content-center col-2"
               style={{
@@ -170,16 +182,161 @@ const Jdash = () => {
                   "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
               }}
             >
-              <div style={{ height: "200px", width: "200px" }}>
+              <div
+                style={{
+                  height: "200px",
+                  width: "200px",
+                  position: "relative",
+                }}
+              >
                 <img
                   style={{ width: "100%" }}
                   src="https://img.freepik.com/premium-vector/supreme-court-with-judges-illustration_7737-1699.jpg"
                   alt=""
                 />
               </div>
-              <h3 className="mb-5 fw-bold fs-2 ms-5  " style={{ color: " #796F57" }}>
+              <h3
+                className="mb-5 fw-bold fs-2 ms-5  "
+                style={{ color: " #796F57" }}
+              >
                 Welcome
               </h3>
+              <button onClick={handleShow}
+                className="btn text-white"
+                style={{
+                  position: "absolute",
+                  left: "100px",
+                  top: "390px",
+                  backgroundColor: "#796F57",
+                }}
+              >
+                service requests <i class="fa-solid fa-server"></i>
+              </button>
+
+              <Modal centered size="lg" show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title className="ms-5">SERVICE REQUESTS <i class="fa-solid fa-server"></i></Modal.Title>
+        </Modal.Header>
+        <Modal.Body><div className="table-responsive me-2">
+              {" "}
+              <table
+                className=" table-bordered text-center ms-3 me-5 mb-5"
+                style={{
+                  backgroundColor: "#d9d9d9",
+                  borderColor: "#796F57",
+                  overflow: "hidden",
+
+                  borderCollapse: "collapse",
+                }}
+              >
+                <thead
+                  className="rounded-3 mb-4"
+                  style={{
+                    backgroundColor: "#796F57",
+                    color: "white",
+                    fontSize: "18px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <tr>
+                    <th style={{ padding: "10px" }}>Civilian Name</th>
+                    <th style={{ padding: "10px" }}>Date of Submission</th>
+                    <th style={{ padding: "10px" }}>Requested service</th>
+                    <th style={{ padding: "10px" }}>Civilian number</th>
+                    <th style={{ padding: "10px" }}>Decision</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
+                    <td style={{ padding: "5px" }}>Abhishek</td>
+                    <td style={{ padding: "5px" }}>2-5-2018</td>
+                    <td style={{ padding: "5px" }}>
+                   Guarding
+                    </td>
+                    <td style={{ padding: "5px" }}>7878772212148</td>
+                    <td style={{ padding: "5px" }}>
+                      <button
+                        className="btn btn-success"
+                        style={{ marginBottom: "2px" }}
+                      >
+                        Accepted<i class="fa-solid fa-check"></i>
+                      </button>{" "}
+                      <br />
+                      <button
+                        style={{ marginRight: "2px" }}
+                        className="btn btn-danger"
+                      >
+                        Reject <i className="fa-solid fa-square-xmark"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table
+                className=" table-bordered text-center ms-3 me-5 mb-5"
+                style={{
+                  backgroundColor: "#d9d9d9",
+                  borderColor: "#796F57",
+                  overflow: "hidden",
+
+                  borderCollapse: "collapse",
+                }}
+              >
+                <thead
+                  className="rounded-3 mb-4"
+                  style={{
+                    backgroundColor: "#796F57",
+                    color: "white",
+                    fontSize: "18px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <tr>
+                    <th style={{ padding: "10px" }}>Officer Name</th>
+                    <th style={{ padding: "10px" }}>Date of Submission</th>
+                    <th style={{ padding: "10px" }}>Requested service</th>
+                    <th style={{ padding: "10px" }}>Officer number</th>
+                    <th style={{ padding: "10px" }}>Decision</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
+                    <td style={{ padding: "5px" }}>sharath</td>
+                    <td style={{ padding: "5px" }}>2-5-2018</td>
+                    <td style={{ padding: "5px" }}>
+                   Guarding
+                    </td>
+                    <td style={{ padding: "5px" }}>987455874587</td>
+                    <td style={{ padding: "5px" }}>
+                      <button
+                        className="btn btn-success"
+                        style={{ marginBottom: "2px" }}
+                      >
+                        Accepted<i class="fa-solid fa-check"></i>
+                      </button>{" "}
+                      <br />
+                      <button
+                        style={{ marginRight: "2px" }}
+                        className="btn btn-danger"
+                      >
+                        Reject <i className="fa-solid fa-square-xmark"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+
+
+            </div></Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          
+        </Modal.Footer>
+      </Modal>
             </div>
             <div className="col-8 table-responsive me-2">
               {" "}
@@ -189,8 +346,7 @@ const Jdash = () => {
                   backgroundColor: "#d9d9d9",
                   borderColor: "#796F57",
                   overflow: "hidden",
-                  
-                 
+
                   borderCollapse: "collapse",
                 }}
               >
@@ -243,21 +399,20 @@ const Jdash = () => {
                   </tr>
                 </tbody>
               </table>
+              
+              
             </div>
-            </div>
-      
+          </div>
 
-          <section
-            className="container mt-5"
-           
-          >
+          <section className="container mt-5">
             <div className="text-center">
               <h2
                 className="fw-bold text-white p-3 rounded-3"
                 style={{ backgroundColor: "#796F57" }}
               >
                 OFFICERS RECORDS
-              </h2>     <button className="btn btn-light shadow ">ADD OFFICERS</button>
+              </h2>{" "}
+              <button className="btn btn-light shadow ">ADD OFFICERS</button>
             </div>
 
             <div className="table-responsive mt-4">
@@ -315,15 +470,7 @@ const Jdash = () => {
             </div>
           </section>
 
-
-          
-       
-
-
-          <section
-            className="container mt-5"
-           
-          >
+          <section className="container mt-5">
             <div className="text-center">
               <h2
                 className="fw-bold text-white p-3 rounded-3"
@@ -368,14 +515,14 @@ const Jdash = () => {
                     <td className="p-3">Sarath</td>
                     <td className="p-3">PATTOM</td>
                     <td className="p-3">10</td>
-                     <td className="p-3">
-                    <Button className="btn m-2 bg-success border-0">
-                      Approve <i className="fa-solid fa-check"></i>
-                    </Button>
-                    <Button className="bg-danger border-0">
-                      Reject <i className="fa-solid fa-square-xmark"></i>
-                    </Button>
-                  </td>
+                    <td className="p-3">
+                      <Button className="btn m-2 bg-success border-0">
+                        Approve <i className="fa-solid fa-check"></i>
+                      </Button>
+                      <Button className="bg-danger border-0">
+                        Reject <i className="fa-solid fa-square-xmark"></i>
+                      </Button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -383,8 +530,6 @@ const Jdash = () => {
           </section>
         </div>
       </div>
-
-       
 
       <Footer />
     </div>

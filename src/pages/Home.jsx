@@ -5,6 +5,7 @@ import Footer from "../Components/Footer";
 import Carousel from "react-bootstrap/Carousel";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -219,12 +220,12 @@ const Home = () => {
                 </Card.Title>
                 <h4>Request for police activities and events</h4>
                 <Card.Text></Card.Text>
-                <Button
+               <Link to={'/local'}> <Button
                   style={{ backgroundColor: "#796F57", border: "0px" }}
                   className="mt-3"
                 >
                   Apply
-                </Button>
+                </Button></Link>
               </Card.Body>
             </Card>
             <Card
@@ -241,12 +242,12 @@ const Home = () => {
                 </Card.Title>
                 <h4>Request statics and Data</h4>
                 <Card.Text></Card.Text>
-                <Button
+               <Link to={'/login'}><Button
                   style={{ backgroundColor: "#796F57", border: "0px" }}
                   className="mt-3"
                 >
                   Apply
-                </Button>
+                </Button></Link> 
               </Card.Body>
             </Card>
             <Card
@@ -263,12 +264,12 @@ const Home = () => {
                 </Card.Title>
                 <h4>Officers Club Facility Bookings</h4>
                 <Card.Text></Card.Text>
-                <Button
+               <Link to={'/login'}><Button
                   style={{ backgroundColor: "#796F57", border: "0px" }}
                   className="mt-3"
                 >
                   Apply
-                </Button>
+                </Button></Link> 
               </Card.Body>
             </Card>
             <Card
@@ -285,12 +286,13 @@ const Home = () => {
                 </Card.Title>
                 <h4>File a complaint</h4>
                 <Card.Text></Card.Text>
-                <Button
+               <Link to={'/local'}> <Button
                   style={{ backgroundColor: "#796F57", border: "0px" }}
                   className="mt-4"
                 >
                   Apply
                 </Button>
+                </Link>
               </Card.Body>
             </Card>
             <Card
@@ -307,12 +309,12 @@ const Home = () => {
                 </Card.Title>
                 <h4>Suggesiions</h4>
                 <Card.Text></Card.Text>
-                <Button
+               <Link to={'/local'}> <Button
                   style={{ backgroundColor: "#796F57", border: "0px" }}
                   className="mt-4"
                 >
                   Apply
-                </Button>
+                </Button></Link>
               </Card.Body>
             </Card>
           </div>

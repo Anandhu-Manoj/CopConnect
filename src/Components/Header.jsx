@@ -71,11 +71,11 @@ const Header = () => {
           <i class="fa-solid fa-bell"></i>
         </button>
 
-       <Link to={'/local'}> <button
+       <Link to={'/localac'}> <button
           className="btn-white rounded-3"
           style={{ width: "300px", height: "45px" }}
         >
-          <i className="fa-solid fa-fingerprint me-3"> </i> sign in with ID
+          <i className="fa-solid fa-fingerprint me-3"> </i> sign up with ID
           Proof
         </button></Link>
 

@@ -84,7 +84,7 @@ const Login = () => {
                 </option>
 
                 <option className="text-dark" value="Judiciary">
-                  Judiciary
+                ADMINISTRATION
                 </option>
                 <option className="text-dark" value="Officer">
                   Officer
@@ -178,7 +178,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
