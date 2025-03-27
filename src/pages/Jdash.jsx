@@ -25,6 +25,11 @@ const Jdash = () => {
     PopsetTarget(event.target);
   };
 
+  const [revshow, setRevShow] = useState(false);
+                    
+  const handleRevClose = () => setRevShow(false);
+  const handleRevShow = () => setRevShow(true);
+
 
 //add officer modal
 
@@ -430,10 +435,40 @@ const [oshow, setOShow] = useState(false);
                       >
                         Reject <i className="fa-solid fa-square-xmark"></i>
                       </button>
-                      <button className="btn btn-primary mt-2">
+                      <button onClick={handleRevShow} className="btn btn-primary mt-2">
                         Review <i className="fa-solid fa-eye"></i>
                       </button>
                     </td>
+                     
+                    
+                    <Modal  centered show={revshow} onHide={handleRevClose}>
+            <Modal.Header style={{ background:
+                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}} closeButton>
+              <Modal.Title className="ms-5">Review Complaint <i class="fa-solid fa-pen-to-square fw-bold"></i>
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ background:
+                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
+             <input className="form-control w-100 mb-5" required type="text" placeholder="civilian name" />
+             <input className="form-control w-100 mb-5" required type="text" placeholder="Date complaint filed" />
+             <input className="form-control w-100 mb-5" required type="number" placeholder="civilian number your contact  number" />
+             <input className="form-control w-100 mb-5" required type="text" placeholder="civilian your aadhar number " />
+             <input className="form-control w-100 mb-5" required type="text" placeholder="assign officer " />
+             <input className="form-control w-100" required type="file" placeholder="" />
+             <p className="mt-2 ms-5 text-dark fw-lighter"> uploaded  written complaint in pdf format</p>
+            </Modal.Body>
+            <Modal.Footer style={{ background:
+                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
+              <Button variant="secondary" onClick={handleRevClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleRevClose}>
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+
                     <td style={{ padding: "10px" }}>Sarath</td>
                     <td style={{ padding: "10px" }}>
                       <button
@@ -464,9 +499,10 @@ const [oshow, setOShow] = useState(false);
               </h2>{" "}
               <button className="btn btn-light shadow " onClick={handleOfShow}>ADD OFFICERS</button>
             </div>
-            <Modal centered size="lg" show={oshow} onHide={handleOfClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Officers <i className="fa-solid fa-shield"></i></Modal.Title>
+            <Modal centered size="lg" show={oshow} onHide={handleOfClose} >
+        <Modal.Header closeButton  style={{ background:
+                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
+          <Modal.Title >Add Officers <i className="fa-solid fa-shield"></i></Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ background:
                 "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
@@ -481,7 +517,8 @@ const [oshow, setOShow] = useState(false);
              
              
             </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer style={{ background:
+                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}} >
           <Button variant="secondary" onClick={handleOfClose}>
             Close
           </Button>

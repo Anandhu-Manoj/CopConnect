@@ -204,7 +204,9 @@ const Home = () => {
         </div>
 
         <section className="mt-5">
-          <h1 className="d-flex justify-content-center">Our Services</h1>
+          <h1 className="d-flex justify-content-center fw-bold fs-1">
+            Our Services
+          </h1>
           <div className="d-flex gap-3 justify-content-center align-center mb-5 mt-5 ">
             <Card
               className="card  ms-5"
@@ -220,12 +222,15 @@ const Home = () => {
                 </Card.Title>
                 <h4>Request for police activities and events</h4>
                 <Card.Text></Card.Text>
-               <Link to={'/local'}> <Button
-                  style={{ backgroundColor: "#796F57", border: "0px" }}
-                  className="mt-3"
-                >
-                  Apply
-                </Button></Link>
+                <Link to={"/local"}>
+                  {" "}
+                  <Button
+                    style={{ backgroundColor: "#796F57", border: "0px" }}
+                    className="mt-3"
+                  >
+                    Apply
+                  </Button>
+                </Link>
               </Card.Body>
             </Card>
             <Card
@@ -242,12 +247,14 @@ const Home = () => {
                 </Card.Title>
                 <h4>Request statics and Data</h4>
                 <Card.Text></Card.Text>
-               <Link to={'/login'}><Button
-                  style={{ backgroundColor: "#796F57", border: "0px" }}
-                  className="mt-3"
-                >
-                  Apply
-                </Button></Link> 
+                <Link to={"/login"}>
+                  <Button
+                    style={{ backgroundColor: "#796F57", border: "0px" }}
+                    className="mt-3"
+                  >
+                    Apply
+                  </Button>
+                </Link>
               </Card.Body>
             </Card>
             <Card
@@ -264,12 +271,14 @@ const Home = () => {
                 </Card.Title>
                 <h4>Officers Club Facility Bookings</h4>
                 <Card.Text></Card.Text>
-               <Link to={'/login'}><Button
-                  style={{ backgroundColor: "#796F57", border: "0px" }}
-                  className="mt-3"
-                >
-                  Apply
-                </Button></Link> 
+                <Link to={"/login"}>
+                  <Button
+                    style={{ backgroundColor: "#796F57", border: "0px" }}
+                    className="mt-3"
+                  >
+                    Apply
+                  </Button>
+                </Link>
               </Card.Body>
             </Card>
             <Card
@@ -286,12 +295,14 @@ const Home = () => {
                 </Card.Title>
                 <h4>File a complaint</h4>
                 <Card.Text></Card.Text>
-               <Link to={'/local'}> <Button
-                  style={{ backgroundColor: "#796F57", border: "0px" }}
-                  className="mt-4"
-                >
-                  Apply
-                </Button>
+                <Link to={"/local"}>
+                  {" "}
+                  <Button
+                    style={{ backgroundColor: "#796F57", border: "0px" }}
+                    className="mt-4"
+                  >
+                    Apply
+                  </Button>
                 </Link>
               </Card.Body>
             </Card>
@@ -305,16 +316,19 @@ const Home = () => {
             >
               <Card.Body>
                 <Card.Title style={{ fontSize: "50px", color: "#796F57" }}>
-                <i class="fa-solid fa-handshake-angle"></i>
+                  <i class="fa-solid fa-handshake-angle"></i>
                 </Card.Title>
                 <h4>Visit Inmates </h4>
                 <Card.Text></Card.Text>
-               <Link to={'/local'}> <Button
-                  style={{ backgroundColor: "#796F57", border: "0px" }}
-                  className="mt-4"
-                >
-                  Apply
-                </Button></Link>
+                <Link to={"/local"}>
+                  {" "}
+                  <Button
+                    style={{ backgroundColor: "#796F57", border: "0px" }}
+                    className="mt-4"
+                  >
+                    Apply
+                  </Button>
+                </Link>
               </Card.Body>
             </Card>
           </div>

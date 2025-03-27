@@ -8,8 +8,8 @@ import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Card from "react-bootstrap/Card";
 
-import Overlay from 'react-bootstrap/Overlay';
-import Popover from 'react-bootstrap/Popover';
+import Overlay from "react-bootstrap/Overlay";
+import Popover from "react-bootstrap/Popover";
 
 const Odash = () => {
   const [show, setShow] = useState(false);
@@ -21,18 +21,14 @@ const Odash = () => {
   const handleCloseMod = () => setShowMod(false);
   const handleShowMod = () => setShowMod(true);
 
+  const [popshow, setPopShow] = useState(false);
+  const [poptarget, PopsetTarget] = useState(null);
+  const popoverRef = useRef(null);
 
-   const [popshow, setPopShow] = useState(false);
-    const [poptarget, PopsetTarget] = useState(null);
-    const popoverRef = useRef(null); 
-  
-    const handlePopClick = (event) => {
-      setPopShow(!popshow);
-      PopsetTarget(event.target);
-    };
-
-
-  
+  const handlePopClick = (event) => {
+    setPopShow(!popshow);
+    PopsetTarget(event.target);
+  };
 
   return (
     <div className="m-0 overflow-hidden">
@@ -95,44 +91,51 @@ const Odash = () => {
                 <i className="fa-solid fa-bars-staggered"></i>
               </h1>
               <div ref={popoverRef} className="mb-5">
-        <button onClick={handlePopClick}
-          className="btn btn-white text-white"
-          style={{
-            fontSize: "20px",
-            position: "absolute",
-            left: "300px",
-          
-            backgroundColor: "#6D6249",
-          }}
-        >
-          <i className="fa-solid fa-bell"></i>
-        </button>
-       
-  
-      <Overlay className="d-flex flex-column justify-content-center"
-        show={popshow}
-        target={poptarget}
-        placement="bottom"
-        container={popoverRef.current}
-        containerPadding={20}
-      >
-        <Popover id="popover-contained" >
-          <Popover.Header as="h3">Notifications</Popover.Header>
-          <Popover.Body style={{height:"300px",width:"300px"}}>
-            <strong>no notifications</strong> Check this info.
-          </Popover.Body>
+                <button
+                  onClick={handlePopClick}
+                  className="btn btn-white text-white"
+                  style={{
+                    fontSize: "20px",
+                    position: "absolute",
+                    left: "300px",
 
-          <button style={{backgroundColor:"#796F57"}} className="btn  text-white w-100  ">Clear all </button>
-        </Popover>
-      </Overlay>
-    </div>
+                    backgroundColor: "#6D6249",
+                  }}
+                >
+                  <i className="fa-solid fa-bell"></i>
+                </button>
 
+                <Overlay
+                  className="d-flex flex-column justify-content-center"
+                  show={popshow}
+                  target={poptarget}
+                  placement="bottom"
+                  container={popoverRef.current}
+                  containerPadding={20}
+                >
+                  <Popover id="popover-contained">
+                    <Popover.Header as="h3">Notifications</Popover.Header>
+                    <Popover.Body style={{ height: "300px", width: "300px" }}>
+                      <strong>no notifications</strong> Check this info.
+                    </Popover.Body>
 
-              <div className="d-flex align-content-center ms-5" style={{position:"absolute",left:"400px"}}>
+                    <button
+                      style={{ backgroundColor: "#796F57" }}
+                      className="btn  text-white w-100  "
+                    >
+                      Clear all{" "}
+                    </button>
+                  </Popover>
+                </Overlay>
+              </div>
+
+              <div
+                className="d-flex align-content-center ms-5"
+                style={{ position: "absolute", left: "400px" }}
+              >
                 <h2
                   style={{ padding: "10px " }}
                   className="fs-1 fw-bold text-white ms-5 "
-                
                 >
                   OFFICER PORTAL <i className="fa-solid fa-building-shield"></i>
                 </h2>
@@ -165,47 +168,87 @@ const Odash = () => {
                     </button>
                   </li>
                   <li>
-                    <button onClick={handleShowMod}
+                    <button
+                      onClick={handleShowMod}
                       style={{ backgroundColor: "#6D6249" }}
                       className="btn text-white"
                     >
                       Apply Leave <i className="fa-solid fa-couch"></i>
                     </button>
                   </li>
-                  <Modal size="lg"  centered show={showMod} onHide={handleCloseMod}>
-                    <Modal.Header closeButton  style={{ background:
-                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
-                      <Modal.Title className="ms-5">Leave Application <i className="fa-solid fa-couch"></i>
+                  <Modal
+                    size="lg"
+                    centered
+                    show={showMod}
+                    onHide={handleCloseMod}
+                  >
+                    <Modal.Header
+                      closeButton
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                      }}
+                    >
+                      <Modal.Title className="ms-5">
+                        Leave Application <i className="fa-solid fa-couch"></i>
                       </Modal.Title>
-                    </Modal.Header >
-                    <Modal.Body style={{ background:
-                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",height:"400px"}} className="d-flex flex-column gap-3 justify-content-center align-items-center">
-
+                    </Modal.Header>
+                    <Modal.Body
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                        height: "400px",
+                      }}
+                      className="d-flex flex-column gap-3 justify-content-center align-items-center"
+                    >
                       <select className="form-control mt-3" name="" id="">
-                        <option value="" selected disabled>choose leave type</option>
+                        <option value="" selected disabled>
+                          choose leave type
+                        </option>
                         <option value="">Casual Leave</option>
                         <option value="">Sick Leave</option>
-                        <option value="">Meternity/Paternity  Leave</option>
+                        <option value="">Meternity/Paternity Leave</option>
                         <option value="">Bevarement Leave</option>
                       </select>
-                      <input className="form-control" type="text" placeholder="reporting officers name" />
-                      <input className="form-control" type="text"  placeholder="circle of duty"/>
-                      <input className="form-control" type="text"  placeholder="Batch number"/>
+                      <input
+                        className="form-control"
+                        type="text"
+                        placeholder="reporting officers name"
+                      />
+                      <input
+                        className="form-control"
+                        type="text"
+                        placeholder="circle of duty"
+                      />
+                      <input
+                        className="form-control"
+                        type="text"
+                        placeholder="Batch number"
+                      />
 
-
-                      <textarea placeholder="reason for the leave" type="text" className="form-control" name="" id="" />
-                      <button className="btn text-white w-50 mt-3 " style={{backgroundColor:"#796F57"}}>APPLY</button>
-                      
-                     
-                       
-                    
+                      <textarea
+                        placeholder="reason for the leave"
+                        type="text"
+                        className="form-control"
+                        name=""
+                        id=""
+                      />
+                      <button
+                        className="btn text-white w-50 mt-3 "
+                        style={{ backgroundColor: "#796F57" }}
+                      >
+                        APPLY
+                      </button>
                     </Modal.Body>
-                    <Modal.Footer style={{ background:
-                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
+                    <Modal.Footer
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                      }}
+                    >
                       <Button variant="secondary" onClick={handleCloseMod}>
                         Close
                       </Button>
-                     
                     </Modal.Footer>
                   </Modal>
                   <li
@@ -224,11 +267,16 @@ const Odash = () => {
                       Book services <i class="fa-solid fa-server"></i>
                     </button>
                   </li>
-                  <Modal size="lg"  centered show={show} onHide={handleClose}>
-                    <Modal.Header closeButton >
-                      <Modal.Title className="ms-5">SERVICES <i class="fa-solid fa-server"></i></Modal.Title>
+                  <Modal size="lg" centered show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                      <Modal.Title className="ms-5">
+                        SERVICES <i class="fa-solid fa-server"></i>
+                      </Modal.Title>
                     </Modal.Header>
-                    <Modal.Body style={{ height: "300px" }} className="d-flex  gap-3 justify-content-center align-items-center">
+                    <Modal.Body
+                      style={{ height: "300px" }}
+                      className="d-flex  gap-3 justify-content-center align-items-center"
+                    >
                       {" "}
                       <Card
                         className="card d-flex flex-column justify-content-center align-items-center"
@@ -246,17 +294,16 @@ const Odash = () => {
                           </Card.Title>
                           <h4>Officers Club Facility Bookings</h4>
                           <Card.Text></Card.Text>
-                         
-                            <Button
-                              style={{
-                                backgroundColor: "#796F57",
-                                border: "0px",
-                              }}
-                              className="mt-3"
-                            >
-                              Apply
-                            </Button>
-                         
+
+                          <Button
+                            style={{
+                              backgroundColor: "#796F57",
+                              border: "0px",
+                            }}
+                            className="mt-3"
+                          >
+                            Apply
+                          </Button>
                         </Card.Body>
                       </Card>
                       <Card
@@ -268,24 +315,23 @@ const Odash = () => {
                         }}
                       >
                         <Card.Body className="d-flex flex-column justify-content-center align-items-center text-center">
-                        <Card.Title
+                          <Card.Title
                             style={{ fontSize: "50px", color: "#796F57" }}
                           >
                             <i class="fa-solid fa-square-poll-vertical"></i>
                           </Card.Title>
                           <h4>Request statics and Data</h4>
                           <Card.Text></Card.Text>
-                         
-                            <Button
-                              style={{
-                                backgroundColor: "#796F57",
-                                border: "0px",
-                              }}
-                              className="mt-3"
-                            >
-                              Apply
-                            </Button>
-                        
+
+                          <Button
+                            style={{
+                              backgroundColor: "#796F57",
+                              border: "0px",
+                            }}
+                            className="mt-3"
+                          >
+                            Apply
+                          </Button>
                         </Card.Body>
                       </Card>
                     </Modal.Body>
@@ -293,7 +339,6 @@ const Odash = () => {
                       <Button variant="secondary" onClick={handleClose}>
                         Close
                       </Button>
-                     
                     </Modal.Footer>
                   </Modal>
                   <Link
@@ -331,6 +376,7 @@ const Odash = () => {
                 alt=""
               />
             </div>
+
             <div
               className="col-md-7 m-0 rounded-5"
               style={{
@@ -360,12 +406,19 @@ const Odash = () => {
                   alt="Officer"
                 />
               </div>
+              <button
+                className="btn text-white rounded-5"
+                style={{ position: "absolute", left: "605px", top: "220px",backgroundColor:"#796F57" }}
+              >
+               EDIT  <i className="fa-solid fa-pen"></i>
+              </button>
+
               <div className="mt-3 text-dark" style={{ paddingLeft: "20px" }}>
                 <p className="fs-5 fw-bold">
-                  <span>Name: </span>Sarath
+                  <span>Name: </span>Abhishek
                 </p>
                 <p className="fs-5 fw-bold">
-                  <span>Father's Name: </span>Lal
+                  <span>Father's Name: </span>Sharma
                 </p>
                 <p className="fs-5 fw-bold">
                   <span>Batch No: </span>12

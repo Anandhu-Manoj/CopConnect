@@ -121,6 +121,7 @@ const Services = () => {
             <Modal.Body style={{ background:
                 "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
              <input className="form-control w-100 mb-5" required type="text" placeholder="enter your name" />
+             <input className="form-control w-100 mb-5" required type="date" placeholder="enter Date of submission" />
              <input className="form-control w-100 mb-5" required type="number" placeholder="enter your contact  number" />
              <input className="form-control w-100 mb-5" required type="text" placeholder="enter your aadhar number " />
              <input className="form-control w-100" required type="file" placeholder="" />
