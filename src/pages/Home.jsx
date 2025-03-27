@@ -305,9 +305,9 @@ const Home = () => {
             >
               <Card.Body>
                 <Card.Title style={{ fontSize: "50px", color: "#796F57" }}>
-                  <i class="fa-regular fa-lightbulb"></i>
+                <i class="fa-solid fa-handshake-angle"></i>
                 </Card.Title>
-                <h4>Suggesiions</h4>
+                <h4>Visit Inmates </h4>
                 <Card.Text></Card.Text>
                <Link to={'/local'}> <Button
                   style={{ backgroundColor: "#796F57", border: "0px" }}

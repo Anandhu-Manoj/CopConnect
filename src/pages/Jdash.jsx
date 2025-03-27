@@ -1,19 +1,38 @@
-import React from "react";
+import React, { useRef } from "react";
 import Logo from "../assets/sideLogo.png";
 import sideLogo from "../assets/logo.png";
 import Video from "../assets/Jbg.mp4";
 import Footer from "../Components/Footer";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
+import { useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import Overlay from "react-bootstrap/Overlay";
+import Popover from "react-bootstrap/Popover";
 
 const Jdash = () => {
-
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [popshow, setPopShow] = useState(false);
+  const [poptarget, PopsetTarget] = useState(null);
+  const popoverRef = useRef(null);
+
+  const handlePopClick = (event) => {
+    setPopShow(!popshow);
+    PopsetTarget(event.target);
+  };
+
+
+//add officer modal
+
+const [oshow, setOShow] = useState(false);
+
+  const handleOfClose = () => setOShow(false);
+  const handleOfShow = () => setOShow(true);
+
   return (
     <div
       className="relative min-h-screen overflow-hidden "
@@ -79,17 +98,44 @@ const Jdash = () => {
                 CopConnect
                 <i className="fa-solid fa-bars-staggered"></i>
               </h1>
-              <button
-                className="btn btn-white text-white"
-                style={{
-                  fontSize: "20px",
-                  position: "absolute",
-                  left: "300px",
-                  backgroundColor: "#6D6249",
-                }}
-              >
-                <i className="fa-solid fa-bell"></i>
-              </button>
+              <div ref={popoverRef} className="mb-5">
+                <button
+                  onClick={handlePopClick}
+                  className="btn btn-white text-white"
+                  style={{
+                    fontSize: "20px",
+                    position: "absolute",
+                    left: "300px",
+
+                    backgroundColor: "#6D6249",
+                  }}
+                >
+                  <i className="fa-solid fa-bell"></i>
+                </button>
+
+                <Overlay
+                  className="d-flex flex-column justify-content-center"
+                  show={popshow}
+                  target={poptarget}
+                  placement="bottom"
+                  container={popoverRef.current}
+                  containerPadding={20}
+                >
+                  <Popover id="popover-contained">
+                    <Popover.Header as="h3">Notifications</Popover.Header>
+                    <Popover.Body style={{ height: "300px", width: "300px" }}>
+                      <strong>no notifications</strong> Check this info.
+                    </Popover.Body>
+
+                    <button
+                      style={{ backgroundColor: "#796F57" }}
+                      className="btn  text-white w-100 mb-1 "
+                    >
+                      Clear all{" "}
+                    </button>
+                  </Popover>
+                </Overlay>
+              </div>
 
               <div
                 className="d-flex align-content-center ms-5"
@@ -201,7 +247,8 @@ const Jdash = () => {
               >
                 Welcome
               </h3>
-              <button onClick={handleShow}
+              <button
+                onClick={handleShow}
                 className="btn text-white"
                 style={{
                   position: "absolute",
@@ -214,129 +261,134 @@ const Jdash = () => {
               </button>
 
               <Modal centered size="lg" show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title className="ms-5">SERVICE REQUESTS <i class="fa-solid fa-server"></i></Modal.Title>
-        </Modal.Header>
-        <Modal.Body><div className="table-responsive me-2">
-              {" "}
-              <table
-                className=" table-bordered text-center ms-3 me-5 mb-5"
-                style={{
-                  backgroundColor: "#d9d9d9",
-                  borderColor: "#796F57",
-                  overflow: "hidden",
+                <Modal.Header closeButton>
+                  <Modal.Title className="ms-5">
+                    SERVICE REQUESTS <i class="fa-solid fa-server"></i>
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <div className="table-responsive me-2">
+                    {" "}
+                    <table
+                      className=" table-bordered text-center ms-3 me-5 mb-5"
+                      style={{
+                        backgroundColor: "#d9d9d9",
+                        borderColor: "#796F57",
+                        overflow: "hidden",
 
-                  borderCollapse: "collapse",
-                }}
-              >
-                <thead
-                  className="rounded-3 mb-4"
-                  style={{
-                    backgroundColor: "#796F57",
-                    color: "white",
-                    fontSize: "18px",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  <tr>
-                    <th style={{ padding: "10px" }}>Civilian Name</th>
-                    <th style={{ padding: "10px" }}>Date of Submission</th>
-                    <th style={{ padding: "10px" }}>Requested service</th>
-                    <th style={{ padding: "10px" }}>Civilian number</th>
-                    <th style={{ padding: "10px" }}>Decision</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                    <td style={{ padding: "5px" }}>Abhishek</td>
-                    <td style={{ padding: "5px" }}>2-5-2018</td>
-                    <td style={{ padding: "5px" }}>
-                   Guarding
-                    </td>
-                    <td style={{ padding: "5px" }}>7878772212148</td>
-                    <td style={{ padding: "5px" }}>
-                      <button
-                        className="btn btn-success"
-                        style={{ marginBottom: "2px" }}
+                        borderCollapse: "collapse",
+                      }}
+                    >
+                      <thead
+                        className="rounded-3 mb-4"
+                        style={{
+                          backgroundColor: "#796F57",
+                          color: "white",
+                          fontSize: "18px",
+                          textTransform: "uppercase",
+                        }}
                       >
-                        Accepted<i class="fa-solid fa-check"></i>
-                      </button>{" "}
-                      <br />
-                      <button
-                        style={{ marginRight: "2px" }}
-                        className="btn btn-danger"
+                        <tr>
+                          <th style={{ padding: "10px" }}>Civilian Name</th>
+                          <th style={{ padding: "10px" }}>
+                            Date of Submission
+                          </th>
+                          <th style={{ padding: "10px" }}>Requested service</th>
+                          <th style={{ padding: "10px" }}>Civilian number</th>
+                          <th style={{ padding: "10px" }}>Decision</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          style={{ backgroundColor: "#fff", fontSize: "16px" }}
+                        >
+                          <td style={{ padding: "5px" }}>Abhishek</td>
+                          <td style={{ padding: "5px" }}>2-5-2018</td>
+                          <td style={{ padding: "5px" }}>Guarding</td>
+                          <td style={{ padding: "5px" }}>7878772212148</td>
+                          <td style={{ padding: "5px" }}>
+                            <button
+                              className="btn btn-success"
+                              style={{ marginBottom: "2px" }}
+                            >
+                              Accepted<i class="fa-solid fa-check"></i>
+                            </button>{" "}
+                            <br />
+                            <button
+                              style={{ marginRight: "2px" }}
+                              className="btn btn-danger"
+                            >
+                              Reject{" "}
+                              <i className="fa-solid fa-square-xmark"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      className=" table-bordered text-center ms-3 me-5 mb-5"
+                      style={{
+                        backgroundColor: "#d9d9d9",
+                        borderColor: "#796F57",
+                        overflow: "hidden",
+
+                        borderCollapse: "collapse",
+                      }}
+                    >
+                      <thead
+                        className="rounded-3 mb-4"
+                        style={{
+                          backgroundColor: "#796F57",
+                          color: "white",
+                          fontSize: "18px",
+                          textTransform: "uppercase",
+                        }}
                       >
-                        Reject <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <table
-                className=" table-bordered text-center ms-3 me-5 mb-5"
-                style={{
-                  backgroundColor: "#d9d9d9",
-                  borderColor: "#796F57",
-                  overflow: "hidden",
-
-                  borderCollapse: "collapse",
-                }}
-              >
-                <thead
-                  className="rounded-3 mb-4"
-                  style={{
-                    backgroundColor: "#796F57",
-                    color: "white",
-                    fontSize: "18px",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  <tr>
-                    <th style={{ padding: "10px" }}>Officer Name</th>
-                    <th style={{ padding: "10px" }}>Date of Submission</th>
-                    <th style={{ padding: "10px" }}>Requested service</th>
-                    <th style={{ padding: "10px" }}>Officer number</th>
-                    <th style={{ padding: "10px" }}>Decision</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                    <td style={{ padding: "5px" }}>sharath</td>
-                    <td style={{ padding: "5px" }}>2-5-2018</td>
-                    <td style={{ padding: "5px" }}>
-                   Guarding
-                    </td>
-                    <td style={{ padding: "5px" }}>987455874587</td>
-                    <td style={{ padding: "5px" }}>
-                      <button
-                        className="btn btn-success"
-                        style={{ marginBottom: "2px" }}
-                      >
-                        Accepted<i class="fa-solid fa-check"></i>
-                      </button>{" "}
-                      <br />
-                      <button
-                        style={{ marginRight: "2px" }}
-                        className="btn btn-danger"
-                      >
-                        Reject <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  
-                </tbody>
-              </table>
-
-
-            </div></Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          
-        </Modal.Footer>
-      </Modal>
+                        <tr>
+                          <th style={{ padding: "10px" }}>Officer Name</th>
+                          <th style={{ padding: "10px" }}>
+                            Date of Submission
+                          </th>
+                          <th style={{ padding: "10px" }}>Requested service</th>
+                          <th style={{ padding: "10px" }}>Officer number</th>
+                          <th style={{ padding: "10px" }}>Decision</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          style={{ backgroundColor: "#fff", fontSize: "16px" }}
+                        >
+                          <td style={{ padding: "5px" }}>sharath</td>
+                          <td style={{ padding: "5px" }}>2-5-2018</td>
+                          <td style={{ padding: "5px" }}>Guarding</td>
+                          <td style={{ padding: "5px" }}>987455874587</td>
+                          <td style={{ padding: "5px" }}>
+                            <button
+                              className="btn btn-success"
+                              style={{ marginBottom: "2px" }}
+                            >
+                              Accepted<i class="fa-solid fa-check"></i>
+                            </button>{" "}
+                            <br />
+                            <button
+                              style={{ marginRight: "2px" }}
+                              className="btn btn-danger"
+                            >
+                              Reject{" "}
+                              <i className="fa-solid fa-square-xmark"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </div>
             <div className="col-8 table-responsive me-2">
               {" "}
@@ -399,8 +451,6 @@ const Jdash = () => {
                   </tr>
                 </tbody>
               </table>
-              
-              
             </div>
           </div>
 
@@ -412,8 +462,36 @@ const Jdash = () => {
               >
                 OFFICERS RECORDS
               </h2>{" "}
-              <button className="btn btn-light shadow ">ADD OFFICERS</button>
+              <button className="btn btn-light shadow " onClick={handleOfShow}>ADD OFFICERS</button>
             </div>
+            <Modal centered size="lg" show={oshow} onHide={handleOfClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Officers <i className="fa-solid fa-shield"></i></Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background:
+                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
+             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter Officers name" />
+             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter Officers fathers name" />
+             <input className="form-control w-100 mb-2" required type="number" placeholder="Enter  Officers Batch number" />
+             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter  Officers contact number" />
+             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter Designation" />
+             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter assigned circle ofduty" />
+             <input className="form-control w-100 mb-2" required type="number" placeholder="Enter service period" />
+
+             
+             
+            </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleOfClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleOfClose}>
+            Add
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
 
             <div className="table-responsive mt-4">
               <table

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Footer from "../Components/Footer";
 import Logo from "../assets/sideLogo.png";
 import sideLogo from "../assets/logo.png";
@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Card from "react-bootstrap/Card";
-import {  useRef } from 'react';
+
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 
@@ -20,6 +20,16 @@ const Odash = () => {
 
   const handleCloseMod = () => setShowMod(false);
   const handleShowMod = () => setShowMod(true);
+
+
+   const [popshow, setPopShow] = useState(false);
+    const [poptarget, PopsetTarget] = useState(null);
+    const popoverRef = useRef(null); 
+  
+    const handlePopClick = (event) => {
+      setPopShow(!popshow);
+      PopsetTarget(event.target);
+    };
 
 
   
@@ -84,17 +94,39 @@ const Odash = () => {
                 CopConnect
                 <i className="fa-solid fa-bars-staggered"></i>
               </h1>
-              <button
-                className="btn btn-white text-white"
-                style={{
-                  fontSize: "20px",
-                  position: "absolute",
-                  left: "300px",
-                  backgroundColor: "#6D6249",
-                }}
-              >
-                <i className="fa-solid fa-bell"></i>
-              </button>
+              <div ref={popoverRef} className="mb-5">
+        <button onClick={handlePopClick}
+          className="btn btn-white text-white"
+          style={{
+            fontSize: "20px",
+            position: "absolute",
+            left: "300px",
+          
+            backgroundColor: "#6D6249",
+          }}
+        >
+          <i className="fa-solid fa-bell"></i>
+        </button>
+       
+  
+      <Overlay className="d-flex flex-column justify-content-center"
+        show={popshow}
+        target={poptarget}
+        placement="bottom"
+        container={popoverRef.current}
+        containerPadding={20}
+      >
+        <Popover id="popover-contained" >
+          <Popover.Header as="h3">Notifications</Popover.Header>
+          <Popover.Body style={{height:"300px",width:"300px"}}>
+            <strong>no notifications</strong> Check this info.
+          </Popover.Body>
+
+          <button style={{backgroundColor:"#796F57"}} className="btn  text-white w-100  ">Clear all </button>
+        </Popover>
+      </Overlay>
+    </div>
+
 
               <div className="d-flex align-content-center ms-5" style={{position:"absolute",left:"400px"}}>
                 <h2
