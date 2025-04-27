@@ -1,13 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../Components/Footer";
 import Header from "../Components/Header";
+import { civilianLogin } from "../Services/AllApis";
 
 const Local = () => {
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+    aadharNo: "",
+  });
   const navigate = useNavigate();
 
-  const onLogin = () => {
-    navigate("/services");
+  const onLogin = async () => {
+    try {
+      const apiResponse = await civilianLogin(loginData);
+      if (apiResponse.status == 200) {
+        sessionStorage.setItem("user", apiResponse.data.user.email);
+        sessionStorage.setItem("token", apiResponse.data.token);
+        alert("Login succesfully done");
+        console.log(apiResponse.data);
+
+        navigate("/services");
+      } else {
+        apiResponse.status == 404;
+        alert("add correct credentials");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div
@@ -23,6 +44,9 @@ const Local = () => {
         </h2>
         <h2 className="d-flex justify-content-center ">Sign in with id</h2>
         <input
+          onChange={(e) =>
+            setLoginData({ ...loginData, email: e.target.value })
+          }
           style={{ height: "70px" }}
           className="form-control w-25 shadow rounded-3"
           type="text"
@@ -31,6 +55,9 @@ const Local = () => {
           placeholder="enter your email"
         />
         <input
+          onChange={(e) =>
+            setLoginData({ ...loginData, password: e.target.value })
+          }
           style={{ height: "70px" }}
           className="form-control w-25 shadow rounded-3"
           type="text"
@@ -39,6 +66,9 @@ const Local = () => {
           placeholder="enter your password"
         />
         <input
+          onChange={(e) =>
+            setLoginData({ ...loginData, aadharNo: e.target.value })
+          }
           style={{ height: "70px" }}
           className="form-control w-25 shadow rounded-3"
           type="text"

@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../Components/Footer";
+import { CivilianRegister } from "../Services/AllApis";
 
 const Localac = () => {
+  const navigate=useNavigate()
   const [onReg, setOnReg] = useState({
     adhaarImg: "",
     username: "",
     address: "",
     password: "",
     aadhar: "",
+    userType:"Civilian",
+    email:""
   });
 
   const [preview, setPreview] = useState("");
@@ -16,20 +20,54 @@ const Localac = () => {
     if (
       onReg.adhaarImg.type == "image/jpg" ||
       onReg.adhaarImg.type == "image/png" ||
-      onReg.adhaarImg.type == "image/jpeg "
+      onReg.adhaarImg.type == "image/jpeg"
     ) {
-      const View=URL.createObjectURL(onReg.adhaarImg)
+      const View = URL.createObjectURL(onReg.adhaarImg);
       setPreview(View);
     } else {
-      console.log("please upload correct format");
+      // alert("please upload correct format");
     }
   }, [onReg.adhaarImg]);
 
-  const onSignUp = () => {
-    console.log(onReg);
-    console.log(preview)
+  const onSignUp = async () => {
+    if (
+      onReg.aadhar &&
+      onReg.address &&
+      onReg.adhaarImg &&
+      onReg.password &&
+      onReg.username&&
+      onReg.email
+    ) {
+      const payload = new FormData();
+
+      payload.append("aadharNo", onReg.aadhar);
+      payload.append("address", onReg.address);
+      payload.append("adhaarImg", onReg.adhaarImg);
+      payload.append("password", onReg.password);
+      payload.append("username", onReg.username);
+      payload.append("userType",onReg.userType)
+      payload.append("email",onReg.email)
+
+      try {
+        let requestHeader = { "Content-Type": "multipart/form-data" };
+
+        let apiResponse = await CivilianRegister(payload, requestHeader);
+        console.log(apiResponse);
+        if (apiResponse.status == 201) {
+          alert("registration successfull");
+          navigate('/local')
+          
+        } else {
+          alert("registration failed try again later");
+        }
+      } catch (error) {
+        console.log(error);
+        alert("mission failed");
+      }
+    } else {
+      alert("please fill all the datas");
+    }
   };
- 
 
   return (
     <div style={{ margin: "0px", padding: "0px", boxSizing: "border-box" }}>
@@ -64,7 +102,11 @@ const Localac = () => {
             }}
           >
             <img
-              src={preview?preview:"https://www.medianama.com/wp-content/uploads/2023/03/aadhaar-card-7579588_1280.png"}
+              src={
+                preview
+                  ? preview
+                  : "https://www.medianama.com/wp-content/uploads/2023/03/aadhaar-card-7579588_1280.png"
+              }
               className="img-fluid"
               alt=""
             />
@@ -80,15 +122,15 @@ const Localac = () => {
           placeholder="Add user name"
         />
         <input
-          onChange={(e) => setOnReg({ ...onReg, address: e.target.value })}
+          onChange={(e) => setOnReg({ ...onReg, email: e.target.value })}
           style={{ height: "50px" }}
           className="form-control w-25 shadow rounded-3"
           type="text"
           name=""
           id=""
-          placeholder="Enter your address details"
+          placeholder="Enter your email"
         />
-        <input
+           <input
           onChange={(e) => setOnReg({ ...onReg, password: e.target.value })}
           style={{ height: "50px" }}
           className="form-control w-25 shadow rounded-3"
@@ -98,6 +140,16 @@ const Localac = () => {
           placeholder="Create your password"
         />
         <input
+          onChange={(e) => setOnReg({ ...onReg, address: e.target.value })}
+          style={{ height: "50px" }}
+          className="form-control w-25 shadow rounded-3"
+          type="text"
+          name=""
+          id=""
+          placeholder="Enter your address details"
+        />
+     
+        <input
           onChange={(e) => setOnReg({ ...onReg, aadhar: e.target.value })}
           style={{ height: "50px" }}
           className="form-control w-25 shadow rounded-3"
@@ -106,6 +158,7 @@ const Localac = () => {
           id=""
           placeholder="Enter your Aadhar number"
         />
+        
         <button
           className="w-25 rounded-3 border-0 shadow mt-2"
           style={{ height: "50px", backgroundColor: "#ADB2D4" }}
