@@ -8,6 +8,7 @@ import Popover from "react-bootstrap/Popover";
 
 import Modal from "react-bootstrap/Modal";
 import { Link } from "react-router-dom";
+import { onserviceApplication } from "../Services/AllApis";
 
 const Services = () => {
   const [ServiceApplication, setServiceApplication] = useState({
@@ -19,7 +20,7 @@ const Services = () => {
     description: "",
     criminalname: "",
     visitingreason: "",
-    relation:"",
+    relation: "",
     visitingtime: "",
   });
   console.log(ServiceApplication);
@@ -35,13 +36,106 @@ const Services = () => {
       console.log(viewComplaint);
       setPreView("you can submit now");
     } else {
-      alert("upload correct format");
-      handleClose();
+      // alert("upload correct format");
+      // handleClose();
     }
   }, [ServiceApplication.complaint]);
 
+  const onApplly = async () => {
+    if (
+      ServiceApplication.name &&
+      ServiceApplication.complaint &&
+      ServiceApplication.number &&
+      ServiceApplication.Date
+    ) {
+      const payload = new FormData();
 
+      payload.append("name", ServiceApplication.name);
+      payload.append("complaint", ServiceApplication.complaint);
+      payload.append("number", ServiceApplication.number);
+      payload.append("Date", ServiceApplication.Date);
 
+      try {
+        const requestHeader = { "Content-Type": "multipart/form-data" };
+        const apiResponse = await onserviceApplication(payload, requestHeader);
+        if (apiResponse.status === 200) {
+          alert("complainted");
+          handleClose();
+        } else {
+          alert("unable to send try again later");
+        }
+      } catch (error) {
+        console.log("api error");
+        console.log(error);
+      }
+    } else {
+      alert("fill all the fields");
+    }
+  };
+
+  //serviceRequest
+
+  const onServiceRequest = async () => {
+    if (
+      ServiceApplication.name &&
+      ServiceApplication.number &&
+      ServiceApplication.description
+    ) {
+      try {
+        const payload = {
+          name: ServiceApplication.name,
+          number: ServiceApplication.number,
+          description: ServiceApplication.description,
+        };
+        const apiResponse = await onserviceApplication(payload);
+        if (apiResponse.status === 200) {
+          alert("Request send");
+          handleModalClose();
+        } else {
+          alert("request sending failed try again later");
+        }
+      } catch (error) {
+        console.log(error, "server error");
+      }
+    } else {
+      alert("fill all the details");
+    }
+  };
+
+  //apointment booking
+  const onBookingAppontment = async () => {
+    if (
+      ServiceApplication.name &&
+      ServiceApplication.fathersname &&
+      ServiceApplication.number &&
+      ServiceApplication.Date &&
+      ServiceApplication.relation &&
+      ServiceApplication.visitingreason &&
+      ServiceApplication.visitingtime &&
+      ServiceApplication.criminalname
+    ) {
+      const payload = {
+        name: ServiceApplication.name,
+        fathersname: ServiceApplication.fathersname,
+        number: ServiceApplication.number,
+        Date: ServiceApplication.relation,
+        relation: ServiceApplication.visitingreason,
+        visitingtime: ServiceApplication.visitingtime,
+        criminalname: ServiceApplication.criminalname,
+      };
+      try {
+        const apiResponse = await onserviceApplication(payload);
+        if (apiResponse.status === 200) {
+          alert("Appointment request send");
+          handleModClose();
+        } else "try again later for booking";
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("fill all the required details");
+    }
+  };
 
   const [iseLoggedin, setIsLoggedin] = useState(false);
 
@@ -66,8 +160,6 @@ const Services = () => {
     setPopShow(!popshow);
     PopsetTarget(event.target);
   };
-  console.log(ServiceApplication)
-
 
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
@@ -76,6 +168,7 @@ const Services = () => {
       setIsLoggedin(false);
     }
   }, [iseLoggedin]);
+
   return (
     <div className="overflow-hidden">
       {/* <Header /> */}
@@ -158,7 +251,7 @@ const Services = () => {
               </Button>
             </Card.Body>
           </Card>
-
+          {/* //complaints */}
           <Modal centered show={show} onHide={handleClose}>
             <Modal.Header
               style={{
@@ -238,7 +331,7 @@ const Services = () => {
               <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleClose}>
+              <Button variant="primary" onClick={onApplly}>
                 Submit
               </Button>
             </Modal.Footer>
@@ -269,6 +362,8 @@ const Services = () => {
               </Button>
             </Card.Body>
           </Card>
+
+          {/* service bookings */}
           <Modal show={showModal} onHide={handleModalClose}>
             <Modal.Header
               style={{
@@ -289,36 +384,36 @@ const Services = () => {
               }}
             >
               <input
-               onChange={(e) => {
-                setServiceApplication({
-                  ...ServiceApplication,
-                  name: e.target.value,
-                });
-              }}
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
+                    name: e.target.value,
+                  });
+                }}
                 className="form-control w-100 mb-5"
                 required
                 type="text"
                 placeholder="enter your name"
               />
               <input
-               onChange={(e) => {
-                setServiceApplication({
-                  ...ServiceApplication,
-                  number: e.target.value,
-                });
-              }}
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
+                    number: e.target.value,
+                  });
+                }}
                 className="form-control w-100 mb-5"
                 required
                 type="number"
                 placeholder="enter your contact  number"
               />
               <textarea
-               onChange={(e) => {
-                setServiceApplication({
-                  ...ServiceApplication,
-                  description: e.target.value,
-                });
-              }}
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
+                    description: e.target.value,
+                  });
+                }}
                 className="form-control w-100 mb-5"
                 required
                 type="textArea"
@@ -336,8 +431,8 @@ const Services = () => {
               <Button variant="secondary" onClick={handleModalClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleModalClose}>
-                Save Changes
+              <Button variant="primary" onClick={onServiceRequest}>
+                Submit
               </Button>
             </Modal.Footer>
           </Modal>
@@ -384,96 +479,96 @@ const Services = () => {
               }}
             >
               <input
-              onChange={(e) => {
-                setServiceApplication({
-                  ...ServiceApplication,
-                  name: e.target.value,
-                });
-              }}
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
+                    name: e.target.value,
+                  });
+                }}
                 className="form-control w-100 mb-2"
                 required
                 type="text"
                 placeholder="Enter your name"
               />
               <input
-               onChange={(e) => {
-                setServiceApplication({
-                  ...ServiceApplication,
-                  fathersname: e.target.value,
-                });
-              }}
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
+                    fathersname: e.target.value,
+                  });
+                }}
                 className="form-control w-100 mb-2"
                 required
                 type="text"
                 placeholder="Enter your fathers name"
               />
               <input
-               onChange={(e) => {
-                setServiceApplication({
-                  ...ServiceApplication,
-                  number: e.target.value,
-                });
-              }}
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
+                    number: e.target.value,
+                  });
+                }}
                 className="form-control w-100 mb-2"
                 required
                 type="number"
                 placeholder="Enter  your contact number"
               />
               <input
-               onChange={(e) => {
-                setServiceApplication({
-                  ...ServiceApplication,
-                  criminalname: e.target.value,
-                });
-              }}
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
+                    criminalname: e.target.value,
+                  });
+                }}
                 className="form-control w-100 mb-2"
                 required
                 type="text"
                 placeholder="Enter crminal  name"
               />
               <input
-               onChange={(e) => {
-                setServiceApplication({
-                  ...ServiceApplication,
-                  relation: e.target.value,
-                });
-              }}
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
+                    relation: e.target.value,
+                  });
+                }}
                 className="form-control w-100 mb-2"
                 required
                 type="text"
                 placeholder="Relatioship with criminal"
               />
               <input
-              onChange={(e) => {
-               setServiceApplication({
-                 ...ServiceApplication,
-                 Date: e.target.value,
-               });
-             }}
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
+                    Date: e.target.value,
+                  });
+                }}
                 className="form-control w-100 mb-2"
                 required
                 type="date"
                 placeholder="Date of visit"
               />
               <textarea
-               onChange={(e) => {
-                setServiceApplication({
-                  ...ServiceApplication,
-                  visitingreason: e.target.value,
-                });
-              }}
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
+                    visitingreason: e.target.value,
+                  });
+                }}
                 className="form-control w-100 mb-2"
                 required
                 type="text"
                 placeholder="Reason for visit"
               />
               <input
-               onChange={(e) => {
-                setServiceApplication({
-                  ...ServiceApplication,
-                  visitingtime: e.target.value,
-                });
-              }}
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
+                    visitingtime: e.target.value,
+                  });
+                }}
                 className="form-control w-100 mb-2"
                 required
                 type="text"
@@ -489,7 +584,7 @@ const Services = () => {
               <Button variant="secondary" onClick={handleModClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleModClose}>
+              <Button variant="primary" onClick={onBookingAppontment}>
                 Submit
               </Button>
             </Modal.Footer>
