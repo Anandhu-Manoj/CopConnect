@@ -16,3 +16,10 @@ export const civilianLogin=async(requestbody)=>{
 export const onserviceApplication=async(requestbody,requestHeader)=>{
   return await commonApi('post','/serviceRegister',requestbody,requestHeader)
 }
+
+//admin login
+
+export const onAdminlogin=async(requestbody)=>{
+  return await('post','/adminLogin',requestbody)
+
+}

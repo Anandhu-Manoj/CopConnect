@@ -1,21 +1,28 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { onAdminlogin } from "../Services/AllApis";
 
-import Footer from "../Components/Footer";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [data, setData] = useState("");
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+    role: "",
+  });
 
-  const handleSubmit = () => {
-    if (data === "Judiciary") {
-      navigate("/jd");
-    } else if (data === "Officer") {
-      navigate("/od");
-    } else {
-      alert("Please select a department");
+  const handleSubmit = async () => {
+    if (data) {
+      try {
+        const apiResp = await onAdminlogin(data);
+        if (apiResp.status == 200) {
+          alert("login succesfull");
+        }else{alert('login failed')}
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+
   return (
     <div
       className="relative min-h-screen overflow-hidden "
@@ -65,8 +72,8 @@ const Login = () => {
             }} >select your Depatment</p> */}
 
               <select
-              defaultValue=""
-                onChange={(e) => setData(e.target.value)}
+                defaultValue=""
+                onChange={(e) => setData({ ...data, role: e.target.value })}
                 style={{
                   background: "rgba(255, 255, 255, 0.2)",
                   border: "1px solid rgba(255, 255, 255, 0.3)",
@@ -83,8 +90,8 @@ const Login = () => {
                   Choose your Department
                 </option>
 
-                <option className="text-dark" value="Judiciary">
-                ADMINISTRATION
+                <option className="text-dark" value="admin">
+                  ADMINISTRATION
                 </option>
                 <option className="text-dark" value="Officer">
                   Officer
@@ -105,6 +112,9 @@ const Login = () => {
                 Enter your username
               </p>
               <input
+                onChange={(e) => {
+                  setData({ ...data, email: e.target.value });
+                }}
                 style={{
                   background: "rgba(255, 255, 255, 0.1)",
                   border: "1px solid rgba(255, 255, 255, 0.3)",
@@ -129,6 +139,9 @@ const Login = () => {
                 Enter your password
               </p>
               <input
+                onChange={(e) => {
+                  setData({ ...data, password: e.target.value });
+                }}
                 style={{
                   background: "rgba(255, 255, 255, 0.2)",
                   border: "1px solid rgba(255, 255, 255, 0.3)",

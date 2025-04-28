@@ -509,6 +509,8 @@ const [oshow, setOShow] = useState(false);
              <input className="form-control w-100 mb-2" required type="text" placeholder="Enter Officers name" />
              <input className="form-control w-100 mb-2" required type="text" placeholder="Enter Officers fathers name" />
              <input className="form-control w-100 mb-2" required type="number" placeholder="Enter  Officers Batch number" />
+             <input className="form-control w-100 mb-2" required type="email" placeholder="Enter  Officers email" />
+             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter  Officers password" />
              <input className="form-control w-100 mb-2" required type="text" placeholder="Enter  Officers contact number" />
              <input className="form-control w-100 mb-2" required type="text" placeholder="Enter Designation" />
              <input className="form-control w-100 mb-2" required type="text" placeholder="Enter assigned circle ofduty" />
@@ -551,6 +553,8 @@ const [oshow, setOShow] = useState(false);
                     <th className="p-3">Name</th>
                     <th className="p-3">Fathers Name</th>
                     <th className="p-3">Batch Number</th>
+                    <th className="p-3">E-mail</th>
+                    <th className="p-3">password</th>
                     <th className="p-3">Phone number</th>
                     <th className="p-3">Designation</th>
                     <th className="p-3">Circle of Duty</th>
@@ -562,7 +566,10 @@ const [oshow, setOShow] = useState(false);
                   <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
                     <td className="p-3">Arun</td>
                     <td className="p-3">Nath</td>
+                   
                     <td className="p-3">10</td>
+                    <td className="p-3">xyx@123</td>
+                    <td className="p-3">qwerty</td>
                     <td className="p-3">808045457721</td>
                     <td className="p-3">SI</td>
                     <td className="p-3">PATTOM</td>
