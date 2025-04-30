@@ -36,3 +36,8 @@ export const GetallOfficers=async()=>{
   return await commonApi('get',"/getPolice",'')
 
 }
+
+//delete officer details
+export const  deleteOfficers=async(id)=>{
+ return commonApi('delete',`/officers/${id}/delete`,{})
+}

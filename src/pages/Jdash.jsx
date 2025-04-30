@@ -9,7 +9,11 @@ import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
-import { AdddPoliceOfficer, GetallOfficers } from "../Services/AllApis";
+import {
+  AdddPoliceOfficer,
+  deleteOfficers,
+  GetallOfficers,
+} from "../Services/AllApis";
 
 const Jdash = () => {
   const [show, setShow] = useState(false);
@@ -32,7 +36,7 @@ const Jdash = () => {
   const handleRevShow = () => setRevShow(true);
 
   //add officer modal
-  const [render,setRender]=useState('')
+  const [render, setRender] = useState("");
 
   const [officerData, setofficerData] = useState({
     role: "",
@@ -72,7 +76,9 @@ const Jdash = () => {
   const getOfficer = async () => {
     try {
       const apiresp = await GetallOfficers();
-      setOfficerTable(apiresp.data);
+      if (apiresp.status == 200) {
+        setOfficerTable(apiresp.data);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -86,6 +92,25 @@ const Jdash = () => {
 
   const handleOfClose = () => setOShow(false);
   const handleOfShow = () => setOShow(true);
+
+  //ondelete
+
+  const onDelete = async (id) => {
+    try {
+      const apiResp = await deleteOfficers(id);
+     
+      if (apiResp.status === 200) {
+        setRender(apiResp);
+
+        alert("officer deleted");
+      } else {
+        alert("try again later");
+      }
+    } catch (error) {
+      alert("error");
+      console.log(error);
+    }
+  };
 
   return (
     <div
@@ -763,7 +788,7 @@ const Jdash = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {officerTable?.map((data, index) => (
+                  {officerTable?.length>0?officerTable?.map((data, index) => (
                     <tr
                       key={index}
                       style={{ backgroundColor: "#fff", fontSize: "16px" }}
@@ -781,6 +806,7 @@ const Jdash = () => {
                       <td className="p-3">
                         {" "}
                         <button
+                          onClick={() => onDelete(data._id)}
                           style={{ marginRight: "5px" }}
                           className="btn btn-danger"
                         >
@@ -791,7 +817,7 @@ const Jdash = () => {
                         </button>
                       </td>
                     </tr>
-                  ))}
+                  )):""}
                 </tbody>
               </table>
             </div>
