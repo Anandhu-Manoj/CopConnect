@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { onAdminlogin } from "../Services/AllApis";
 
-
 const Login = () => {
+  const navigate = useNavigate();
+
+
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -11,15 +13,25 @@ const Login = () => {
   });
 
   const handleSubmit = async () => {
-    if (data) {
+    if (data.email && data.password && data.role) {
       try {
         const apiResp = await onAdminlogin(data);
-        if (apiResp.status == 200) {
+        if (
+          data.email == "adminpanel@gmail.com" &&
+          data.password == "adminpanel" &&
+          data.role == "admin"
+        ) {
+          apiResp.status == 200;
           alert("login succesfull");
-        }else{alert('login failed')}
+          navigate("/jd");
+        } else {
+          alert("login failed check password and email");
+        }
       } catch (error) {
         console.log(error);
       }
+    } else {
+      alert("please fill all the form");
     }
   };
 

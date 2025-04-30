@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Logo from "../assets/sideLogo.png";
 import sideLogo from "../assets/logo.png";
 import Video from "../assets/Jbg.mp4";
@@ -9,6 +9,7 @@ import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
+import { AdddPoliceOfficer, GetallOfficers } from "../Services/AllApis";
 
 const Jdash = () => {
   const [show, setShow] = useState(false);
@@ -26,14 +27,62 @@ const Jdash = () => {
   };
 
   const [revshow, setRevShow] = useState(false);
-                    
+
   const handleRevClose = () => setRevShow(false);
   const handleRevShow = () => setRevShow(true);
 
+  //add officer modal
+  const [render,setRender]=useState('')
 
-//add officer modal
+  const [officerData, setofficerData] = useState({
+    role: "",
+    email: "",
+    password: "",
+    username: "",
 
-const [oshow, setOShow] = useState(false);
+    fathersname: "",
+
+    batchNo: "",
+
+    number: "",
+
+    designation: "",
+    circleofduty: "",
+    serviceperiod: "",
+  });
+
+  //adding officer button
+
+  const onAddOfficer = async () => {
+    try {
+      const apiResponse = await AdddPoliceOfficer(officerData);
+      setRender(apiResponse);
+      if (apiResponse.status == 201) {
+        alert("officer created");
+        handleOfClose();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //getting the added officers
+  const [officerTable, setOfficerTable] = useState([]);
+
+  const getOfficer = async () => {
+    try {
+      const apiresp = await GetallOfficers();
+      setOfficerTable(apiresp.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getOfficer();
+  }, [render]);
+
+  const [oshow, setOShow] = useState(false);
 
   const handleOfClose = () => setOShow(false);
   const handleOfShow = () => setOShow(true);
@@ -435,39 +484,88 @@ const [oshow, setOShow] = useState(false);
                       >
                         Reject <i className="fa-solid fa-square-xmark"></i>
                       </button>
-                      <button onClick={handleRevShow} className="btn btn-primary mt-2">
+                      <button
+                        onClick={handleRevShow}
+                        className="btn btn-primary mt-2"
+                      >
                         Review <i className="fa-solid fa-eye"></i>
                       </button>
                     </td>
-                     
-                    
-                    <Modal  centered show={revshow} onHide={handleRevClose}>
-            <Modal.Header style={{ background:
-                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}} closeButton>
-              <Modal.Title className="ms-5">Review Complaint <i class="fa-solid fa-pen-to-square fw-bold"></i>
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body style={{ background:
-                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
-             <input className="form-control w-100 mb-5" required type="text" placeholder="civilian name" />
-             <input className="form-control w-100 mb-5" required type="text" placeholder="Date complaint filed" />
-             <input className="form-control w-100 mb-5" required type="number" placeholder="civilian number your contact  number" />
-             <input className="form-control w-100 mb-5" required type="text" placeholder="civilian your aadhar number " />
-             <input className="form-control w-100 mb-5" required type="text" placeholder="assign officer " />
-             <input className="form-control w-100" required type="file" placeholder="" />
-             <p className="mt-2 ms-5 text-dark fw-lighter"> uploaded  written complaint in pdf format</p>
-            </Modal.Body>
-            <Modal.Footer style={{ background:
-                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
-              <Button variant="secondary" onClick={handleRevClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={handleRevClose}>
-                Submit
-              </Button>
-            </Modal.Footer>
-          </Modal>
 
+                    <Modal centered show={revshow} onHide={handleRevClose}>
+                      <Modal.Header
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                        }}
+                        closeButton
+                      >
+                        <Modal.Title className="ms-5">
+                          Review Complaint{" "}
+                          <i class="fa-solid fa-pen-to-square fw-bold"></i>
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                        }}
+                      >
+                        <input
+                          className="form-control w-100 mb-5"
+                          required
+                          type="text"
+                          placeholder="civilian name"
+                        />
+                        <input
+                          className="form-control w-100 mb-5"
+                          required
+                          type="text"
+                          placeholder="Date complaint filed"
+                        />
+                        <input
+                          className="form-control w-100 mb-5"
+                          required
+                          type="number"
+                          placeholder="civilian number your contact  number"
+                        />
+                        <input
+                          className="form-control w-100 mb-5"
+                          required
+                          type="text"
+                          placeholder="civilian your aadhar number "
+                        />
+                        <input
+                          className="form-control w-100 mb-5"
+                          required
+                          type="text"
+                          placeholder="assign officer "
+                        />
+                        <input
+                          className="form-control w-100"
+                          required
+                          type="file"
+                          placeholder=""
+                        />
+                        <p className="mt-2 ms-5 text-dark fw-lighter">
+                          {" "}
+                          uploaded written complaint in pdf format
+                        </p>
+                      </Modal.Body>
+                      <Modal.Footer
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                        }}
+                      >
+                        <Button variant="secondary" onClick={handleRevClose}>
+                          Close
+                        </Button>
+                        <Button variant="primary" onClick={handleRevClose}>
+                          Submit
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
 
                     <td style={{ padding: "10px" }}>Sarath</td>
                     <td style={{ padding: "10px" }}>
@@ -497,40 +595,142 @@ const [oshow, setOShow] = useState(false);
               >
                 OFFICERS RECORDS
               </h2>{" "}
-              <button className="btn btn-light shadow " onClick={handleOfShow}>ADD OFFICERS</button>
+              <button className="btn btn-light shadow " onClick={handleOfShow}>
+                ADD OFFICERS
+              </button>
             </div>
-            <Modal centered size="lg" show={oshow} onHide={handleOfClose} >
-        <Modal.Header closeButton  style={{ background:
-                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
-          <Modal.Title >Add Officers <i className="fa-solid fa-shield"></i></Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ background:
-                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}}>
-             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter Officers name" />
-             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter Officers fathers name" />
-             <input className="form-control w-100 mb-2" required type="number" placeholder="Enter  Officers Batch number" />
-             <input className="form-control w-100 mb-2" required type="email" placeholder="Enter  Officers email" />
-             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter  Officers password" />
-             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter  Officers contact number" />
-             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter Designation" />
-             <input className="form-control w-100 mb-2" required type="text" placeholder="Enter assigned circle ofduty" />
-             <input className="form-control w-100 mb-2" required type="number" placeholder="Enter service period" />
-
-             
-             
-            </Modal.Body>
-        <Modal.Footer style={{ background:
-                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",}} >
-          <Button variant="secondary" onClick={handleOfClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleOfClose}>
-            Add
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-
+            <Modal centered size="lg" show={oshow} onHide={handleOfClose}>
+              <Modal.Header
+                closeButton
+                style={{
+                  background:
+                    "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                }}
+              >
+                <Modal.Title>
+                  Add Officers <i className="fa-solid fa-shield"></i>
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body
+                style={{
+                  background:
+                    "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                }}
+              >
+                <input
+                  onChange={(e) => {
+                    setofficerData({
+                      ...officerData,
+                      username: e.target.value,
+                    });
+                  }}
+                  className="form-control w-100 mb-2"
+                  required
+                  type="text"
+                  placeholder="Enter Officers name"
+                />
+                <input
+                  onChange={(e) => {
+                    setofficerData({
+                      ...officerData,
+                      fathersname: e.target.value,
+                    });
+                  }}
+                  className="form-control w-100 mb-2"
+                  required
+                  type="text"
+                  placeholder="Enter Officers fathers name"
+                />
+                <input
+                  onChange={(e) => {
+                    setofficerData({ ...officerData, batchNo: e.target.value });
+                  }}
+                  className="form-control w-100 mb-2"
+                  required
+                  type="number"
+                  placeholder="Enter  Officers Batch number"
+                />
+                <input
+                  onChange={(e) => {
+                    setofficerData({ ...officerData, email: e.target.value });
+                  }}
+                  className="form-control w-100 mb-2"
+                  required
+                  type="email"
+                  placeholder="Enter  Officers email"
+                />
+                <input
+                  onChange={(e) => {
+                    setofficerData({
+                      ...officerData,
+                      password: e.target.value,
+                    });
+                  }}
+                  className="form-control w-100 mb-2"
+                  required
+                  type="text"
+                  placeholder="Enter  Officers password"
+                />
+                <input
+                  onChange={(e) => {
+                    setofficerData({ ...officerData, number: e.target.value });
+                  }}
+                  className="form-control w-100 mb-2"
+                  required
+                  type="text"
+                  placeholder="Enter  Officers contact number"
+                />
+                <input
+                  onChange={(e) => {
+                    setofficerData({
+                      ...officerData,
+                      designation: e.target.value,
+                    });
+                  }}
+                  className="form-control w-100 mb-2"
+                  required
+                  type="text"
+                  placeholder="Enter Designation"
+                />
+                <input
+                  onChange={(e) => {
+                    setofficerData({
+                      ...officerData,
+                      circleofduty: e.target.value,
+                    });
+                  }}
+                  className="form-control w-100 mb-2"
+                  required
+                  type="text"
+                  placeholder="Enter assigned circle ofduty"
+                />
+                <input
+                  onChange={(e) => {
+                    setofficerData({
+                      ...officerData,
+                      serviceperiod: e.target.value,
+                    });
+                  }}
+                  className="form-control w-100 mb-2"
+                  required
+                  type="number"
+                  placeholder="Enter service period"
+                />
+              </Modal.Body>
+              <Modal.Footer
+                style={{
+                  background:
+                    "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                }}
+              >
+                <Button variant="secondary" onClick={handleOfClose}>
+                  Close
+                </Button>
+                <Button variant="primary" onClick={onAddOfficer}>
+                  Add
+                </Button>
+              </Modal.Footer>
+            </Modal>
 
             <div className="table-responsive mt-4">
               <table
@@ -563,30 +763,35 @@ const [oshow, setOShow] = useState(false);
                   </tr>
                 </thead>
                 <tbody>
-                  <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                    <td className="p-3">Arun</td>
-                    <td className="p-3">Nath</td>
-                   
-                    <td className="p-3">10</td>
-                    <td className="p-3">xyx@123</td>
-                    <td className="p-3">qwerty</td>
-                    <td className="p-3">808045457721</td>
-                    <td className="p-3">SI</td>
-                    <td className="p-3">PATTOM</td>
-                    <td className="p-3">10</td>
-                    <td className="p-3">
-                      {" "}
-                      <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-danger"
-                      >
-                        Remove <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                      <button className="btn btn-primary mt-2">
-                        Review <i className="fa-solid fa-eye"></i>
-                      </button>
-                    </td>
-                  </tr>
+                  {officerTable?.map((data, index) => (
+                    <tr
+                      key={index}
+                      style={{ backgroundColor: "#fff", fontSize: "16px" }}
+                    >
+                      <td className="p-3">{data.username}</td>
+                      <td className="p-3">{data.fathersname}</td>
+
+                      <td className="p-3">{data.batchNo}</td>
+                      <td className="p-3">{data.email}</td>
+                      <td className="p-3">{data.password}</td>
+                      <td className="p-3">{data.number}</td>
+                      <td className="p-3">{data.designation}</td>
+                      <td className="p-3">{data.circleofduty}</td>
+                      <td className="p-3">{data.serviceperiod}</td>
+                      <td className="p-3">
+                        {" "}
+                        <button
+                          style={{ marginRight: "5px" }}
+                          className="btn btn-danger"
+                        >
+                          Remove <i className="fa-solid fa-square-xmark"></i>
+                        </button>
+                        <button className="btn btn-primary mt-2">
+                          Review <i className="fa-solid fa-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

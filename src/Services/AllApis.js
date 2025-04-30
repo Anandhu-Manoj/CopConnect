@@ -20,6 +20,19 @@ export const onserviceApplication=async(requestbody,requestHeader)=>{
 //admin login
 
 export const onAdminlogin=async(requestbody)=>{
-  return await('post','/adminLogin',requestbody)
+  return await commonApi('post','/adminLogin',requestbody)
+
+}
+
+
+//add police officer
+
+export const AdddPoliceOfficer=async(requestbody)=>{
+  return await commonApi('post',"/addPolice",requestbody)
+}
+
+//getting all officers in the table
+export const GetallOfficers=async()=>{
+  return await commonApi('get',"/getPolice",'')
 
 }
