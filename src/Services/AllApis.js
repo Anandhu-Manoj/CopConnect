@@ -39,5 +39,11 @@ export const GetallOfficers=async()=>{
 
 //delete officer details
 export const  deleteOfficers=async(id)=>{
- return commonApi('delete',`/officers/${id}/delete`,{})
+ return await commonApi('delete',`/officers/${id}/delete`,{})
+}
+
+//addingOfficers
+export const AddCriminals=async(requestbody,requestHeader)=>{
+  return await commonApi('post','/addCriminals',requestbody,requestHeader)
+
 }

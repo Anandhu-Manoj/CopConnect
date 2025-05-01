@@ -1,5 +1,7 @@
 
 
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Home from './pages/Home'
@@ -12,11 +14,12 @@ import Login from './pages/Login'
 import Services from './pages/Services'
 
 
+
 function App() {
   
   return (
     <>
-     
+     <ToastContainer position="top-center" pauseOnHover />
      <Routes>
       <Route path='/' element={<Home/>}></Route>
       <Route path="/local" element={<Local/>}></Route>

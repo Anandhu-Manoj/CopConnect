@@ -1,14 +1,95 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Logo from "../assets/sideLogo.png";
 import sideLogo from "../assets/logo.png";
-import Footer from '../Components/Footer';
+import Footer from "../Components/Footer";
+import { Button, Modal } from "react-bootstrap";
+import { AddCriminals } from "../Services/AllApis";
+import { toast } from "react-toastify";
 
 const Crimerecords = () => {
-  return (
-    
-         <div className="relative min-h-screen overflow-hidden " style={{height:"100%"}}>
+  const [revshow, setRevShow] = useState(false);
+
+  //state for storing crime records
+  const [criminalDetails, setCriminalDetails] = useState({
+    criminalimage: "",
+    criminalname: "",
+    criminalfathersName: "",
+    CriminalIdentificationMark: "",
+    CNumber: "",
+    TotalYearsofSentence: "",
+    AdmittedDate: "",
+    RelievingDate: "",
+  });
+
+  const onAddingCriminal = async () => {
+  
+
+    if (criminalDetails.criminalimage
+    &&
+          criminalDetails.criminalname &&
+          criminalDetails.criminalfathersName &&
+          criminalDetails.CriminalIdentificationMark &&
+          criminalDetails.CNumber &&
+          criminalDetails.TotalYearsofSentence &&
+          criminalDetails.AdmittedDate &&
+          criminalDetails.RelievingDate
+    ) {
+      if(   criminalDetails.criminalimage.type == "image/jpg" ||
+        criminalDetails.criminalimage.type == "image/png" ||
+        criminalDetails.criminalimage.type == "image/jpeg"
+          ? criminalDetails.criminalimage
+          : toast.error("please upload required image format")){
+            const payload = new FormData();
+
+            payload.append("criminalimage", criminalDetails.criminalimage);
+            payload.append("criminalname", criminalDetails.criminalname);
+            payload.append(
+              "criminalfathersName",
+              criminalDetails.criminalfathersName
+            );
+            payload.append(
+              "CriminalIdentificationMark",
+              criminalDetails.CriminalIdentificationMark
+            );
+            payload.append("CNumber", criminalDetails.CNumber);
+            payload.append(
+              "TotalYearsofSentence",
+              criminalDetails.TotalYearsofSentence
+            );
+            payload.append("AdmittedDate", criminalDetails.AdmittedDate);
+            payload.append("RelievingDate", criminalDetails.RelievingDate);
       
+            try {
+              let requestHeader = { "Content-Type": "multipart/form-data" };
+              let apiResponse = await AddCriminals(payload, requestHeader);
+              console.log(apiResponse);
+              if (apiResponse.status == 201) {
+                toast.success("Criminal added successfully");
+                handleRevClose();
+              }else{
+                toast.error('registration failed check the C-Number')
+              }
+             
+            } catch (error) {
+              toast.error(error);
+            }
+
+          }
+    
+    }else{
+      toast.error('fill all the required credentials')
+    }
+  };
+
+  const handleRevClose = () => setRevShow(false);
+  const handleRevShow = () => setRevShow(true);
+
+  return (
+    <div
+      className="relative min-h-screen overflow-hidden "
+      style={{ height: "100%" }}
+    >
       <div
         className="overflow-hidden"
         style={{
@@ -20,7 +101,7 @@ const Crimerecords = () => {
           flexDirection: "column",
         }}
       >
-        <div >
+        <div>
           <div
             style={{ margin: "0px", padding: "0px", boxSizing: "border-box" }}
           >
@@ -117,15 +198,16 @@ const Crimerecords = () => {
                     </button>
                   </li>
                   <li>
-
-                    <Link to={'/jd'}>  <button
-                      style={{ backgroundColor: "#6D6249" }}
-                      className="btn text-white"
-                    >
-                      Back{""}
-                      <i className="fa-solid fa-right-to-bracket"></i>
-                    </button></Link>
-                  
+                    <Link to={"/jd"}>
+                      {" "}
+                      <button
+                        style={{ backgroundColor: "#6D6249" }}
+                        className="btn text-white"
+                      >
+                        Back{""}
+                        <i className="fa-solid fa-right-to-bracket"></i>
+                      </button>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -144,8 +226,144 @@ const Crimerecords = () => {
               style={{ backgroundColor: "#796F57" }}
             >
               Criminal Records
-            </h2><button className="btn btn-light shadow mt-2 ">ADD CRIMINALS</button>
+            </h2>
+            <button
+              className="btn btn-light shadow mt-2 "
+              onClick={handleRevShow}
+            >
+              ADD CRIMINALS
+            </button>
           </center>
+          <Modal centered show={revshow} onHide={handleRevClose}>
+            <Modal.Header
+              style={{
+                background:
+                  "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+              }}
+              closeButton
+            >
+              <Modal.Title className="ms-5">
+                Review Complaint{" "}
+                <i class="fa-solid fa-pen-to-square fw-bold"></i>
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body
+              style={{
+                background:
+                  "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+              }}
+            >
+              <input
+                onChange={(e) => {
+                  setCriminalDetails({
+                    ...criminalDetails,
+                    criminalimage: e.target.files[0],
+                  });
+                }}
+                className="form-control w-100 mb-2"
+                required
+                type="file"
+                placeholder="criminal image"
+              />
+              <input
+                onChange={(e) => {
+                  setCriminalDetails({
+                    ...criminalDetails,
+                    criminalname: e.target.value,
+                  });
+                }}
+                className="form-control w-100 mb-2"
+                required
+                type="text"
+                placeholder="criminal name"
+              />
+              <input
+                onChange={(e) => {
+                  setCriminalDetails({
+                    ...criminalDetails,
+                    criminalfathersName: e.target.value,
+                  });
+                }}
+                className="form-control w-100 mb-2"
+                required
+                type="text"
+                placeholder="criminal fathers name"
+              />
+              <input
+                onChange={(e) => {
+                  setCriminalDetails({
+                    ...criminalDetails,
+                    CriminalIdentificationMark: e.target.value,
+                  });
+                }}
+                className="form-control w-100 mb-2"
+                required
+                type="text"
+                placeholder="criminal identification mark"
+              />
+              <input
+                onChange={(e) => {
+                  setCriminalDetails({
+                    ...criminalDetails,
+                    CNumber: e.target.value,
+                  });
+                }}
+                className="form-control w-100 mb-2"
+                required
+                type="text"
+                placeholder=" C-number"
+              />
+              <input
+                onChange={(e) => {
+                  setCriminalDetails({
+                    ...criminalDetails,
+                    TotalYearsofSentence: e.target.value,
+                  });
+                }}
+                className="form-control w-100 mb-2"
+                required
+                type="text"
+                placeholder="Total years of Sentence"
+              />
+              <input
+                onChange={(e) => {
+                  setCriminalDetails({
+                    ...criminalDetails,
+                    AdmittedDate: e.target.value,
+                  });
+                }}
+                className="form-control w-100 mb-2"
+                required
+                type="text"
+                placeholder="Admitted Date"
+              />
+              <input
+                onChange={(e) => {
+                  setCriminalDetails({
+                    ...criminalDetails,
+                    RelievingDate: e.target.value,
+                  });
+                }}
+                className="form-control w-100 mb-2"
+                required
+                type="text"
+                placeholder="Relieving Date"
+              />
+            </Modal.Body>
+            <Modal.Footer
+              style={{
+                background:
+                  "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+              }}
+            >
+              <Button variant="secondary" onClick={handleRevClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={onAddingCriminal}>
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>
 
           <div className="table-responsive mt-4">
             <table
@@ -169,7 +387,7 @@ const Crimerecords = () => {
                   <th className="p-3">Name</th>
                   <th className="p-3">Father's Name</th>
                   <th className="p-3">Identification Mark</th>
-                  <th className="p-3">Cell Number</th>
+                  <th className="p-3">C-Number</th>
                   <th className="p-3">Total Years of Sentence</th>
                   <th className="p-3">Admitted Date</th>
                   <th className="p-3">Relieving Date</th>
@@ -196,15 +414,18 @@ const Crimerecords = () => {
                   <td className="p-3">10</td>
                   <td className="p-3">10-05-2000</td>
                   <td className="p-3">10-05-2010</td>
-                  <td className="p-3"> <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-danger"
-                      >
-                        Remove <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                      <button className="btn btn-primary mt-2">
-                        Review <i className="fa-solid fa-eye"></i>
-                      </button></td>
+                  <td className="p-3">
+                    {" "}
+                    <button
+                      style={{ marginRight: "5px" }}
+                      className="btn btn-danger"
+                    >
+                      Remove <i className="fa-solid fa-square-xmark"></i>
+                    </button>
+                    <button className="btn btn-primary mt-2">
+                      Review <i className="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
                 </tr>
                 <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
                   <td
@@ -224,15 +445,18 @@ const Crimerecords = () => {
                   <td className="p-3">10</td>
                   <td className="p-3">10-05-2000</td>
                   <td className="p-3">10-05-2010</td>
-                  <td className="p-3"> <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-danger"
-                      >
-                        Remove <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                      <button className="btn btn-primary mt-2">
-                        Review <i className="fa-solid fa-eye"></i>
-                      </button></td>
+                  <td className="p-3">
+                    {" "}
+                    <button
+                      style={{ marginRight: "5px" }}
+                      className="btn btn-danger"
+                    >
+                      Remove <i className="fa-solid fa-square-xmark"></i>
+                    </button>
+                    <button className="btn btn-primary mt-2">
+                      Review <i className="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
                 </tr>
                 <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
                   <td
@@ -252,15 +476,18 @@ const Crimerecords = () => {
                   <td className="p-3">10</td>
                   <td className="p-3">10-05-2000</td>
                   <td className="p-3">10-05-2010</td>
-                  <td className="p-3"> <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-danger"
-                      >
-                        Remove <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                      <button className="btn btn-primary mt-2">
-                        Review <i className="fa-solid fa-eye"></i>
-                      </button></td>
+                  <td className="p-3">
+                    {" "}
+                    <button
+                      style={{ marginRight: "5px" }}
+                      className="btn btn-danger"
+                    >
+                      Remove <i className="fa-solid fa-square-xmark"></i>
+                    </button>
+                    <button className="btn btn-primary mt-2">
+                      Review <i className="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
                 </tr>
                 <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
                   <td
@@ -280,15 +507,18 @@ const Crimerecords = () => {
                   <td className="p-3">10</td>
                   <td className="p-3">10-05-2000</td>
                   <td className="p-3">10-05-2010</td>
-                  <td className="p-3"> <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-danger"
-                      >
-                        Remove <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                      <button className="btn btn-primary mt-2">
-                        Review <i className="fa-solid fa-eye"></i>
-                      </button></td>
+                  <td className="p-3">
+                    {" "}
+                    <button
+                      style={{ marginRight: "5px" }}
+                      className="btn btn-danger"
+                    >
+                      Remove <i className="fa-solid fa-square-xmark"></i>
+                    </button>
+                    <button className="btn btn-primary mt-2">
+                      Review <i className="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
                 </tr>
                 <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
                   <td
@@ -308,15 +538,18 @@ const Crimerecords = () => {
                   <td className="p-3">10</td>
                   <td className="p-3">10-05-2000</td>
                   <td className="p-3">10-05-2010</td>
-                  <td className="p-3"> <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-danger"
-                      >
-                        Remove <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                      <button className="btn btn-primary mt-2">
-                        Review <i className="fa-solid fa-eye"></i>
-                      </button></td>
+                  <td className="p-3">
+                    {" "}
+                    <button
+                      style={{ marginRight: "5px" }}
+                      className="btn btn-danger"
+                    >
+                      Remove <i className="fa-solid fa-square-xmark"></i>
+                    </button>
+                    <button className="btn btn-primary mt-2">
+                      Review <i className="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
                 </tr>
                 <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
                   <td
@@ -336,15 +569,18 @@ const Crimerecords = () => {
                   <td className="p-3">10</td>
                   <td className="p-3">10-05-2000</td>
                   <td className="p-3">10-05-2010</td>
-                  <td className="p-3"> <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-danger"
-                      >
-                        Remove <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                      <button className="btn btn-primary mt-2">
-                        Review <i className="fa-solid fa-eye"></i>
-                      </button></td>
+                  <td className="p-3">
+                    {" "}
+                    <button
+                      style={{ marginRight: "5px" }}
+                      className="btn btn-danger"
+                    >
+                      Remove <i className="fa-solid fa-square-xmark"></i>
+                    </button>
+                    <button className="btn btn-primary mt-2">
+                      Review <i className="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
                 </tr>
                 <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
                   <td
@@ -364,15 +600,18 @@ const Crimerecords = () => {
                   <td className="p-3">10</td>
                   <td className="p-3">10-05-2000</td>
                   <td className="p-3">10-05-2010</td>
-                  <td className="p-3"> <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-danger"
-                      >
-                        Remove <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                      <button className="btn btn-primary mt-2">
-                        Review <i className="fa-solid fa-eye"></i>
-                      </button></td>
+                  <td className="p-3">
+                    {" "}
+                    <button
+                      style={{ marginRight: "5px" }}
+                      className="btn btn-danger"
+                    >
+                      Remove <i className="fa-solid fa-square-xmark"></i>
+                    </button>
+                    <button className="btn btn-primary mt-2">
+                      Review <i className="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
                 </tr>
                 <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
                   <td
@@ -392,15 +631,18 @@ const Crimerecords = () => {
                   <td className="p-3">10</td>
                   <td className="p-3">10-05-2000</td>
                   <td className="p-3">10-05-2010</td>
-                  <td className="p-3"> <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-danger"
-                      >
-                        Remove <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                      <button className="btn btn-primary mt-2">
-                        Review <i className="fa-solid fa-eye"></i>
-                      </button></td>
+                  <td className="p-3">
+                    {" "}
+                    <button
+                      style={{ marginRight: "5px" }}
+                      className="btn btn-danger"
+                    >
+                      Remove <i className="fa-solid fa-square-xmark"></i>
+                    </button>
+                    <button className="btn btn-primary mt-2">
+                      Review <i className="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
                 </tr>
                 <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
                   <td
@@ -420,26 +662,28 @@ const Crimerecords = () => {
                   <td className="p-3">10</td>
                   <td className="p-3">10-05-2000</td>
                   <td className="p-3">10-05-2010</td>
-                  <td className="p-3"> <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-danger"
-                      >
-                        Remove <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                      <button className="btn btn-primary mt-2">
-                        Review <i className="fa-solid fa-eye"></i>
-                      </button></td>
+                  <td className="p-3">
+                    {" "}
+                    <button
+                      style={{ marginRight: "5px" }}
+                      className="btn btn-danger"
+                    >
+                      Remove <i className="fa-solid fa-square-xmark"></i>
+                    </button>
+                    <button className="btn btn-primary mt-2">
+                      Review <i className="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
                 </tr>
-               
               </tbody>
             </table>
           </div>
         </section>
-        </div>
- 
-<Footer/>
-    </div>
-  )
-}
+      </div>
 
-export default Crimerecords
+      <Footer />
+    </div>
+  );
+};
+
+export default Crimerecords;
