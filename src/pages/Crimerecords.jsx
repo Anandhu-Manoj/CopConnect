@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/sideLogo.png";
 import sideLogo from "../assets/logo.png";
 import Footer from "../Components/Footer";
 import { Button, Modal } from "react-bootstrap";
-import { AddCriminals } from "../Services/AllApis";
+import {
+  AddCriminals,
+  deleteCriminals,
+  getCriminals,
+} from "../Services/AllApis";
 import { toast } from "react-toastify";
 
 const Crimerecords = () => {
+  const handleRevClose = () => setRevShow(false);
+  const handleRevShow = () => setRevShow(true);
   const [revshow, setRevShow] = useState(false);
 
   //state for storing crime records
+  const [render, setRender] = useState("");
+
   const [criminalDetails, setCriminalDetails] = useState({
     criminalimage: "",
     criminalname: "",
@@ -23,67 +31,95 @@ const Crimerecords = () => {
   });
 
   const onAddingCriminal = async () => {
-  
-
-    if (criminalDetails.criminalimage
-    &&
-          criminalDetails.criminalname &&
-          criminalDetails.criminalfathersName &&
-          criminalDetails.CriminalIdentificationMark &&
-          criminalDetails.CNumber &&
-          criminalDetails.TotalYearsofSentence &&
-          criminalDetails.AdmittedDate &&
-          criminalDetails.RelievingDate
+    if (
+      criminalDetails.criminalimage &&
+      criminalDetails.criminalname &&
+      criminalDetails.criminalfathersName &&
+      criminalDetails.CriminalIdentificationMark &&
+      criminalDetails.CNumber &&
+      criminalDetails.TotalYearsofSentence &&
+      criminalDetails.AdmittedDate &&
+      criminalDetails.RelievingDate
     ) {
-      if(   criminalDetails.criminalimage.type == "image/jpg" ||
+      if (
+        criminalDetails.criminalimage.type == "image/jpg" ||
         criminalDetails.criminalimage.type == "image/png" ||
         criminalDetails.criminalimage.type == "image/jpeg"
           ? criminalDetails.criminalimage
-          : toast.error("please upload required image format")){
-            const payload = new FormData();
+          : toast.error("please upload required image format")
+      ) {
+        const payload = new FormData();
 
-            payload.append("criminalimage", criminalDetails.criminalimage);
-            payload.append("criminalname", criminalDetails.criminalname);
-            payload.append(
-              "criminalfathersName",
-              criminalDetails.criminalfathersName
-            );
-            payload.append(
-              "CriminalIdentificationMark",
-              criminalDetails.CriminalIdentificationMark
-            );
-            payload.append("CNumber", criminalDetails.CNumber);
-            payload.append(
-              "TotalYearsofSentence",
-              criminalDetails.TotalYearsofSentence
-            );
-            payload.append("AdmittedDate", criminalDetails.AdmittedDate);
-            payload.append("RelievingDate", criminalDetails.RelievingDate);
-      
-            try {
-              let requestHeader = { "Content-Type": "multipart/form-data" };
-              let apiResponse = await AddCriminals(payload, requestHeader);
-              console.log(apiResponse);
-              if (apiResponse.status == 201) {
-                toast.success("Criminal added successfully");
-                handleRevClose();
-              }else{
-                toast.error('registration failed check the C-Number')
-              }
-             
-            } catch (error) {
-              toast.error(error);
-            }
+        payload.append("criminalimage", criminalDetails.criminalimage);
+        payload.append("criminalname", criminalDetails.criminalname);
+        payload.append(
+          "criminalfathersName",
+          criminalDetails.criminalfathersName
+        );
+        payload.append(
+          "CriminalIdentificationMark",
+          criminalDetails.CriminalIdentificationMark
+        );
+        payload.append("CNumber", criminalDetails.CNumber);
+        payload.append(
+          "TotalYearsofSentence",
+          criminalDetails.TotalYearsofSentence
+        );
+        payload.append("AdmittedDate", criminalDetails.AdmittedDate);
+        payload.append("RelievingDate", criminalDetails.RelievingDate);
 
+        try {
+          let requestHeader = { "Content-Type": "multipart/form-data" };
+          let apiResponse = await AddCriminals(payload, requestHeader);
+          console.log(apiResponse);
+          if (apiResponse.status == 201) {
+            toast.success("Criminal added successfully");
+            setRender(apiResponse)
+            handleRevClose();
+          } else {
+            toast.error("registration failed check the C-Number");
           }
-    
-    }else{
-      toast.error('fill all the required credentials')
+        } catch (error) {
+          toast.error(error);
+        }
+      }
+    } else {
+      toast.error("fill all the required credentials");
     }
   };
 
-  const handleRevClose = () => setRevShow(false);
-  const handleRevShow = () => setRevShow(true);
+  //gettingCriminals
+
+  const [getCrimedata, setGetCrimeData] = useState([]);
+  console.log(getCrimedata)
+
+  const gettingAllCriminals = async () => {
+    try {
+      const apiResp = await getCriminals();
+      setGetCrimeData(apiResp.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    gettingAllCriminals();
+  }, [render]);
+
+  //deleting criminals
+  const onDeleteCriminals = async (id) => {
+    try {
+      const apiResponse = await deleteCriminals(id);
+      console.log(apiResponse);
+      if (apiResponse.status == 200) {
+        toast.success("criminal deleted succesfully");
+        setRender('deleted')
+      } else {
+        toast.error("please try again later");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div
@@ -396,285 +432,48 @@ const Crimerecords = () => {
               </thead>
 
               <tbody>
-                <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td
-                    className="p-3 img-fluid"
-                    style={{ height: "100px", width: "100px" }}
-                  >
-                    <img
-                      style={{ width: "100%" }}
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s"
-                      alt=""
-                    />
-                  </td>
-                  <td className="p-3">Thomas</td>
-                  <td className="p-3">Shebly</td>
-                  <td className="p-3">Scratch on forehead</td>
-                  <td className="p-3">02</td>
-                  <td className="p-3">10</td>
-                  <td className="p-3">10-05-2000</td>
-                  <td className="p-3">10-05-2010</td>
-                  <td className="p-3">
-                    {" "}
-                    <button
-                      style={{ marginRight: "5px" }}
-                      className="btn btn-danger"
-                    >
-                      Remove <i className="fa-solid fa-square-xmark"></i>
-                    </button>
-                    <button className="btn btn-primary mt-2">
-                      Review <i className="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td
-                    className="p-3 img-fluid"
-                    style={{ height: "100px", width: "100px" }}
-                  >
-                    <img
-                      style={{ width: "100%" }}
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s"
-                      alt=""
-                    />
-                  </td>
-                  <td className="p-3">Thomas</td>
-                  <td className="p-3">Shebly</td>
-                  <td className="p-3">Scratch on forehead</td>
-                  <td className="p-3">02</td>
-                  <td className="p-3">10</td>
-                  <td className="p-3">10-05-2000</td>
-                  <td className="p-3">10-05-2010</td>
-                  <td className="p-3">
-                    {" "}
-                    <button
-                      style={{ marginRight: "5px" }}
-                      className="btn btn-danger"
-                    >
-                      Remove <i className="fa-solid fa-square-xmark"></i>
-                    </button>
-                    <button className="btn btn-primary mt-2">
-                      Review <i className="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td
-                    className="p-3 img-fluid"
-                    style={{ height: "100px", width: "100px" }}
-                  >
-                    <img
-                      style={{ width: "100%" }}
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s"
-                      alt=""
-                    />
-                  </td>
-                  <td className="p-3">Thomas</td>
-                  <td className="p-3">Shebly</td>
-                  <td className="p-3">Scratch on forehead</td>
-                  <td className="p-3">02</td>
-                  <td className="p-3">10</td>
-                  <td className="p-3">10-05-2000</td>
-                  <td className="p-3">10-05-2010</td>
-                  <td className="p-3">
-                    {" "}
-                    <button
-                      style={{ marginRight: "5px" }}
-                      className="btn btn-danger"
-                    >
-                      Remove <i className="fa-solid fa-square-xmark"></i>
-                    </button>
-                    <button className="btn btn-primary mt-2">
-                      Review <i className="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td
-                    className="p-3 img-fluid"
-                    style={{ height: "100px", width: "100px" }}
-                  >
-                    <img
-                      style={{ width: "100%" }}
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s"
-                      alt=""
-                    />
-                  </td>
-                  <td className="p-3">Thomas</td>
-                  <td className="p-3">Shebly</td>
-                  <td className="p-3">Scratch on forehead</td>
-                  <td className="p-3">02</td>
-                  <td className="p-3">10</td>
-                  <td className="p-3">10-05-2000</td>
-                  <td className="p-3">10-05-2010</td>
-                  <td className="p-3">
-                    {" "}
-                    <button
-                      style={{ marginRight: "5px" }}
-                      className="btn btn-danger"
-                    >
-                      Remove <i className="fa-solid fa-square-xmark"></i>
-                    </button>
-                    <button className="btn btn-primary mt-2">
-                      Review <i className="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td
-                    className="p-3 img-fluid"
-                    style={{ height: "100px", width: "100px" }}
-                  >
-                    <img
-                      style={{ width: "100%" }}
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s"
-                      alt=""
-                    />
-                  </td>
-                  <td className="p-3">Thomas</td>
-                  <td className="p-3">Shebly</td>
-                  <td className="p-3">Scratch on forehead</td>
-                  <td className="p-3">02</td>
-                  <td className="p-3">10</td>
-                  <td className="p-3">10-05-2000</td>
-                  <td className="p-3">10-05-2010</td>
-                  <td className="p-3">
-                    {" "}
-                    <button
-                      style={{ marginRight: "5px" }}
-                      className="btn btn-danger"
-                    >
-                      Remove <i className="fa-solid fa-square-xmark"></i>
-                    </button>
-                    <button className="btn btn-primary mt-2">
-                      Review <i className="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td
-                    className="p-3 img-fluid"
-                    style={{ height: "100px", width: "100px" }}
-                  >
-                    <img
-                      style={{ width: "100%" }}
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s"
-                      alt=""
-                    />
-                  </td>
-                  <td className="p-3">Thomas</td>
-                  <td className="p-3">Shebly</td>
-                  <td className="p-3">Scratch on forehead</td>
-                  <td className="p-3">02</td>
-                  <td className="p-3">10</td>
-                  <td className="p-3">10-05-2000</td>
-                  <td className="p-3">10-05-2010</td>
-                  <td className="p-3">
-                    {" "}
-                    <button
-                      style={{ marginRight: "5px" }}
-                      className="btn btn-danger"
-                    >
-                      Remove <i className="fa-solid fa-square-xmark"></i>
-                    </button>
-                    <button className="btn btn-primary mt-2">
-                      Review <i className="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td
-                    className="p-3 img-fluid"
-                    style={{ height: "100px", width: "100px" }}
-                  >
-                    <img
-                      style={{ width: "100%" }}
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s"
-                      alt=""
-                    />
-                  </td>
-                  <td className="p-3">Thomas</td>
-                  <td className="p-3">Shebly</td>
-                  <td className="p-3">Scratch on forehead</td>
-                  <td className="p-3">02</td>
-                  <td className="p-3">10</td>
-                  <td className="p-3">10-05-2000</td>
-                  <td className="p-3">10-05-2010</td>
-                  <td className="p-3">
-                    {" "}
-                    <button
-                      style={{ marginRight: "5px" }}
-                      className="btn btn-danger"
-                    >
-                      Remove <i className="fa-solid fa-square-xmark"></i>
-                    </button>
-                    <button className="btn btn-primary mt-2">
-                      Review <i className="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td
-                    className="p-3 img-fluid"
-                    style={{ height: "100px", width: "100px" }}
-                  >
-                    <img
-                      style={{ width: "100%" }}
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s"
-                      alt=""
-                    />
-                  </td>
-                  <td className="p-3">Thomas</td>
-                  <td className="p-3">Shebly</td>
-                  <td className="p-3">Scratch on forehead</td>
-                  <td className="p-3">02</td>
-                  <td className="p-3">10</td>
-                  <td className="p-3">10-05-2000</td>
-                  <td className="p-3">10-05-2010</td>
-                  <td className="p-3">
-                    {" "}
-                    <button
-                      style={{ marginRight: "5px" }}
-                      className="btn btn-danger"
-                    >
-                      Remove <i className="fa-solid fa-square-xmark"></i>
-                    </button>
-                    <button className="btn btn-primary mt-2">
-                      Review <i className="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td
-                    className="p-3 img-fluid"
-                    style={{ height: "100px", width: "100px" }}
-                  >
-                    <img
-                      style={{ width: "100%" }}
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s"
-                      alt=""
-                    />
-                  </td>
-                  <td className="p-3">Thomas</td>
-                  <td className="p-3">Shebly</td>
-                  <td className="p-3">Scratch on forehead</td>
-                  <td className="p-3">02</td>
-                  <td className="p-3">10</td>
-                  <td className="p-3">10-05-2000</td>
-                  <td className="p-3">10-05-2010</td>
-                  <td className="p-3">
-                    {" "}
-                    <button
-                      style={{ marginRight: "5px" }}
-                      className="btn btn-danger"
-                    >
-                      Remove <i className="fa-solid fa-square-xmark"></i>
-                    </button>
-                    <button className="btn btn-primary mt-2">
-                      Review <i className="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
+                {getCrimedata.length > 0
+                  ? getCrimedata.map((data) => (
+                      <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
+                        <td
+                          className="p-3 img-fluid"
+                          style={{ height: "100px", width: "100px" }}
+                        >
+                          <img
+                            style={{ width: "100%" }}
+                            src={
+                              data.criminalimage
+                                ? `http://localhost:3000/Media/${data.criminalimage}`
+                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVO3GNQRm6Ly9CrUTsDREMk08IvcAvJtlKg84q62up6DGGXB0jxoUem0NIwKxya0H0YwU&usqp=CAU"
+                            }
+                            alt="Criminalimage"
+                          />
+                        </td>
+                        <td className="p-3">{data.criminalname}</td>
+                        <td className="p-3">{data.criminalfathersName}</td>
+                        <td className="p-3">
+                          {data.CriminalIdentificationMark}
+                        </td>
+                        <td className="p-3">{data.CNumber}</td>
+                        <td className="p-3">{data.TotalYearsofSentence}</td>
+                        <td className="p-3">{data.AdmittedDate}</td>
+                        <td className="p-3">{data.RelievingDate}</td>
+                        <td className="p-3">
+                          {" "}
+                          <button
+                            onClick={() => onDeleteCriminals(data._id)}
+                            style={{ marginRight: "5px" }}
+                            className="btn btn-danger"
+                          >
+                            Remove <i className="fa-solid fa-square-xmark"></i>
+                          </button>
+                          <button className="btn btn-primary mt-2">
+                            Review <i className="fa-solid fa-eye"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  : ""}
               </tbody>
             </table>
           </div>

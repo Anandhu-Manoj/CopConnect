@@ -17,6 +17,13 @@ export const onserviceApplication=async(requestbody,requestHeader)=>{
   return await commonApi('post','/serviceRegister',requestbody,requestHeader)
 }
 
+//gettingservices
+
+export const getServices=async()=>{
+  return await commonApi('get','/getServices','')
+}
+
+
 //admin login
 
 export const onAdminlogin=async(requestbody)=>{
@@ -42,8 +49,21 @@ export const  deleteOfficers=async(id)=>{
  return await commonApi('delete',`/officers/${id}/delete`,{})
 }
 
-//addingOfficers
+//addingCriminals
 export const AddCriminals=async(requestbody,requestHeader)=>{
   return await commonApi('post','/addCriminals',requestbody,requestHeader)
 
 }
+
+
+//gettingCriminals
+export const getCriminals=async()=>{
+return  await commonApi('get','/getAllCriminals','')
+}
+
+//deleteCriminals
+
+export const deleteCriminals=async(id)=>{
+  return await commonApi('delete',`/criminal/${id}/delete`,{})
+}
+

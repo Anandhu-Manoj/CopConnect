@@ -13,6 +13,7 @@ import {
   AdddPoliceOfficer,
   deleteOfficers,
   GetallOfficers,
+  getServices,
 } from "../Services/AllApis";
 
 const Jdash = () => {
@@ -98,7 +99,7 @@ const Jdash = () => {
   const onDelete = async (id) => {
     try {
       const apiResp = await deleteOfficers(id);
-     
+
       if (apiResp.status === 200) {
         setRender(apiResp);
 
@@ -112,6 +113,22 @@ const Jdash = () => {
     }
   };
 
+  //getting services
+
+  const [serviceData, setServiceData] = useState([]);
+  console.log(serviceData);
+
+  const getAllServices = async () => {
+    try {
+      const ApiResponse = await getServices();
+      setServiceData(ApiResponse.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getAllServices();
+  }, []);
   return (
     <div
       className="relative min-h-screen overflow-hidden "
@@ -378,30 +395,37 @@ const Jdash = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr
-                          style={{ backgroundColor: "#fff", fontSize: "16px" }}
-                        >
-                          <td style={{ padding: "5px" }}>Abhishek</td>
-                          <td style={{ padding: "5px" }}>2-5-2018</td>
-                          <td style={{ padding: "5px" }}>Guarding</td>
-                          <td style={{ padding: "5px" }}>7878772212148</td>
-                          <td style={{ padding: "5px" }}>
-                            <button
-                              className="btn btn-success"
-                              style={{ marginBottom: "2px" }}
-                            >
-                              Accepted<i class="fa-solid fa-check"></i>
-                            </button>{" "}
-                            <br />
-                            <button
-                              style={{ marginRight: "2px" }}
-                              className="btn btn-danger"
-                            >
-                              Reject{" "}
-                              <i className="fa-solid fa-square-xmark"></i>
-                            </button>
-                          </td>
-                        </tr>
+                        {serviceData?.filter((a)=>a.serviceType=="requestservice").map((data) => (
+                          <tr
+                            style={{
+                              backgroundColor: "#fff",
+                              fontSize: "16px",
+                            }}
+                          >
+                            <td style={{ padding: "5px" }}>{data.name}</td>
+                            <td style={{ padding: "5px" }}>{data.Date}</td>
+                            <td style={{ padding: "5px" }}>{data.description} </td>
+
+                              
+                            <td style={{ padding: "5px" }}>{data.number}</td>
+                            <td style={{ padding: "5px" }}>
+                              <button
+                                className="btn btn-success"
+                                style={{ marginBottom: "2px" }}
+                              >
+                                Accepted<i class="fa-solid fa-check"></i>
+                              </button>{" "}
+                              <br />
+                              <button
+                                style={{ marginRight: "2px" }}
+                                className="btn btn-danger"
+                              >
+                                Reject{" "}
+                                <i className="fa-solid fa-square-xmark"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                     <table
@@ -788,36 +812,39 @@ const Jdash = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {officerTable?.length>0?officerTable?.map((data, index) => (
-                    <tr
-                      key={index}
-                      style={{ backgroundColor: "#fff", fontSize: "16px" }}
-                    >
-                      <td className="p-3">{data.username}</td>
-                      <td className="p-3">{data.fathersname}</td>
-
-                      <td className="p-3">{data.batchNo}</td>
-                      <td className="p-3">{data.email}</td>
-                      <td className="p-3">{data.password}</td>
-                      <td className="p-3">{data.number}</td>
-                      <td className="p-3">{data.designation}</td>
-                      <td className="p-3">{data.circleofduty}</td>
-                      <td className="p-3">{data.serviceperiod}</td>
-                      <td className="p-3">
-                        {" "}
-                        <button
-                          onClick={() => onDelete(data._id)}
-                          style={{ marginRight: "5px" }}
-                          className="btn btn-danger"
+                  {officerTable?.length > 0
+                    ? officerTable?.map((data, index) => (
+                        <tr
+                          key={index}
+                          style={{ backgroundColor: "#fff", fontSize: "16px" }}
                         >
-                          Remove <i className="fa-solid fa-square-xmark"></i>
-                        </button>
-                        <button className="btn btn-primary mt-2">
-                          Review <i className="fa-solid fa-eye"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  )):""}
+                          <td className="p-3">{data.username}</td>
+                          <td className="p-3">{data.fathersname}</td>
+
+                          <td className="p-3">{data.batchNo}</td>
+                          <td className="p-3">{data.email}</td>
+                          <td className="p-3">{data.password}</td>
+                          <td className="p-3">{data.number}</td>
+                          <td className="p-3">{data.designation}</td>
+                          <td className="p-3">{data.circleofduty}</td>
+                          <td className="p-3">{data.serviceperiod}</td>
+                          <td className="p-3">
+                            {" "}
+                            <button
+                              onClick={() => onDelete(data._id)}
+                              style={{ marginRight: "5px" }}
+                              className="btn btn-danger"
+                            >
+                              Remove{" "}
+                              <i className="fa-solid fa-square-xmark"></i>
+                            </button>
+                            <button className="btn btn-primary mt-2">
+                              Review <i className="fa-solid fa-eye"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    : ""}
                 </tbody>
               </table>
             </div>

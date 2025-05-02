@@ -49,6 +49,7 @@ const Services = () => {
       ServiceApplication.Date
     ) {
       const payload = new FormData();
+      payload.append('serviceType',"complaints")
 
       payload.append("name", ServiceApplication.name);
       payload.append("complaint", ServiceApplication.complaint);
@@ -78,16 +79,21 @@ const Services = () => {
   const onServiceRequest = async () => {
     if (
       ServiceApplication.name &&
+      ServiceApplication.Date &&
       ServiceApplication.number &&
       ServiceApplication.description
     ) {
       try {
         const payload = {
           name: ServiceApplication.name,
+          Date: ServiceApplication.Date,
+          serviceType: "requestservice",
+
           number: ServiceApplication.number,
           description: ServiceApplication.description,
         };
         const apiResponse = await onserviceApplication(payload);
+        console.log(apiResponse);
         if (apiResponse.status === 200) {
           alert("Request send");
           handleModalClose();
@@ -115,6 +121,7 @@ const Services = () => {
       ServiceApplication.criminalname
     ) {
       const payload = {
+        serviceType:"appointment",
         name: ServiceApplication.name,
         fathersname: ServiceApplication.fathersname,
         number: ServiceApplication.number,
@@ -399,6 +406,18 @@ const Services = () => {
                 onChange={(e) => {
                   setServiceApplication({
                     ...ServiceApplication,
+                    Date: e.target.value,
+                  });
+                }}
+                className="form-control w-100 mb-5"
+                required
+                type="date"
+                placeholder="enter date of submission"
+              />
+              <input
+                onChange={(e) => {
+                  setServiceApplication({
+                    ...ServiceApplication,
                     number: e.target.value,
                   });
                 }}
@@ -407,7 +426,7 @@ const Services = () => {
                 type="number"
                 placeholder="enter your contact  number"
               />
-              <textarea
+              <input
                 onChange={(e) => {
                   setServiceApplication({
                     ...ServiceApplication,
@@ -416,7 +435,7 @@ const Services = () => {
                 }}
                 className="form-control w-100 mb-5"
                 required
-                type="textArea"
+                type="text"
                 placeholder="Short discription of the required service "
               />
               {/* <input className="form-control w-100" required type="file" placeholder="" />
