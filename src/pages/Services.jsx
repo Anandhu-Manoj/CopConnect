@@ -60,7 +60,7 @@ const Services = () => {
         const requestHeader = { "Content-Type": "multipart/form-data" };
         const apiResponse = await onserviceApplication(payload, requestHeader);
         if (apiResponse.status === 200) {
-          alert("complainted");
+          alert("complainted registered");
           handleClose();
         } else {
           alert("unable to send try again later");

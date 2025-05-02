@@ -12,9 +12,11 @@ import Popover from "react-bootstrap/Popover";
 import {
   AdddPoliceOfficer,
   deleteOfficers,
+  deleteServices,
   GetallOfficers,
   getServices,
 } from "../Services/AllApis";
+import { toast } from "react-toastify";
 
 const Jdash = () => {
   const [show, setShow] = useState(false);
@@ -94,7 +96,7 @@ const Jdash = () => {
   const handleOfClose = () => setOShow(false);
   const handleOfShow = () => setOShow(true);
 
-  //ondelete
+  //ondeleteOfficer
 
   const onDelete = async (id) => {
     try {
@@ -116,19 +118,48 @@ const Jdash = () => {
   //getting services
 
   const [serviceData, setServiceData] = useState([]);
-  console.log(serviceData);
 
   const getAllServices = async () => {
     try {
       const ApiResponse = await getServices();
       setServiceData(ApiResponse.data);
+      setRender(ApiResponse);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getAllServices();
-  }, []);
+  }, [render]);
+
+
+  //delete services
+  const RejectService = async (id) => {
+    try {
+      const Apiresponse = await deleteServices(id);
+      if (Apiresponse.status == 200) {
+        toast.success("ServiceRejected");
+        setRender(Apiresponse)
+      }
+    } catch (error) {
+      toast.error("error deleting data", error);
+    }
+  };
+  // delete Complaint
+  const onCaseDissmissal=async(id)=>{
+    try {
+      const Apiresponse = await deleteServices(id);
+      if (Apiresponse.status == 200) {
+        toast.success("ServiceRejected");
+        setRender(Apiresponse)
+      }
+    } catch (error) {
+      toast.error("error deleting data", error);
+    }
+    
+
+  }
+
   return (
     <div
       className="relative min-h-screen overflow-hidden "
@@ -395,37 +426,45 @@ const Jdash = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {serviceData?.filter((a)=>a.serviceType=="requestservice").map((data) => (
-                          <tr
-                            style={{
-                              backgroundColor: "#fff",
-                              fontSize: "16px",
-                            }}
-                          >
-                            <td style={{ padding: "5px" }}>{data.name}</td>
-                            <td style={{ padding: "5px" }}>{data.Date}</td>
-                            <td style={{ padding: "5px" }}>{data.description} </td>
+                        {serviceData
+                          ?.filter((a) => a.serviceType == "requestservice")
+                          .map((data) => (
+                            <tr
+                              style={{
+                                backgroundColor: "#fff",
+                                fontSize: "16px",
+                              }}
+                            >
+                              <td style={{ padding: "5px" }}>{data.name}</td>
+                              <td style={{ padding: "5px" }}>
+                                {new Date(data.Date).toLocaleDateString(
+                                  "en-IN"
+                                )}
+                              </td>
+                              <td style={{ padding: "5px" }}>
+                                {data.description}{" "}
+                              </td>
 
-                              
-                            <td style={{ padding: "5px" }}>{data.number}</td>
-                            <td style={{ padding: "5px" }}>
-                              <button
-                                className="btn btn-success"
-                                style={{ marginBottom: "2px" }}
-                              >
-                                Accepted<i class="fa-solid fa-check"></i>
-                              </button>{" "}
-                              <br />
-                              <button
-                                style={{ marginRight: "2px" }}
-                                className="btn btn-danger"
-                              >
-                                Reject{" "}
-                                <i className="fa-solid fa-square-xmark"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                              <td style={{ padding: "5px" }}>{data.number}</td>
+                              <td style={{ padding: "5px" }}>
+                                <button
+                                  className="btn btn-success"
+                                  style={{ marginBottom: "2px" }}
+                                >
+                                  Accepted<i class="fa-solid fa-check"></i>
+                                </button>{" "}
+                                <br />
+                                <button
+                                  onClick={()=>RejectService(data._id)}
+                                  style={{ marginRight: "2px" }}
+                                  className="btn btn-danger"
+                                >
+                                  Reject{" "}
+                                  <i className="fa-solid fa-square-xmark"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
                     <table
@@ -515,122 +554,125 @@ const Jdash = () => {
                   }}
                 >
                   <tr>
-                    <th style={{ padding: "10px" }}>Petition Number</th>
                     <th style={{ padding: "10px" }}>Date of Submission</th>
+                    <th style={{ padding: "10px" }}>petitioner name</th>
                     <th style={{ padding: "10px" }}>Status</th>
                     <th style={{ padding: "10px" }}>Officer Assigned</th>
                     <th style={{ padding: "10px" }}>Decision</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                    <td style={{ padding: "10px" }}>156</td>
-                    <td style={{ padding: "10px" }}>2-5-2018</td>
-                    <td style={{ padding: "10px" }}>
-                      <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-danger"
+                  {serviceData
+                    .filter((a) => a.serviceType == "complaints")
+                    .map((data, index) => (
+                      <tr
+                        key={index}
+                        style={{ backgroundColor: "#fff", fontSize: "16px" }}
                       >
-                        Reject <i className="fa-solid fa-square-xmark"></i>
-                      </button>
-                      <button
-                        onClick={handleRevShow}
-                        className="btn btn-primary mt-2"
-                      >
-                        Review <i className="fa-solid fa-eye"></i>
-                      </button>
-                    </td>
+                        <td style={{ padding: "10px" }}>
+                          {new Date(data.Date).toLocaleDateString("en-IN")}
+                        </td>
+                        <td style={{ padding: "10px" }}>{data.name}</td>
+                        <td style={{ padding: "10px" }}>
+                          {/* <button
+                            style={{ marginRight: "5px" }}
+                            className="btn btn-danger"
+                          >
+                            Reject <i className="fa-solid fa-square-xmark"></i>
+                          </button> */}
+                          <button
+                            onClick={handleRevShow}
+                            className="btn btn-primary mt-2"
+                          >
+                            Review <i className="fa-solid fa-eye"></i>
+                          </button>
+                        </td>
 
-                    <Modal centered show={revshow} onHide={handleRevClose}>
-                      <Modal.Header
-                        style={{
-                          background:
-                            "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
-                        }}
-                        closeButton
-                      >
-                        <Modal.Title className="ms-5">
-                          Review Complaint{" "}
-                          <i class="fa-solid fa-pen-to-square fw-bold"></i>
-                        </Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body
-                        style={{
-                          background:
-                            "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
-                        }}
-                      >
-                        <input
-                          className="form-control w-100 mb-5"
-                          required
-                          type="text"
-                          placeholder="civilian name"
-                        />
-                        <input
-                          className="form-control w-100 mb-5"
-                          required
-                          type="text"
-                          placeholder="Date complaint filed"
-                        />
-                        <input
-                          className="form-control w-100 mb-5"
-                          required
-                          type="number"
-                          placeholder="civilian number your contact  number"
-                        />
-                        <input
-                          className="form-control w-100 mb-5"
-                          required
-                          type="text"
-                          placeholder="civilian your aadhar number "
-                        />
-                        <input
-                          className="form-control w-100 mb-5"
-                          required
-                          type="text"
-                          placeholder="assign officer "
-                        />
-                        <input
-                          className="form-control w-100"
-                          required
-                          type="file"
-                          placeholder=""
-                        />
-                        <p className="mt-2 ms-5 text-dark fw-lighter">
-                          {" "}
-                          uploaded written complaint in pdf format
-                        </p>
-                      </Modal.Body>
-                      <Modal.Footer
-                        style={{
-                          background:
-                            "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
-                        }}
-                      >
-                        <Button variant="secondary" onClick={handleRevClose}>
-                          Close
-                        </Button>
-                        <Button variant="primary" onClick={handleRevClose}>
-                          Submit
-                        </Button>
-                      </Modal.Footer>
-                    </Modal>
+                        <Modal
+                          centered
+                          show={revshow}
+                          onHide={handleRevClose}
+                          size="xl"
+                        >
+                          <Modal.Header
+                            style={{
+                              background:
+                                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                            }}
+                            closeButton
+                          >
+                            <Modal.Title className="ms-5">
+                              Review Complaint{" "}
+                              <i class="fa-solid fa-pen-to-square fw-bold"></i>
+                            </Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body
+                            style={{
+                              background:
+                                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                              height: "600px",
+                            }}
+                          >
+                            <iframe
+                              style={{
+                                height: "600px",
+                                width: "100%",
+                              }}
+                              width="100%"
+                              height="100%"
+                              className="overflow-hidden img-fluid"
+                              src={
+                                data.complaint
+                                  ? `http://localhost:3000/complaints/${data.complaint}`
+                                  : "https://static.vecteezy.com/system/resources/previews/025/674/476/non_2x/no-result-data-document-or-file-not-found-concept-illustration-flat-design-eps10-modern-graphic-element-for-empty-state-ui-infographic-icon-vector.jpg"
+                              }
+                              frameborder="0"
+                            ></iframe>
+                          </Modal.Body>
+                          <Modal.Footer
+                            style={{
+                              background:
+                                "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                            }}
+                          >
+                            <Button
+                              variant="secondary"
+                              onClick={handleRevClose}
+                            >
+                              Close
+                            </Button>
+                            <Button variant="primary" onClick={handleRevClose}>
+                              Submit
+                            </Button>
+                          </Modal.Footer>
+                        </Modal>
 
-                    <td style={{ padding: "10px" }}>Sarath</td>
-                    <td style={{ padding: "10px" }}>
-                      <button
-                        className="btn btn-success"
-                        style={{ marginBottom: "5px" }}
-                      >
-                        Case Closed <i class="fa-solid fa-check"></i>
-                      </button>{" "}
-                      <br />
-                      <button className="btn btn-warning p-2">
-                        Postponed for Further Review{" "}
-                        <i className="fa-solid fa-timeline"></i>
-                      </button>
-                    </td>
-                  </tr>
+                        <td style={{ padding: "10px" }}>
+                          <select className="form-control">
+                            <option value="">Assign to officers</option>
+
+                            {officerTable.map((a, index) => (
+                              <option key={index} value="complaint">
+                                {a.username}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                        <td style={{ padding: "10px" }}>
+                          <button
+                            className="btn btn-success"
+                            style={{ marginBottom: "5px" }}
+                          >
+                            Assign Case <i class="fa-solid fa-check"></i>
+                          </button>{" "}
+                          <br />
+                          <button onClick={()=>onCaseDissmissal(data._id)} className="btn btn-warning p-2">
+                           case dismmised{" "}
+                            <i className="fa-solid fa-timeline"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -783,7 +825,7 @@ const Jdash = () => {
 
             <div className="table-responsive mt-4">
               <table
-                className="table table-bordered text-center"
+                className="table table-bordered text-center w-100"
                 style={{
                   backgroundColor: "#796F57",
                   borderColor: "#796F57",
@@ -822,7 +864,16 @@ const Jdash = () => {
                           <td className="p-3">{data.fathersname}</td>
 
                           <td className="p-3">{data.batchNo}</td>
-                          <td className="p-3">{data.email}</td>
+                          <td
+                            className="p-3"
+                            style={{
+                              wordBreak: "break-word",
+                              whiteSpace: "normal",
+                              maxWidth: "200px",
+                            }}
+                          >
+                            {data.email}
+                          </td>
                           <td className="p-3">{data.password}</td>
                           <td className="p-3">{data.number}</td>
                           <td className="p-3">{data.designation}</td>

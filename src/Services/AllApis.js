@@ -67,3 +67,8 @@ export const deleteCriminals=async(id)=>{
   return await commonApi('delete',`/criminal/${id}/delete`,{})
 }
 
+//deleteServices
+export const deleteServices=async(id)=>{
+  return await commonApi('delete',`/Services/${id}/delete`,{})
+}
+
