@@ -49,6 +49,7 @@ const Crimerecords = () => {
           : toast.error("please upload required image format")
       ) {
         const payload = new FormData();
+       
 
         payload.append("criminalimage", criminalDetails.criminalimage);
         payload.append("criminalname", criminalDetails.criminalname);
@@ -69,7 +70,7 @@ const Crimerecords = () => {
         payload.append("RelievingDate", criminalDetails.RelievingDate);
 
         try {
-          let requestHeader = { "Content-Type": "multipart/form-data" };
+          let requestHeader = { "Content-Type": "multipart/form-data" ,"Authorization":`bearer ${sessionStorage.getItem('token')}`};
           let apiResponse = await AddCriminals(payload, requestHeader);
           console.log(apiResponse);
           if (apiResponse.status == 201) {
@@ -95,7 +96,9 @@ const Crimerecords = () => {
 
   const gettingAllCriminals = async () => {
     try {
-      const apiResp = await getCriminals();
+      const Header={'Authorization':`nearer ${sessionStorage.getItem('token')}`}
+
+      const apiResp = await getCriminals(Header);
       setGetCrimeData(apiResp.data);
     } catch (error) {
       console.log(error);
@@ -108,7 +111,9 @@ const Crimerecords = () => {
   //deleting criminals
   const onDeleteCriminals = async (id) => {
     try {
-      const apiResponse = await deleteCriminals(id);
+      const Header={'Authorization':`nearer ${sessionStorage.getItem('token')}`}
+
+      const apiResponse = await deleteCriminals(id,Header);
       console.log(apiResponse);
       if (apiResponse.status == 200) {
         toast.success("criminal deleted succesfully");

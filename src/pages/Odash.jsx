@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Footer from "../Components/Footer";
 import Logo from "../assets/sideLogo.png";
 import sideLogo from "../assets/logo.png";
@@ -10,9 +10,28 @@ import Card from "react-bootstrap/Card";
 
 import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
+import {
+  addLeaves,
+  deleteServices,
+  getCriminals,
+  getLoggedOfficer,
+  getServices,
+} from "../Services/AllApis";
+import { toast } from "react-toastify";
 
 const Odash = () => {
+  const [leaveData, setLeaveData] = useState({
+    leaveType: "",
+    name: "",
+    circle: "",
+    reason: "",
+    startDate:"",
+    EndDate:""
+
+  });
+  console.log(leaveData)
   const [show, setShow] = useState(false);
+  const [appointmentTable, setAppointmentTable] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -20,6 +39,7 @@ const Odash = () => {
 
   const handleCloseMod = () => setShowMod(false);
   const handleShowMod = () => setShowMod(true);
+  const [render, setRender] = useState("");
 
   const [popshow, setPopShow] = useState(false);
   const [poptarget, PopsetTarget] = useState(null);
@@ -28,6 +48,107 @@ const Odash = () => {
   const handlePopClick = (event) => {
     setPopShow(!popshow);
     PopsetTarget(event.target);
+  };
+
+  const [getCrimedata, setGetCrimeData] = useState([]);
+
+  const gettingAllCriminals = async () => {
+    try {
+      const Header = {
+        Authorization: `nearer ${sessionStorage.getItem("token")}`,
+      };
+
+      const apiResp = await getCriminals(Header);
+      setGetCrimeData(apiResp.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    gettingAllCriminals();
+  }, [render]);
+
+  //gettservices
+  const handleAppontments = async () => {
+    try {
+      const Header = {
+        Authorization: `beares ${sessionStorage.getItem("token")}`,
+      };
+
+      const apiresponse = await getServices(Header);
+
+      setAppointmentTable(apiresponse.data);
+    } catch (error) {
+      toast.error("table loading error");
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleAppontments();
+  }, [render]);
+
+  //deleting appointment
+  const onDeleteAppointment = async (id) => {
+    try {
+      const Header = {
+        Authorization: `bearer ${sessionStorage.getItem("token")}`,
+      };
+      const apiRes = await deleteServices(id, Header);
+      setRender(apiRes);
+      console.log(apiRes);
+    } catch (error) {
+      toast.error("error");
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {}, [render]);
+
+  //get specefiocOfficer
+
+  const [loggedOfficer, setoggedOfficer] = useState({});
+
+  const getLogged = async () => {
+    try {
+      const Header = {
+        Authorization: `bearer ${sessionStorage.getItem("token")}`,
+      };
+      const apiResponse = await getLoggedOfficer(Header);
+      setoggedOfficer(apiResponse.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getLogged();
+  }, []);
+
+  const onLeaveApplication = async () => {
+    if(leaveData.name&&leaveData.circle&&leaveData.reason&&leaveData.EndDate&&leaveData.startDate&&leaveData.leaveType){
+      try {
+      
+        const Header={'Authorization':`bearer ${sessionStorage.getItem('token')}`}
+        const apiResponse = await addLeaves(leaveData,Header);
+        if(apiResponse.status==201){
+          toast.success('Leave request successfull')
+        }else{
+          toast.error('Leave request failed')
+        }
+  
+        
+      } catch (error) {
+        console.log(error)
+        
+      }
+        
+    }else{
+      toast.error('Fill all the forms')
+    }
+    
+    
+    
   };
 
   return (
@@ -201,39 +322,65 @@ const Odash = () => {
                       }}
                       className="d-flex flex-column gap-3 justify-content-center align-items-center"
                     >
-                      <select className="form-control mt-3" name="" id="">
+                      <select  onChange={(e) =>
+                          setLeaveData({ ...leaveData, leaveType: e.target.value })
+                        } className="form-control mt-3" name="" id="">
                         <option value="" selected disabled>
                           choose leave type
                         </option>
-                        <option value="">Casual Leave</option>
-                        <option value="">Sick Leave</option>
-                        <option value="">Meternity/Paternity Leave</option>
-                        <option value="">Bevarement Leave</option>
+                        <option value="casual">Casual Leave</option>
+                        <option value="sick">Sick Leave</option>
+                        <option value="meternity">
+                          Meternity/Paternity Leave
+                        </option>
+                        <option value="bevarement">Bevarement Leave</option>
                       </select>
                       <input
+                        onChange={(e) =>
+                          setLeaveData({ ...leaveData, name: e.target.value })
+                        }
                         className="form-control"
                         type="text"
-                        placeholder="reporting officers name"
+                        placeholder=" name"
                       />
                       <input
+                      onChange={(e) =>
+                        setLeaveData({ ...leaveData, circle: e.target.value })
+                      }
                         className="form-control"
                         type="text"
                         placeholder="circle of duty"
                       />
                       <input
+                       onChange={(e) =>
+                        setLeaveData({ ...leaveData, startDate: e.target.value })
+                      }
                         className="form-control"
-                        type="text"
-                        placeholder="Batch number"
+                        type="Date"
+                        placeholder="Date of leave requirement"
+                      />
+                      <input
+                       onChange={(e) =>
+                        setLeaveData({ ...leaveData, EndDate: e.target.value })
+                      }
+                        className="form-control"
+                        type="Date"
+                        placeholder="until which date
+                         of leave requirement"
                       />
 
                       <textarea
-                        placeholder="reason for the leave"
+                      onChange={(e) =>
+                        setLeaveData({ ...leaveData, reason: e.target.value })
+                      }
+                      
+                        placeholder="reason for the leave  and time period of leave requirement"
                         type="text"
                         className="form-control"
                         name=""
                         id=""
                       />
-                      <button
+                      <button onClick={onLeaveApplication}
                         className="btn text-white w-50 mt-3 "
                         style={{ backgroundColor: "#796F57" }}
                       >
@@ -372,7 +519,8 @@ const Odash = () => {
           <div className="row">
             <div className="col-md-5 rounded-4 overflow-hidden">
               <img
-                src="https://raw.githubusercontent.com/Spyna/react-svg-radar-chart/HEAD/demo.gif"
+                style={{ width: "100%" }}
+                src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs10663-020-09486-2/MediaObjects/10663_2020_9486_Fig2_HTML.png"
                 alt=""
               />
             </div>
@@ -397,40 +545,65 @@ const Odash = () => {
                   right: "30px",
                   top: "20px",
                   borderRadius: "30%",
-                  border: "5px solid #796F57",
+                  border: "0px solid #796F57",
                 }}
               >
-                <img
-                  className="img-fluid"
-                  src="https://garhwalpost.in/wp-content/uploads/2023/12/facebook_1657033495063_6950102216479217718.jpg"
-                  alt="Officer"
-                />
+                <label>
+                  <input
+                    type="file"
+                    name=""
+                    id=""
+                    className="form-control "
+                    style={{ display: "none" }}
+                  />
+                  <img
+                    className="img-fluid"
+                    src="https://thumbs.dreamstime.com/b/monochromatic-minimalist-police-officer-profile-icon-blue-background-uniform-stands-against-vibrant-portrait-captures-290771348.jpg"
+                    alt="Officer"
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </label>
               </div>
+
               <button
                 className="btn text-white rounded-5"
-                style={{ position: "absolute", left: "605px", top: "220px",backgroundColor:"#796F57" }}
+                style={{
+                  position: "absolute",
+                  left: "605px",
+                  top: "220px",
+                  backgroundColor: "#796F57",
+                }}
               >
-               EDIT  <i className="fa-solid fa-pen"></i>
+                save <i className="fa-solid fa-pen"></i>
               </button>
-
               <div className="mt-3 text-dark" style={{ paddingLeft: "20px" }}>
                 <p className="fs-5 fw-bold">
-                  <span>Name: </span>Abhishek
+                  <span>Name: </span>
+                  {loggedOfficer?.username}
                 </p>
                 <p className="fs-5 fw-bold">
-                  <span>Father's Name: </span>Sharma
+                  <span>Father's Name: </span>
+                  {loggedOfficer?.fathersname}
                 </p>
                 <p className="fs-5 fw-bold">
-                  <span>Batch No: </span>12
+                  <span>Batch No: </span>
+                  {loggedOfficer?.batchNo}
                 </p>
                 <p className="fs-5 fw-bold">
-                  <span>Phone No: </span>9876455448
+                  <span>Phone No: </span>
+                  {loggedOfficer?.number}
                 </p>
                 <p className="fs-5 fw-bold">
-                  <span>Designation: </span>D.S.P
+                  <span>Designation: </span>
+                  {loggedOfficer?.designation}
                 </p>
                 <p className="fs-5 fw-bold">
-                  <span>Station Of Duty: </span>Pattom
+                  <span>Station Of Duty: </span>
+                  {loggedOfficer?.circleofduty}
                 </p>
                 <p className="fs-5 fw-bold">
                   <span>Casses Assigned : </span>
@@ -442,7 +615,8 @@ const Odash = () => {
                   </button>
                 </p>
                 <p className="fs-5 fw-bold">
-                  <span>Service period: </span>10
+                  <span>Service period: </span>
+                  {loggedOfficer.serviceperiod}
                 </p>
               </div>
             </div>
@@ -483,7 +657,7 @@ const Odash = () => {
                   <th className="p-3">Name</th>
                   <th className="p-3">Father's Name</th>
                   <th className="p-3">Identification Mark</th>
-                  <th className="p-3">Cell Number</th>
+                  <th className="p-3">C-Number</th>
                   <th className="p-3">Total Years of Sentence</th>
                   <th className="p-3">Admitted Date</th>
                   <th className="p-3">Relieving Date</th>
@@ -491,25 +665,35 @@ const Odash = () => {
               </thead>
 
               <tbody>
-                <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td
-                    className="p-3 img-fluid"
-                    style={{ height: "100px", width: "100px" }}
-                  >
-                    <img
-                      style={{ width: "100%" }}
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfyO1bVGjNtceG2dUQMIqrKTSb9rIciYV5Vw&s"
-                      alt=""
-                    />
-                  </td>
-                  <td className="p-3">Thomas</td>
-                  <td className="p-3">Shebly</td>
-                  <td className="p-3">Scratch on forehead</td>
-                  <td className="p-3">02</td>
-                  <td className="p-3">10</td>
-                  <td className="p-3">10-05-2000</td>
-                  <td className="p-3">10-05-2010</td>
-                </tr>
+                {getCrimedata.length > 0
+                  ? getCrimedata.map((data) => (
+                      <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
+                        <td
+                          className="p-3 img-fluid"
+                          style={{ height: "100px", width: "100px" }}
+                        >
+                          <img
+                            style={{ width: "100%" }}
+                            src={
+                              data.criminalimage
+                                ? `http://localhost:3000/Media/${data.criminalimage}`
+                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVO3GNQRm6Ly9CrUTsDREMk08IvcAvJtlKg84q62up6DGGXB0jxoUem0NIwKxya0H0YwU&usqp=CAU"
+                            }
+                            alt="Criminalimage"
+                          />
+                        </td>
+                        <td className="p-3">{data.criminalname}</td>
+                        <td className="p-3">{data.criminalfathersName}</td>
+                        <td className="p-3">
+                          {data.CriminalIdentificationMark}
+                        </td>
+                        <td className="p-3">{data.CNumber}</td>
+                        <td className="p-3">{data.TotalYearsofSentence}</td>
+                        <td className="p-3">{data.AdmittedDate}</td>
+                        <td className="p-3">{data.RelievingDate}</td>
+                      </tr>
+                    ))
+                  : ""}
               </tbody>
             </table>
           </div>
@@ -556,24 +740,33 @@ const Odash = () => {
               </thead>
 
               <tbody>
-                <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                  <td className="p-3">Akhil</td>
-                  <td className="p-3">Ajith</td>
-                  <td className="p-3">808045533357</td>
-                  <td className="p-3">Thomas</td>
-                  <td className="p-3">Friend</td>
-                  <td className="p-3">10-5-2010</td>
-                  <td className="p-3">Casual visit</td>
-                  <td className="p-3">10-05-2010</td>
-                  <td className="p-3">
-                    <Button className="btn m-2 bg-success border-0">
-                      Approve <i className="fa-solid fa-check"></i>
-                    </Button>
-                    <Button className="bg-danger border-0">
-                      Reject <i className="fa-solid fa-square-xmark"></i>
-                    </Button>
-                  </td>
-                </tr>
+                {appointmentTable
+                  .filter((a) => a.serviceType == "appointment")
+                  .map((visitorData) => (
+                    <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
+                      <td className="p-3">{visitorData.name}</td>
+                      <td className="p-3">{visitorData.fathersname}</td>
+                      <td className="p-3">{visitorData.number}</td>
+                      <td className="p-3">{visitorData.criminalname}</td>
+                      <td className="p-3">{visitorData.relationship}</td>
+                      <td className="p-3">
+                        {new Date(visitorData.Date).toLocaleDateString("en-IN")}
+                      </td>
+                      <td className="p-3"> {visitorData.visitingreason}</td>
+                      <td className="p-3">{visitorData.visitingtime}</td>
+                      <td className="p-3">
+                        <Button className="btn m-2 bg-success border-0">
+                          Approve <i className="fa-solid fa-check"></i>
+                        </Button>
+                        <Button
+                          onClick={() => onDeleteAppointment(visitorData._id)}
+                          className="bg-danger border-0"
+                        >
+                          Reject <i className="fa-solid fa-square-xmark"></i>
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

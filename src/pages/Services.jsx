@@ -57,7 +57,7 @@ const Services = () => {
       payload.append("Date", ServiceApplication.Date);
 
       try {
-        const requestHeader = { "Content-Type": "multipart/form-data" };
+        const requestHeader = { "Content-Type": "multipart/form-data",'Authorization':`bearer ${sessionStorage.getItem('token')}` };
         const apiResponse = await onserviceApplication(payload, requestHeader);
         if (apiResponse.status === 200) {
           alert("complainted registered");
@@ -115,7 +115,7 @@ const Services = () => {
       ServiceApplication.fathersname &&
       ServiceApplication.number &&
       ServiceApplication.Date &&
-      ServiceApplication.relation &&
+      ServiceApplication.relationship &&
       ServiceApplication.visitingreason &&
       ServiceApplication.visitingtime &&
       ServiceApplication.criminalname
@@ -125,10 +125,11 @@ const Services = () => {
         name: ServiceApplication.name,
         fathersname: ServiceApplication.fathersname,
         number: ServiceApplication.number,
-        Date: ServiceApplication.relation,
-        relation: ServiceApplication.visitingreason,
+        Date: ServiceApplication.Date,
+        relationship: ServiceApplication.relationship,
         visitingtime: ServiceApplication.visitingtime,
         criminalname: ServiceApplication.criminalname,
+        visitingreason:ServiceApplication.visitingreason
       };
       try {
         const apiResponse = await onserviceApplication(payload);
@@ -549,7 +550,7 @@ const Services = () => {
                 onChange={(e) => {
                   setServiceApplication({
                     ...ServiceApplication,
-                    relation: e.target.value,
+                    relationship: e.target.value,
                   });
                 }}
                 className="form-control w-100 mb-2"

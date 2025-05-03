@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { onAdminlogin } from "../Services/AllApis";
+import { GetallOfficers, onAdminlogin } from "../Services/AllApis";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
-
 
   const [data, setData] = useState({
     email: "",
@@ -16,16 +16,17 @@ const Login = () => {
     if (data.email && data.password && data.role) {
       try {
         const apiResp = await onAdminlogin(data);
-        if (
-          data.email == "adminpanel@gmail.com" &&
-          data.password == "adminpanel" &&
-          data.role == "admin"
-        ) {
-          apiResp.status == 200;
-          alert("login succesfull");
-          navigate("/jd");
+        if (apiResp.status == 200) {
+          if (apiResp.data.role == "admin") {
+            sessionStorage.setItem("token", apiResp.data.token);
+            navigate("/jd");
+          } else {
+            sessionStorage.setItem("token", apiResp.data.token);
+
+            navigate("/od");
+          }
         } else {
-          alert("login failed check password and email");
+          toast.error("invalid credentials");
         }
       } catch (error) {
         console.log(error);

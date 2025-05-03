@@ -19,8 +19,8 @@ export const onserviceApplication=async(requestbody,requestHeader)=>{
 
 //gettingservices
 
-export const getServices=async()=>{
-  return await commonApi('get','/getServices','')
+export const getServices=async(requestHeader)=>{
+  return await commonApi('get','/getServices','',requestHeader)
 }
 
 
@@ -34,19 +34,19 @@ export const onAdminlogin=async(requestbody)=>{
 
 //add police officer
 
-export const AdddPoliceOfficer=async(requestbody)=>{
-  return await commonApi('post',"/addPolice",requestbody)
+export const AdddPoliceOfficer=async(requestbody,requestHeader)=>{
+  return await commonApi('post',"/addPolice",requestbody,requestHeader)
 }
 
 //getting all officers in the table
-export const GetallOfficers=async()=>{
-  return await commonApi('get',"/getPolice",'')
+export const GetallOfficers=async(requestHeader)=>{
+  return await commonApi('get',"/getPolice",'',requestHeader)
 
 }
 
 //delete officer details
-export const  deleteOfficers=async(id)=>{
- return await commonApi('delete',`/officers/${id}/delete`,{})
+export const  deleteOfficers=async(id,requestHeader)=>{
+ return await commonApi('delete',`/officers/${id}/delete`,{},requestHeader)
 }
 
 //addingCriminals
@@ -57,18 +57,28 @@ export const AddCriminals=async(requestbody,requestHeader)=>{
 
 
 //gettingCriminals
-export const getCriminals=async()=>{
-return  await commonApi('get','/getAllCriminals','')
+export const getCriminals=async(requestHeader)=>{
+return  await commonApi('get','/getAllCriminals','',requestHeader)
 }
 
 //deleteCriminals
 
-export const deleteCriminals=async(id)=>{
-  return await commonApi('delete',`/criminal/${id}/delete`,{})
+export const deleteCriminals=async(id,requestHeader)=>{
+  return await commonApi('delete',`/criminal/${id}/delete`,{},requestHeader)
 }
 
 //deleteServices
-export const deleteServices=async(id)=>{
-  return await commonApi('delete',`/Services/${id}/delete`,{})
+export const deleteServices=async(id,requestHeader)=>{
+  return await commonApi('delete',`/Services/${id}/delete`,{},requestHeader)
 }
 
+
+//getLoggedOfficer
+export const getLoggedOfficer=async(requestHeader)=>{
+  return await commonApi('get','/getLoggedOfficer',"",requestHeader)
+}
+
+//addLeaves
+export const addLeaves=async(requestbody,requestHeader)=>{
+  return await commonApi('post','/postLeaves',requestbody,requestHeader)
+}

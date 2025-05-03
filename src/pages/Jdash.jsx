@@ -61,8 +61,10 @@ const Jdash = () => {
   //adding officer button
 
   const onAddOfficer = async () => {
+    const Header={'Authorization':`beares ${sessionStorage.getItem('token')}`}
+
     try {
-      const apiResponse = await AdddPoliceOfficer(officerData);
+      const apiResponse = await AdddPoliceOfficer(officerData,Header);
       setRender(apiResponse);
       if (apiResponse.status == 201) {
         alert("officer created");
@@ -77,8 +79,9 @@ const Jdash = () => {
   const [officerTable, setOfficerTable] = useState([]);
 
   const getOfficer = async () => {
+    const Header={'Authorization':`nearer ${sessionStorage.getItem('token')}`}
     try {
-      const apiresp = await GetallOfficers();
+      const apiresp = await GetallOfficers(Header);
       if (apiresp.status == 200) {
         setOfficerTable(apiresp.data);
       }
@@ -100,7 +103,9 @@ const Jdash = () => {
 
   const onDelete = async (id) => {
     try {
-      const apiResp = await deleteOfficers(id);
+
+      const Header={'Authorization':`beares ${sessionStorage.getItem('token')}`}
+      const apiResp = await deleteOfficers(id,Header);
 
       if (apiResp.status === 200) {
         setRender(apiResp);
@@ -120,10 +125,10 @@ const Jdash = () => {
   const [serviceData, setServiceData] = useState([]);
 
   const getAllServices = async () => {
+    const Header={'Authorization':`beares ${sessionStorage.getItem('token')}`}
     try {
-      const ApiResponse = await getServices();
+      const ApiResponse = await getServices(Header);
       setServiceData(ApiResponse.data);
-      setRender(ApiResponse);
     } catch (error) {
       console.log(error);
     }
@@ -136,7 +141,9 @@ const Jdash = () => {
   //delete services
   const RejectService = async (id) => {
     try {
-      const Apiresponse = await deleteServices(id);
+      const Header={'Authorization':`nearer ${sessionStorage.getItem('token')}`}
+
+      const Apiresponse = await deleteServices(id,Header);
       if (Apiresponse.status == 200) {
         toast.success("ServiceRejected");
         setRender(Apiresponse)
@@ -160,6 +167,9 @@ const Jdash = () => {
 
   }
 
+  useEffect(()=>{
+
+  },[render])
   return (
     <div
       className="relative min-h-screen overflow-hidden "
@@ -426,8 +436,8 @@ const Jdash = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {serviceData
-                          ?.filter((a) => a.serviceType == "requestservice")
+                        {serviceData.length>0?
+                          serviceData.filter((a) => a.serviceType == "requestservice")
                           .map((data) => (
                             <tr
                               style={{
@@ -464,7 +474,7 @@ const Jdash = () => {
                                 </button>
                               </td>
                             </tr>
-                          ))}
+                          )):""}
                       </tbody>
                     </table>
                     <table
