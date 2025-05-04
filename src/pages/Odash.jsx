@@ -12,6 +12,7 @@ import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
 import {
   addLeaves,
+  bookSportsFacility,
   deleteServices,
   getCriminals,
   getLoggedOfficer,
@@ -20,16 +21,22 @@ import {
 import { toast } from "react-toastify";
 
 const Odash = () => {
+  const [showSpModal, setshowSpModal] = useState(false);
+  const handleSpModalClose = () => setshowSpModal(false);
+  const handleSpModalShow = () => setshowSpModal(true);
+
+  const [showStModal, setshowStModal] = useState(false);
+  const handleStModalClose = () => setshowStModal(false);
+  const handleStModalShow = () => setshowStModal(true);
+
   const [leaveData, setLeaveData] = useState({
     leaveType: "",
     name: "",
     circle: "",
     reason: "",
-    startDate:"",
-    EndDate:""
-
+    startDate: "",
+    EndDate: "",
   });
-  console.log(leaveData)
   const [show, setShow] = useState(false);
   const [appointmentTable, setAppointmentTable] = useState([]);
 
@@ -49,6 +56,21 @@ const Odash = () => {
     setPopShow(!popshow);
     PopsetTarget(event.target);
   };
+  const [sportsData, setSportsData] = useState({
+    serviceType: "Sports Club Booking",
+    name: "",
+    Date: "",
+    number: "",
+    details: "",
+  });
+  const [staticData, setStaticData] = useState({
+    serviceType: "Requesting Case Data",
+    name: "",
+    Date: "",
+    number: "",
+    details: "",
+  });
+  console.log(staticData);
 
   const [getCrimedata, setGetCrimeData] = useState([]);
 
@@ -125,30 +147,94 @@ const Odash = () => {
     getLogged();
   }, []);
 
+  //posting leave application
+
   const onLeaveApplication = async () => {
-    if(leaveData.name&&leaveData.circle&&leaveData.reason&&leaveData.EndDate&&leaveData.startDate&&leaveData.leaveType){
+    if (
+      leaveData.name &&
+      leaveData.circle &&
+      leaveData.reason &&
+      leaveData.EndDate &&
+      leaveData.startDate &&
+      leaveData.leaveType
+    ) {
       try {
-      
-        const Header={'Authorization':`bearer ${sessionStorage.getItem('token')}`}
-        const apiResponse = await addLeaves(leaveData,Header);
-        if(apiResponse.status==201){
-          toast.success('Leave request successfull')
-        }else{
-          toast.error('Leave request failed')
+        const Header = {
+          Authorization: `bearer ${sessionStorage.getItem("token")}`,
+        };
+        const apiResponse = await addLeaves(leaveData, Header);
+        if (apiResponse.status == 201) {
+          handleCloseMod();
+
+          toast.success("Leave request successfull");
+        } else {
+          toast.error("Leave request failed");
         }
-  
-        
       } catch (error) {
-        console.log(error)
-        
+        console.log(error);
       }
-        
-    }else{
-      toast.error('Fill all the forms')
+    } else {
+      toast.error("Fill all the forms");
     }
-    
-    
-    
+  };
+
+  //posting sports facility
+
+  const clubFacility = async () => {
+    if (
+      sportsData.name &&
+      sportsData.details &&
+      sportsData.Date &&
+      sportsData.number
+    ) {
+      try {
+        const Header = {
+          Authorization: `bearer ${sessionStorage.getItem("token")}`,
+        };
+        const apiResponse = await bookSportsFacility(sportsData, Header);
+        if (apiResponse.status == 200) {
+          toast.success("Sports club booking request send");
+          handleSpModalClose();
+          handleClose();
+        } else {
+          toast.error("try again later");
+        }
+      } catch (error) {
+        toast.error("error");
+        console.log(error);
+      }
+    } else {
+      toast.error("fill all credentials");
+    }
+  };
+
+  //posting static datas
+  const staticDataApplication = async () => {
+    if (
+      staticData.name &&
+      staticData.details &&
+      staticData.Date &&
+      staticData.number
+    ) {
+      try {
+        const Header = {
+          Authorization: `bearer ${sessionStorage.getItem("token")}`,
+        };
+        const apiResponse = await bookSportsFacility(sportsData, Header);
+        if (apiResponse.status == 200) {
+          toast.success("Sports club booking request send");
+          handleStModalClose();
+          handleClose();
+        } else {
+          toast.error("try again later");
+        }
+      } catch (error) {
+        toast.error("error");
+        console.log(error);
+      }
+    } else {
+      toast.error("fill all credentials");
+    }
   };
 
   return (
@@ -322,9 +408,17 @@ const Odash = () => {
                       }}
                       className="d-flex flex-column gap-3 justify-content-center align-items-center"
                     >
-                      <select  onChange={(e) =>
-                          setLeaveData({ ...leaveData, leaveType: e.target.value })
-                        } className="form-control mt-3" name="" id="">
+                      <select
+                        onChange={(e) =>
+                          setLeaveData({
+                            ...leaveData,
+                            leaveType: e.target.value,
+                          })
+                        }
+                        className="form-control mt-3"
+                        name=""
+                        id=""
+                      >
                         <option value="" selected disabled>
                           choose leave type
                         </option>
@@ -344,25 +438,31 @@ const Odash = () => {
                         placeholder=" name"
                       />
                       <input
-                      onChange={(e) =>
-                        setLeaveData({ ...leaveData, circle: e.target.value })
-                      }
+                        onChange={(e) =>
+                          setLeaveData({ ...leaveData, circle: e.target.value })
+                        }
                         className="form-control"
                         type="text"
                         placeholder="circle of duty"
                       />
                       <input
-                       onChange={(e) =>
-                        setLeaveData({ ...leaveData, startDate: e.target.value })
-                      }
+                        onChange={(e) =>
+                          setLeaveData({
+                            ...leaveData,
+                            startDate: e.target.value,
+                          })
+                        }
                         className="form-control"
                         type="Date"
                         placeholder="Date of leave requirement"
                       />
                       <input
-                       onChange={(e) =>
-                        setLeaveData({ ...leaveData, EndDate: e.target.value })
-                      }
+                        onChange={(e) =>
+                          setLeaveData({
+                            ...leaveData,
+                            EndDate: e.target.value,
+                          })
+                        }
                         className="form-control"
                         type="Date"
                         placeholder="until which date
@@ -370,17 +470,17 @@ const Odash = () => {
                       />
 
                       <textarea
-                      onChange={(e) =>
-                        setLeaveData({ ...leaveData, reason: e.target.value })
-                      }
-                      
+                        onChange={(e) =>
+                          setLeaveData({ ...leaveData, reason: e.target.value })
+                        }
                         placeholder="reason for the leave  and time period of leave requirement"
                         type="text"
                         className="form-control"
                         name=""
                         id=""
                       />
-                      <button onClick={onLeaveApplication}
+                      <button
+                        onClick={onLeaveApplication}
                         className="btn text-white w-50 mt-3 "
                         style={{ backgroundColor: "#796F57" }}
                       >
@@ -448,6 +548,7 @@ const Odash = () => {
                               border: "0px",
                             }}
                             className="mt-3"
+                            onClick={handleSpModalShow}
                           >
                             Apply
                           </Button>
@@ -476,18 +577,185 @@ const Odash = () => {
                               border: "0px",
                             }}
                             className="mt-3"
+                            onClick={handleStModalShow}
                           >
                             Apply
                           </Button>
                         </Card.Body>
                       </Card>
+                      <Modal show={showStModal} onHide={handleStModalClose}>
+                        <Modal.Header
+                          style={{
+                            background:
+                              "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                          }}
+                          closeButton
+                        >
+                          <Modal.Title>
+                            Request Case Data{" "}
+                            <i className="fa-solid fa-suitcase fw-bold"></i>
+                          </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body
+                          style={{
+                            background:
+                              "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                          }}
+                        >
+                          <input
+                            onChange={(e) =>
+                              setStaticData({
+                                ...staticData,
+                                name: e.target.value,
+                              })
+                            }
+                            className="form-control w-100 mb-5"
+                            required
+                            type="text"
+                            placeholder="enter your name"
+                          />
+                          <input
+                            onChange={(e) =>
+                              setStaticData({
+                                ...staticData,
+                                Date: e.target.value,
+                              })
+                            }
+                            className="form-control w-100 mb-5"
+                            required
+                            type="date"
+                            placeholder="enter date of submission"
+                          />
+                          <input
+                            onChange={(e) =>
+                              setStaticData({
+                                ...staticData,
+                                number: e.target.value,
+                              })
+                            }
+                            className="form-control w-100 mb-5"
+                            required
+                            type="number"
+                            placeholder="enter your contact  number"
+                          />
+                          <input
+                            onChange={(e) =>
+                              setStaticData({
+                                ...staticData,
+                                details: e.target.value,
+                              })
+                            }
+                            className="form-control w-100 mb-5"
+                            required
+                            type="text"
+                            placeholder="Short discription of the case data required "
+                          />
+                        </Modal.Body>
+                        <Modal.Footer
+                          style={{
+                            background:
+                              "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                          }}
+                        >
+                          <Button
+                            variant="secondary"
+                            onClick={handleStModalClose}
+                          >
+                            Close
+                          </Button>
+                          <Button
+                            variant="primary"
+                            onClick={staticDataApplication}
+                          >
+                            Submit
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
                     </Modal.Body>
                     <Modal.Footer>
                       <Button variant="secondary" onClick={handleClose}>
                         Close
                       </Button>
                     </Modal.Footer>
+                    //sports club facility modal
                   </Modal>
+                  <Modal show={showSpModal} onHide={handleSpModalClose}>
+                    <Modal.Header
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                      }}
+                      closeButton
+                    >
+                      <Modal.Title>
+                        Club Facility Booking{" "}
+                        <i className="fa-solid fa-suitcase fw-bold"></i>
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                      }}
+                    >
+                      <input
+                        onChange={(e) =>
+                          setSportsData({ ...sportsData, name: e.target.value })
+                        }
+                        className="form-control w-100 mb-5"
+                        required
+                        type="text"
+                        placeholder="enter your name"
+                      />
+                      <input
+                        onChange={(e) =>
+                          setSportsData({ ...sportsData, Date: e.target.value })
+                        }
+                        className="form-control w-100 mb-5"
+                        required
+                        type="date"
+                        placeholder="enter date of submission"
+                      />
+                      <input
+                        onChange={(e) =>
+                          setSportsData({
+                            ...sportsData,
+                            number: e.target.value,
+                          })
+                        }
+                        className="form-control w-100 mb-5"
+                        required
+                        type="number"
+                        placeholder="enter your contact  number"
+                      />
+                      <input
+                        onChange={(e) =>
+                          setSportsData({
+                            ...sportsData,
+                            details: e.target.value,
+                          })
+                        }
+                        className="form-control w-100 mb-5"
+                        required
+                        type="text"
+                        placeholder="Short discription booking purpose and time slot required "
+                      />
+                    </Modal.Body>
+                    <Modal.Footer
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                      }}
+                    >
+                      <Button variant="secondary" onClick={handleSpModalClose}>
+                        Close
+                      </Button>
+                      <Button variant="primary" onClick={clubFacility}>
+                        Submit
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+
                   <Link
                     to={"/login"}
                     style={{

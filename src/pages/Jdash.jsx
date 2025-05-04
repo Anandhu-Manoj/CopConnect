@@ -13,8 +13,11 @@ import {
   AdddPoliceOfficer,
   deleteOfficers,
   deleteServices,
+  getAllLeaves,
   GetallOfficers,
+  getPoliceServices,
   getServices,
+  onAcceptingNotification,
 } from "../Services/AllApis";
 import { toast } from "react-toastify";
 
@@ -61,10 +64,12 @@ const Jdash = () => {
   //adding officer button
 
   const onAddOfficer = async () => {
-    const Header={'Authorization':`beares ${sessionStorage.getItem('token')}`}
+    const Header = {
+      Authorization: `beares ${sessionStorage.getItem("token")}`,
+    };
 
     try {
-      const apiResponse = await AdddPoliceOfficer(officerData,Header);
+      const apiResponse = await AdddPoliceOfficer(officerData, Header);
       setRender(apiResponse);
       if (apiResponse.status == 201) {
         alert("officer created");
@@ -79,7 +84,9 @@ const Jdash = () => {
   const [officerTable, setOfficerTable] = useState([]);
 
   const getOfficer = async () => {
-    const Header={'Authorization':`nearer ${sessionStorage.getItem('token')}`}
+    const Header = {
+      Authorization: `nearer ${sessionStorage.getItem("token")}`,
+    };
     try {
       const apiresp = await GetallOfficers(Header);
       if (apiresp.status == 200) {
@@ -103,9 +110,10 @@ const Jdash = () => {
 
   const onDelete = async (id) => {
     try {
-
-      const Header={'Authorization':`beares ${sessionStorage.getItem('token')}`}
-      const apiResp = await deleteOfficers(id,Header);
+      const Header = {
+        Authorization: `beares ${sessionStorage.getItem("token")}`,
+      };
+      const apiResp = await deleteOfficers(id, Header);
 
       if (apiResp.status === 200) {
         setRender(apiResp);
@@ -125,7 +133,9 @@ const Jdash = () => {
   const [serviceData, setServiceData] = useState([]);
 
   const getAllServices = async () => {
-    const Header={'Authorization':`beares ${sessionStorage.getItem('token')}`}
+    const Header = {
+      Authorization: `beares ${sessionStorage.getItem("token")}`,
+    };
     try {
       const ApiResponse = await getServices(Header);
       setServiceData(ApiResponse.data);
@@ -137,39 +147,100 @@ const Jdash = () => {
     getAllServices();
   }, [render]);
 
-
   //delete services
   const RejectService = async (id) => {
     try {
-      const Header={'Authorization':`nearer ${sessionStorage.getItem('token')}`}
+      const Header = {
+        Authorization: `nearer ${sessionStorage.getItem("token")}`,
+      };
 
-      const Apiresponse = await deleteServices(id,Header);
+      const Apiresponse = await deleteServices(id, Header);
       if (Apiresponse.status == 200) {
         toast.success("ServiceRejected");
-        setRender(Apiresponse)
+        setRender(Apiresponse);
       }
     } catch (error) {
       toast.error("error deleting data", error);
     }
   };
   // delete Complaint
-  const onCaseDissmissal=async(id)=>{
+  const onCaseDissmissal = async (id) => {
     try {
       const Apiresponse = await deleteServices(id);
       if (Apiresponse.status == 200) {
         toast.success("ServiceRejected");
-        setRender(Apiresponse)
+        setRender(Apiresponse);
       }
     } catch (error) {
       toast.error("error deleting data", error);
     }
-    
+  };
 
+  useEffect(() => {}, [render]);
+
+  //getAllLeaves
+  const [leaveData, setLeaveData] = useState([]);
+
+  const allLeaves = async () => {
+    try {
+      const reqHeader = {
+        Authorization: `bearer ${sessionStorage.getItem("token")}`,
+      };
+      const apiResponse = await getAllLeaves(reqHeader);
+      setLeaveData(apiResponse.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    allLeaves();
+  }, []);
+  //policeServiceData
+
+  const [policeService, setPoliceServices] = useState([]);
+
+  const policeServiceData = async () => {
+   
+      try {
+        const Header = {
+          Authorization: `bearer ${sessionStorage.getItem("token")}`,
+        };
+        const apiResponse = await getPoliceServices(Header);
+        setPoliceServices(apiResponse.data);
+        
+
+      } catch (error) {
+        console.log(error);
+      }
+   
+  };
+
+  useEffect(() => {
+    policeServiceData();
+  }, [render]);
+
+   const onAcceptService=async(data)=>{
+    const Header={Authorization:`bearer ${sessionStorage.getItem('token')}`}
+try {
+
+  const payload={
+    serviceId:data.serviceId,
+    userId:data.userId,
+    serviceType:data.serviceType,
+    date:data.Date
   }
+const serverResp=await onAcceptingNotification(payload,Header)
+console.log(serverResp)
 
-  useEffect(()=>{
+  
+} catch (error) {
+  console.log(error)
+  
+}    
 
-  },[render])
+   }
+
+
   return (
     <div
       className="relative min-h-screen overflow-hidden "
@@ -436,45 +507,51 @@ const Jdash = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {serviceData.length>0?
-                          serviceData.filter((a) => a.serviceType == "requestservice")
-                          .map((data) => (
-                            <tr
-                              style={{
-                                backgroundColor: "#fff",
-                                fontSize: "16px",
-                              }}
-                            >
-                              <td style={{ padding: "5px" }}>{data.name}</td>
-                              <td style={{ padding: "5px" }}>
-                                {new Date(data.Date).toLocaleDateString(
-                                  "en-IN"
-                                )}
-                              </td>
-                              <td style={{ padding: "5px" }}>
-                                {data.description}{" "}
-                              </td>
+                        {serviceData.length > 0
+                          ? serviceData
+                              .filter((a) => a.serviceType == "requestservice")
+                              .map((data) => (
+                                <tr
+                                  style={{
+                                    backgroundColor: "#fff",
+                                    fontSize: "16px",
+                                  }}
+                                >
+                                  <td style={{ padding: "5px" }}>
+                                    {data.name}
+                                  </td>
+                                  <td style={{ padding: "5px" }}>
+                                    {new Date(data.Date).toLocaleDateString(
+                                      "en-IN"
+                                    )}
+                                  </td>
+                                  <td style={{ padding: "5px" }}>
+                                    {data.description}{" "}
+                                  </td>
 
-                              <td style={{ padding: "5px" }}>{data.number}</td>
-                              <td style={{ padding: "5px" }}>
-                                <button
-                                  className="btn btn-success"
-                                  style={{ marginBottom: "2px" }}
-                                >
-                                  Accepted<i class="fa-solid fa-check"></i>
-                                </button>{" "}
-                                <br />
-                                <button
-                                  onClick={()=>RejectService(data._id)}
-                                  style={{ marginRight: "2px" }}
-                                  className="btn btn-danger"
-                                >
-                                  Reject{" "}
-                                  <i className="fa-solid fa-square-xmark"></i>
-                                </button>
-                              </td>
-                            </tr>
-                          )):""}
+                                  <td style={{ padding: "5px" }}>
+                                    {data.number}
+                                  </td>
+                                  <td style={{ padding: "5px" }}>
+                                    <button
+                                      className="btn btn-success"
+                                      style={{ marginBottom: "2px" }}
+                                    >
+                                      Accepted<i class="fa-solid fa-check"></i>
+                                    </button>{" "}
+                                    <br />
+                                    <button
+                                      onClick={() => RejectService(data._id)}
+                                      style={{ marginRight: "2px" }}
+                                      className="btn btn-danger"
+                                    >
+                                      Reject{" "}
+                                      <i className="fa-solid fa-square-xmark"></i>
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))
+                          : ""}
                       </tbody>
                     </table>
                     <table
@@ -507,30 +584,45 @@ const Jdash = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr
-                          style={{ backgroundColor: "#fff", fontSize: "16px" }}
-                        >
-                          <td style={{ padding: "5px" }}>sharath</td>
-                          <td style={{ padding: "5px" }}>2-5-2018</td>
-                          <td style={{ padding: "5px" }}>Guarding</td>
-                          <td style={{ padding: "5px" }}>987455874587</td>
-                          <td style={{ padding: "5px" }}>
-                            <button
-                              className="btn btn-success"
-                              style={{ marginBottom: "2px" }}
-                            >
-                              Accepted<i class="fa-solid fa-check"></i>
-                            </button>{" "}
-                            <br />
-                            <button
-                              style={{ marginRight: "2px" }}
-                              className="btn btn-danger"
-                            >
-                              Reject{" "}
-                              <i className="fa-solid fa-square-xmark"></i>
-                            </button>
-                          </td>
-                        </tr>
+                        {policeService?.length > 0
+                          ? policeService?.map((data) => (
+                              <tr
+                                style={{
+                                  backgroundColor: "#fff",
+                                  fontSize: "16px",
+                                }}
+                              >
+                                <td style={{ padding: "5px" }}>
+                                  {data.name}
+                                </td>
+                                <td style={{ padding: "5px" }}>
+                                  {data.Date}
+                                </td>
+                                <td style={{ padding: "5px" }}>
+                                  {data.serviceType}
+                                </td>
+                                <td style={{ padding: "5px" }}>
+                                  {data.number}
+                                </td>
+                                <td style={{ padding: "5px" }}>
+                                  <button onClick={()=>onAcceptService(data)}
+                                    className="btn btn-success"
+                                    style={{ marginBottom: "2px" }}
+                                  >
+                                    Accepted<i class="fa-solid fa-check"></i>
+                                  </button>{" "}
+                                  <br />
+                                  <button
+                                    style={{ marginRight: "2px" }}
+                                    className="btn btn-danger"
+                                  >
+                                    Reject{" "}
+                                    <i className="fa-solid fa-square-xmark"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                          ))
+                          :""}
                       </tbody>
                     </table>
                   </div>
@@ -676,8 +768,11 @@ const Jdash = () => {
                             Assign Case <i class="fa-solid fa-check"></i>
                           </button>{" "}
                           <br />
-                          <button onClick={()=>onCaseDissmissal(data._id)} className="btn btn-warning p-2">
-                           case dismmised{" "}
+                          <button
+                            onClick={() => onCaseDissmissal(data._id)}
+                            className="btn btn-warning p-2"
+                          >
+                            case dismmised{" "}
                             <i className="fa-solid fa-timeline"></i>
                           </button>
                         </td>
@@ -939,32 +1034,49 @@ const Jdash = () => {
                   }}
                 >
                   <tr>
-                    <th className="p-3">Name</th>
-                    <th className="p-3">Batch Number</th>
+                    <th className="p-3">Full Name</th>
+                    <th className="p-3">Leave Type</th>
                     <th className="p-3">Reason</th>
-                    <th className="p-3">Reporting Officer</th>
                     <th className="p-3">Circle of Duty</th>
-                    {/* <th className="p-3">Leaves Remaining</th> */}
+                    <th className="p-3">Starting Date</th>
+                    <th className="p-3"> Ending Date</th>
                     <th className="p-3">Approve/reject</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
-                    <td className="p-3">Arun</td>
-                    <td className="p-3">12</td>
-                    <td className="p-3">Sick Leave</td>
-                    <td className="p-3">Sarath</td>
-                    <td className="p-3">PATTOM</td>
-                    {/* <td className="p-3">10</td> */}
-                    <td className="p-3">
-                      <Button className="btn m-2 bg-success border-0">
-                        Approve <i className="fa-solid fa-check"></i>
-                      </Button>
-                      <Button className="bg-danger border-0">
-                        Reject <i className="fa-solid fa-square-xmark"></i>
-                      </Button>
-                    </td>
-                  </tr>
+                  {leaveData.length > 0
+                    ? leaveData.map((leaves, index) => (
+                        <tr
+                          key={index}
+                          style={{ backgroundColor: "#fff", fontSize: "16px" }}
+                        >
+                          <td className="p-3">{leaves.name}</td>
+                          <td className="p-3">{leaves.leaveType}</td>
+                          <td className="p-3">{leaves.reason}</td>
+                          <td className="p-3">{leaves.circle}</td>
+                          <td className="p-3">
+                            {" "}
+                            {new Date(leaves.startDate).toLocaleDateString(
+                              "en-IN"
+                            )}
+                          </td>
+                          <td className="p-3">
+                            {new Date(leaves.EndDate).toLocaleDateString(
+                              "en-IN"
+                            )}
+                          </td>
+                          <td className="p-3">
+                            <Button className="btn m-2 bg-success border-0">
+                              Approve <i className="fa-solid fa-check"></i>
+                            </Button>
+                            <Button className="bg-danger border-0">
+                              Reject{" "}
+                              <i className="fa-solid fa-square-xmark"></i>
+                            </Button>
+                          </td>
+                        </tr>
+                      ))
+                    : ""}
                 </tbody>
               </table>
             </div>

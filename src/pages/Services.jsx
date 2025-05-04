@@ -439,8 +439,7 @@ const Services = () => {
                 type="text"
                 placeholder="Short discription of the required service "
               />
-              {/* <input className="form-control w-100" required type="file" placeholder="" />
-             <p className="mt-2 ms-5 text-dark fw-lighter"> upload  written complaint in pdf format</p> */}
+              
             </Modal.Body>
             <Modal.Footer
               style={{
