@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Logo from "../assets/sideLogo.png";
 import sideLogo from "../assets/logo.png";
-import Video from "../assets/Jbg.mp4";
 import Footer from "../Components/Footer";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -18,6 +17,7 @@ import {
   getPoliceServices,
   getServices,
   onAcceptingNotification,
+  onUpdateOfficer,
 } from "../Services/AllApis";
 import { toast } from "react-toastify";
 
@@ -151,7 +151,7 @@ const Jdash = () => {
   const RejectService = async (id) => {
     try {
       const Header = {
-        Authorization: `nearer ${sessionStorage.getItem("token")}`,
+        Authorization: `bearer ${sessionStorage.getItem("token")}`,
       };
 
       const Apiresponse = await deleteServices(id, Header);
@@ -167,6 +167,7 @@ const Jdash = () => {
   const onCaseDissmissal = async (id) => {
     try {
       const Apiresponse = await deleteServices(id);
+
       if (Apiresponse.status == 200) {
         toast.success("ServiceRejected");
         setRender(Apiresponse);
@@ -176,7 +177,6 @@ const Jdash = () => {
     }
   };
 
-  useEffect(() => {}, [render]);
 
   //getAllLeaves
   const [leaveData, setLeaveData] = useState([]);
@@ -200,46 +200,74 @@ const Jdash = () => {
   const [policeService, setPoliceServices] = useState([]);
 
   const policeServiceData = async () => {
-   
-      try {
-        const Header = {
-          Authorization: `bearer ${sessionStorage.getItem("token")}`,
-        };
-        const apiResponse = await getPoliceServices(Header);
-        setPoliceServices(apiResponse.data);
-        
-
-      } catch (error) {
-        console.log(error);
-      }
-   
+    try {
+      const Header = {
+        Authorization: `bearer ${sessionStorage.getItem("token")}`,
+      };
+      const apiResponse = await getPoliceServices(Header);
+      setPoliceServices(apiResponse.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     policeServiceData();
   }, [render]);
 
-   const onAcceptService=async(data)=>{
-    const Header={Authorization:`bearer ${sessionStorage.getItem('token')}`}
-try {
+  const onAcceptService = async (data) => {
+    const Header = {
+      Authorization: `bearer ${sessionStorage.getItem("token")}`,
+    };
+    try {
+      const payload = {
+        serviceId: data.serviceId,
+        userId: data.userId,
+        serviceType: data.serviceType,
+        date: data.Date,
+      };
+      const serverResp = await onAcceptingNotification(payload, Header);
+      console.log(serverResp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const payload={
-    serviceId:data.serviceId,
-    userId:data.userId,
-    serviceType:data.serviceType,
-    date:data.Date
+  //edit officer
+  const [oEditshow, setOWditShow] = useState(false);
+  const [officerDetail, setOfficerDetail] = useState({
+    
+
+  });
+
+  const handleOfEditClose = () => setOWditShow(false);
+
+  const handleOEditfShow = (data) => {setOWditShow(true)
+    setOfficerDetail(data)
   }
-const serverResp=await onAcceptingNotification(payload,Header)
-console.log(serverResp)
 
-  
-} catch (error) {
-  console.log(error)
-  
-}    
+ 
 
-   }
+  const onEditOfficer=async()=>{
+    try {
+      const Header={Authorization:`bearer ${sessionStorage.getItem('token')}`}
 
+      const serverResponse=await onUpdateOfficer(officerDetail._id,officerDetail,Header)
+      console.log(serverResponse)
+      if(serverResponse.status==200){
+        toast.success('updated succesfully')
+        handleOfEditClose()
+        setRender(serverResponse)
+      }else{
+        toast.error('try again later')
+      }
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
+
+  }
 
   return (
     <div
@@ -592,12 +620,8 @@ console.log(serverResp)
                                   fontSize: "16px",
                                 }}
                               >
-                                <td style={{ padding: "5px" }}>
-                                  {data.name}
-                                </td>
-                                <td style={{ padding: "5px" }}>
-                                  {data.Date}
-                                </td>
+                                <td style={{ padding: "5px" }}>{data.name}</td>
+                                <td style={{ padding: "5px" }}>{data.Date}</td>
                                 <td style={{ padding: "5px" }}>
                                   {data.serviceType}
                                 </td>
@@ -605,7 +629,8 @@ console.log(serverResp)
                                   {data.number}
                                 </td>
                                 <td style={{ padding: "5px" }}>
-                                  <button onClick={()=>onAcceptService(data)}
+                                  <button
+                                    onClick={() => onAcceptService(data)}
                                     className="btn btn-success"
                                     style={{ marginBottom: "2px" }}
                                   >
@@ -621,8 +646,8 @@ console.log(serverResp)
                                   </button>
                                 </td>
                               </tr>
-                          ))
-                          :""}
+                            ))
+                          : ""}
                       </tbody>
                     </table>
                   </div>
@@ -994,7 +1019,10 @@ console.log(serverResp)
                               Remove{" "}
                               <i className="fa-solid fa-square-xmark"></i>
                             </button>
-                            <button className="btn btn-primary mt-2">
+                            <button
+                              className="btn btn-primary mt-2"
+                              onClick={()=>handleOEditfShow(data)}
+                            >
                               Review <i className="fa-solid fa-eye"></i>
                             </button>
                           </td>
@@ -1003,6 +1031,114 @@ console.log(serverResp)
                     : ""}
                 </tbody>
               </table>
+              <Modal
+                centered
+                size="lg"
+                show={oEditshow}
+                onHide={handleOfEditClose}
+              >
+                <Modal.Header
+                  closeButton
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                  }}
+                >
+                  <Modal.Title>
+                    Edit Officers <i className="fa-solid fa-shield"></i>
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                  }}
+                >
+                  <input
+                    value={officerDetail?.username}
+                    onChange={(e)=>setOfficerDetail({...officerDetail,username:e.target.value})}
+                    className="form-control w-100 mb-2"
+                    required
+                    type="text"
+                    placeholder="Enter Officers name"
+                  />
+                  <input
+                    value={officerDetail?.fathersname}
+                    onChange={(e)=>setOfficerDetail({...officerDetail,fathersname:e.target.value})}
+                    className="form-control w-100 mb-2"
+                    required
+                    type="text"
+                    placeholder="Enter Officers fathers name"
+                  />
+                  <input
+                    value={officerDetail?.batchNo}
+                    onChange={(e)=>setOfficerDetail({...officerDetail,batchNo:e.target.value})}
+                    className="form-control w-100 mb-2"
+                    required
+                    type="number"
+                    placeholder="Enter  Officers Batch number"
+                  />
+                  <input
+                    value={officerDetail?.email}
+                    onChange={(e)=>setOfficerDetail({...officerDetail,email:e.target.value})}
+                    className="form-control w-100 mb-2"
+                    required
+                    type="email"
+                    placeholder="Enter  Officers email"
+                  />
+                  <input
+                    value={officerDetail?.password}
+                    onChange={(e)=>setOfficerDetail({...officerDetail,password:e.target.value})}
+                    className="form-control w-100 mb-2"
+                    required
+                    type="text"
+                    placeholder="Enter  Officers password"
+                  />
+                  <input
+                    value={officerDetail?.number}
+                    onChange={(e)=>setOfficerDetail({...officerDetail,number:e.target.value})}
+                    className="form-control w-100 mb-2"
+                    required
+                    type="text"
+                    placeholder="Enter  Officers contact number"
+                  />
+                  <input
+                    value={officerDetail?.designation}
+                    onChange={(e)=>setOfficerDetail({...officerDetail,designation:e.target.value})}
+                    className="form-control w-100 mb-2"
+                    required
+                    type="text"
+                    placeholder="Enter Designation"
+                  />
+                  <input
+                    value={officerDetail?.circleofduty}
+                    onChange={(e)=>setOfficerDetail({...officerDetail,circleofduty:e.target.value})}
+                    className="form-control w-100 mb-2"
+                    required
+                    type="text"
+                    placeholder="Enter assigned circle ofduty"
+                  />
+                  <input
+                    value={officerDetail?.serviceperiod}
+                    onChange={(e)=>setOfficerDetail({...officerDetail,serviceperiod:e.target.value})}
+                    className="form-control w-100 mb-2"
+                    required
+                    type="number"
+                    placeholder="Enter service period"
+                  />
+                </Modal.Body>
+                <Modal.Footer
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                  }}
+                >
+                  <Button variant="secondary" onClick={handleOfEditClose}>
+                    Close
+                  </Button>
+                  <Button variant="primary" onClick={onEditOfficer}>Add</Button>
+                </Modal.Footer>
+              </Modal>
             </div>
           </section>
 

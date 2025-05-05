@@ -70,7 +70,6 @@ const Odash = () => {
     number: "",
     details: "",
   });
-  console.log(staticData);
 
   const [getCrimedata, setGetCrimeData] = useState([]);
 
