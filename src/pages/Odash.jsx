@@ -17,6 +17,7 @@ import {
   getCriminals,
   getLoggedOfficer,
   getServices,
+  onClearingNotification,
 } from "../Services/AllApis";
 import { toast } from "react-toastify";
 
@@ -144,7 +145,7 @@ const Odash = () => {
   };
   useEffect(() => {
     getLogged();
-  }, []);
+  }, [render]);
 
   //posting leave application
 
@@ -236,6 +237,23 @@ const Odash = () => {
     }
   };
 
+  //clearing Notification
+  const clearNotification = async () => {
+    try {
+      const Header = {
+        Authorization: `bearer ${sessionStorage.getItem("token")}`,
+      };
+      const apiResponse = await onClearingNotification(Header);
+      if (apiResponse.status == 200) {
+        toast.success("notification clear");
+        setRender("deleted");
+        handlePopClick();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="m-0 overflow-hidden">
       <div
@@ -322,15 +340,28 @@ const Odash = () => {
                   <Popover id="popover-contained">
                     <Popover.Header as="h3">Notifications</Popover.Header>
                     <Popover.Body style={{ height: "300px", width: "300px" }}>
-                      <strong>no notifications</strong> Check this info.
+                      <ul>
+                        {loggedOfficer?.Notification?.length > 0 ? (
+                          loggedOfficer?.Notification?.map((data, index) => (
+                            <li className="mb-2" key={index}>
+                              {data.message}
+                            </li>
+                          ))
+                        ) : (
+                          <strong>no notifications</strong>
+                        )}
+                      </ul>
                     </Popover.Body>
 
-                    <button
-                      style={{ backgroundColor: "#796F57" }}
-                      className="btn  text-white w-100  "
-                    >
-                      Clear all{" "}
-                    </button>
+                    {loggedOfficer?.Notification?.length > 0 && (
+                      <button
+                        onClick={clearNotification}
+                        style={{ backgroundColor: "#796F57" }}
+                        className="btn text-white w-100"
+                      >
+                        Clear all
+                      </button>
+                    )}
                   </Popover>
                 </Overlay>
               </div>

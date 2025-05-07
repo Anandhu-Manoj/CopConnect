@@ -103,9 +103,18 @@ export const getPoliceServices = async (requestHeader) => {
 export const onAcceptingNotification=async(requestbody,requestHeader)=>{
   return await commonApi('post','/acceptingPoliceServices',requestbody,requestHeader)
 }
+//clearingNotification
+export const onClearingNotification=async(requestHeader)=>{
+  return await commonApi('patch','/ClearingPoliceServices',{},requestHeader)
+}
 
 //updateOfficer
 export const onUpdateOfficer=async(id,requestbody,requestHeader)=>{
   return await commonApi('patch',`/updateOfficer/${id}`,requestbody,requestHeader)
 
 }
+
+//
+
+
+//updatecriminals

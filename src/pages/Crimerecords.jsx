@@ -49,7 +49,6 @@ const Crimerecords = () => {
           : toast.error("please upload required image format")
       ) {
         const payload = new FormData();
-       
 
         payload.append("criminalimage", criminalDetails.criminalimage);
         payload.append("criminalname", criminalDetails.criminalname);
@@ -70,12 +69,15 @@ const Crimerecords = () => {
         payload.append("RelievingDate", criminalDetails.RelievingDate);
 
         try {
-          let requestHeader = { "Content-Type": "multipart/form-data" ,"Authorization":`bearer ${sessionStorage.getItem('token')}`};
+          let requestHeader = {
+            "Content-Type": "multipart/form-data",
+            Authorization: `bearer ${sessionStorage.getItem("token")}`,
+          };
           let apiResponse = await AddCriminals(payload, requestHeader);
           console.log(apiResponse);
           if (apiResponse.status == 201) {
             toast.success("Criminal added successfully");
-            setRender(apiResponse)
+            setRender(apiResponse);
             handleRevClose();
           } else {
             toast.error("registration failed check the C-Number");
@@ -92,11 +94,13 @@ const Crimerecords = () => {
   //gettingCriminals
 
   const [getCrimedata, setGetCrimeData] = useState([]);
-  console.log(getCrimedata)
+  console.log(getCrimedata);
 
   const gettingAllCriminals = async () => {
     try {
-      const Header={'Authorization':`nearer ${sessionStorage.getItem('token')}`}
+      const Header = {
+        Authorization: `nearer ${sessionStorage.getItem("token")}`,
+      };
 
       const apiResp = await getCriminals(Header);
       setGetCrimeData(apiResp.data);
@@ -111,13 +115,15 @@ const Crimerecords = () => {
   //deleting criminals
   const onDeleteCriminals = async (id) => {
     try {
-      const Header={'Authorization':`nearer ${sessionStorage.getItem('token')}`}
+      const Header = {
+        Authorization: `nearer ${sessionStorage.getItem("token")}`,
+      };
 
-      const apiResponse = await deleteCriminals(id,Header);
+      const apiResponse = await deleteCriminals(id, Header);
       console.log(apiResponse);
       if (apiResponse.status == 200) {
         toast.success("criminal deleted succesfully");
-        setRender('deleted')
+        setRender("deleted");
       } else {
         toast.error("please try again later");
       }
@@ -125,6 +131,13 @@ const Crimerecords = () => {
       console.log(error);
     }
   };
+  //editing criminal
+
+  const [CEditshow, setOWCrEditShow] = useState(false);
+
+  const handleCrEditClose = () => setOWCrEditShow(false);
+
+  const handleCrEditfShow = () => setOWCrEditShow(true);
 
   return (
     <div
@@ -472,7 +485,10 @@ const Crimerecords = () => {
                           >
                             Remove <i className="fa-solid fa-square-xmark"></i>
                           </button>
-                          <button className="btn btn-primary mt-2">
+                          <button
+                            className="btn btn-primary mt-2"
+                            onClick={handleCrEditfShow}
+                          >
                             Review <i className="fa-solid fa-eye"></i>
                           </button>
                         </td>
@@ -481,6 +497,92 @@ const Crimerecords = () => {
                   : ""}
               </tbody>
             </table>
+
+            <Modal
+              centered
+              size="lg"
+              show={CEditshow}
+              onHide={handleCrEditClose}
+            >
+              <Modal.Header
+                closeButton
+                style={{
+                  background:
+                    "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                }}
+              >
+                <Modal.Title>
+                  Edit Criminal <i className="fa-solid fa-shield"></i>
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body
+                style={{
+                  background:
+                    "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                }}
+              >
+                <input
+                  className="form-control w-100 mb-2"
+                  required
+                  type="file"
+                  placeholder="Change  photo"
+                />
+                <input
+                  className="form-control w-100 mb-2"
+                  required
+                  type="text"
+                  placeholder="Change criminal name"
+                />
+                <input
+                  className="form-control w-100 mb-2"
+                  required
+                  type="text"
+                  placeholder="Change criminal fathers name"
+                />
+                <input
+                  className="form-control w-100 mb-2"
+                  required
+                  type="number"
+                  placeholder="Change  criminal  identiFication mark "
+                />
+
+                <input
+                  className="form-control w-100 mb-2"
+                  required
+                  type="text"
+                  placeholder="Change  criminal C-number"
+                />
+                <input
+                  className="form-control w-100 mb-2"
+                  required
+                  type="text"
+                  placeholder="Change Total Years of Sentence"
+                />
+                <input
+                  className="form-control w-100 mb-2"
+                  required
+                  type="text"
+                  placeholder="Change Admitted Date	"
+                />
+                <input
+                  className="form-control w-100 mb-2"
+                  required
+                  type="number"
+                  placeholder="Change Relieving Date	"
+                />
+              </Modal.Body>
+              <Modal.Footer
+                style={{
+                  background:
+                    "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+                }}
+              >
+                <Button variant="secondary" onClick={handleCrEditClose}>
+                  Close
+                </Button>
+                <Button variant="primary">Save</Button>
+              </Modal.Footer>
+            </Modal>
           </div>
         </section>
       </div>

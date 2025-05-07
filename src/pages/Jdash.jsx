@@ -215,19 +215,26 @@ const Jdash = () => {
     policeServiceData();
   }, [render]);
 
+  //accepting services
+
   const onAcceptService = async (data) => {
     const Header = {
       Authorization: `bearer ${sessionStorage.getItem("token")}`,
     };
     try {
       const payload = {
-        serviceId: data.serviceId,
+        serviceId: data._id,
         userId: data.userId,
         serviceType: data.serviceType,
         date: data.Date,
+
       };
       const serverResp = await onAcceptingNotification(payload, Header);
-      console.log(serverResp);
+      if(serverResp.status==200){
+        setRender('clear')
+
+      }
+      
     } catch (error) {
       console.log(error);
     }
