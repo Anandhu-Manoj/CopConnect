@@ -100,21 +100,46 @@ export const getPoliceServices = async (requestHeader) => {
 
 //acceptingPoliceServices
 
-export const onAcceptingNotification=async(requestbody,requestHeader)=>{
-  return await commonApi('post','/acceptingPoliceServices',requestbody,requestHeader)
-}
+export const onAcceptingNotification = async (requestbody, requestHeader) => {
+  return await commonApi(
+    "post",
+    "/acceptingPoliceServices",
+    requestbody,
+    requestHeader
+  );
+};
 //clearingNotification
-export const onClearingNotification=async(requestHeader)=>{
-  return await commonApi('patch','/ClearingPoliceServices',{},requestHeader)
-}
+export const onClearingNotification = async (requestHeader) => {
+  return await commonApi("patch", "/ClearingPoliceServices", {}, requestHeader);
+};
 
 //updateOfficer
-export const onUpdateOfficer=async(id,requestbody,requestHeader)=>{
-  return await commonApi('patch',`/updateOfficer/${id}`,requestbody,requestHeader)
+export const onUpdateOfficer = async (id, requestbody, requestHeader) => {
+  return await commonApi(
+    "patch",
+    `/updateOfficer/${id}`,
+    requestbody,
+    requestHeader
+  );
+};
 
-}
+//editCriminals
+export const editCriminals = async (id, requestbody, requestHeader) => {
+  return await commonApi(
+    "patch",
+    `/updateCriminals/${id}`,
+    requestbody,
+    requestHeader
+  );
+};
 
-//
+//assigning casses
 
-
-//updatecriminals
+export const assignCasses = async (id, requestbody, requestHeader) => {
+  return await commonApi(
+    "patch",
+    `/asignCasses/${id}`,
+    requestbody,
+    requestHeader
+  );
+};

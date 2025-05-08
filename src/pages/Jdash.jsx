@@ -10,6 +10,7 @@ import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
 import {
   AdddPoliceOfficer,
+  assignCasses,
   deleteOfficers,
   deleteServices,
   getAllLeaves,
@@ -177,7 +178,6 @@ const Jdash = () => {
     }
   };
 
-
   //getAllLeaves
   const [leaveData, setLeaveData] = useState([]);
 
@@ -227,14 +227,11 @@ const Jdash = () => {
         userId: data.userId,
         serviceType: data.serviceType,
         date: data.Date,
-
       };
       const serverResp = await onAcceptingNotification(payload, Header);
-      if(serverResp.status==200){
-        setRender('clear')
-
+      if (serverResp.status == 200) {
+        setRender("clear");
       }
-      
     } catch (error) {
       console.log(error);
     }
@@ -242,39 +239,64 @@ const Jdash = () => {
 
   //edit officer
   const [oEditshow, setOWditShow] = useState(false);
-  const [officerDetail, setOfficerDetail] = useState({
-    
-
-  });
+  const [officerDetail, setOfficerDetail] = useState({});
 
   const handleOfEditClose = () => setOWditShow(false);
 
-  const handleOEditfShow = (data) => {setOWditShow(true)
-    setOfficerDetail(data)
-  }
+  const handleOEditfShow = (data) => {
+    setOWditShow(true);
+    setOfficerDetail(data);
+  };
 
- 
-
-  const onEditOfficer=async()=>{
+  const onEditOfficer = async () => {
     try {
-      const Header={Authorization:`bearer ${sessionStorage.getItem('token')}`}
+      const Header = {
+        Authorization: `bearer ${sessionStorage.getItem("token")}`,
+      };
 
-      const serverResponse=await onUpdateOfficer(officerDetail._id,officerDetail,Header)
-      console.log(serverResponse)
-      if(serverResponse.status==200){
-        toast.success('updated succesfully')
-        handleOfEditClose()
-        setRender(serverResponse)
-      }else{
-        toast.error('try again later')
+      const serverResponse = await onUpdateOfficer(
+        officerDetail._id,
+        officerDetail,
+        Header
+      );
+      console.log(serverResponse);
+      if (serverResponse.status == 200) {
+        toast.success("updated succesfully");
+        handleOfEditClose();
+        setRender(serverResponse);
+      } else {
+        toast.error("try again later");
       }
-      
     } catch (error) {
-      console.log(error)
-      
+      console.log(error);
     }
+  };
 
-  }
+  const [caseAssigment, setCaseAssigment] = useState("");
+
+  const assignCase = async (data) => {
+    if (caseAssigment) {
+      const PayLoad = { serviceId: data._id, link: data.complaint };
+      const Header = {
+        Authorization: `bearer ${sessionStorage.getItem("token")}`,
+      };
+
+      try {
+        const ApiResponse=await assignCasses(caseAssigment,PayLoad,Header)
+        if(ApiResponse.status==200){
+          toast.success('casses addigned successfully')
+        }
+        setRender('assigned')
+        
+      } catch (error) {
+        console.log(error)
+
+        
+      }
+    } else {
+      toast.error("Please assign a officer");
+    }
+  };
 
   return (
     <div
@@ -690,7 +712,7 @@ const Jdash = () => {
                   <tr>
                     <th style={{ padding: "10px" }}>Date of Submission</th>
                     <th style={{ padding: "10px" }}>petitioner name</th>
-                    <th style={{ padding: "10px" }}>Status</th>
+                    <th style={{ padding: "10px" }}>Details</th>
                     <th style={{ padding: "10px" }}>Officer Assigned</th>
                     <th style={{ padding: "10px" }}>Decision</th>
                   </tr>
@@ -782,11 +804,17 @@ const Jdash = () => {
                         </Modal>
 
                         <td style={{ padding: "10px" }}>
-                          <select className="form-control">
-                            <option value="">Assign to officers</option>
+                          <select
+                            className="form-control"
+                            defaultValue={""}
+                            onChange={(e) => setCaseAssigment(e.target.value)}
+                          >
+                            <option value="" disabled>
+                              Assign to officers
+                            </option>
 
                             {officerTable.map((a, index) => (
-                              <option key={index} value="complaint">
+                              <option key={index} value={a._id}>
                                 {a.username}
                               </option>
                             ))}
@@ -794,6 +822,7 @@ const Jdash = () => {
                         </td>
                         <td style={{ padding: "10px" }}>
                           <button
+                            onClick={() => assignCase(data)}
                             className="btn btn-success"
                             style={{ marginBottom: "5px" }}
                           >
@@ -1028,7 +1057,7 @@ const Jdash = () => {
                             </button>
                             <button
                               className="btn btn-primary mt-2"
-                              onClick={()=>handleOEditfShow(data)}
+                              onClick={() => handleOEditfShow(data)}
                             >
                               Review <i className="fa-solid fa-eye"></i>
                             </button>
@@ -1063,7 +1092,12 @@ const Jdash = () => {
                 >
                   <input
                     value={officerDetail?.username}
-                    onChange={(e)=>setOfficerDetail({...officerDetail,username:e.target.value})}
+                    onChange={(e) =>
+                      setOfficerDetail({
+                        ...officerDetail,
+                        username: e.target.value,
+                      })
+                    }
                     className="form-control w-100 mb-2"
                     required
                     type="text"
@@ -1071,7 +1105,12 @@ const Jdash = () => {
                   />
                   <input
                     value={officerDetail?.fathersname}
-                    onChange={(e)=>setOfficerDetail({...officerDetail,fathersname:e.target.value})}
+                    onChange={(e) =>
+                      setOfficerDetail({
+                        ...officerDetail,
+                        fathersname: e.target.value,
+                      })
+                    }
                     className="form-control w-100 mb-2"
                     required
                     type="text"
@@ -1079,7 +1118,12 @@ const Jdash = () => {
                   />
                   <input
                     value={officerDetail?.batchNo}
-                    onChange={(e)=>setOfficerDetail({...officerDetail,batchNo:e.target.value})}
+                    onChange={(e) =>
+                      setOfficerDetail({
+                        ...officerDetail,
+                        batchNo: e.target.value,
+                      })
+                    }
                     className="form-control w-100 mb-2"
                     required
                     type="number"
@@ -1087,7 +1131,12 @@ const Jdash = () => {
                   />
                   <input
                     value={officerDetail?.email}
-                    onChange={(e)=>setOfficerDetail({...officerDetail,email:e.target.value})}
+                    onChange={(e) =>
+                      setOfficerDetail({
+                        ...officerDetail,
+                        email: e.target.value,
+                      })
+                    }
                     className="form-control w-100 mb-2"
                     required
                     type="email"
@@ -1095,7 +1144,12 @@ const Jdash = () => {
                   />
                   <input
                     value={officerDetail?.password}
-                    onChange={(e)=>setOfficerDetail({...officerDetail,password:e.target.value})}
+                    onChange={(e) =>
+                      setOfficerDetail({
+                        ...officerDetail,
+                        password: e.target.value,
+                      })
+                    }
                     className="form-control w-100 mb-2"
                     required
                     type="text"
@@ -1103,7 +1157,12 @@ const Jdash = () => {
                   />
                   <input
                     value={officerDetail?.number}
-                    onChange={(e)=>setOfficerDetail({...officerDetail,number:e.target.value})}
+                    onChange={(e) =>
+                      setOfficerDetail({
+                        ...officerDetail,
+                        number: e.target.value,
+                      })
+                    }
                     className="form-control w-100 mb-2"
                     required
                     type="text"
@@ -1111,7 +1170,12 @@ const Jdash = () => {
                   />
                   <input
                     value={officerDetail?.designation}
-                    onChange={(e)=>setOfficerDetail({...officerDetail,designation:e.target.value})}
+                    onChange={(e) =>
+                      setOfficerDetail({
+                        ...officerDetail,
+                        designation: e.target.value,
+                      })
+                    }
                     className="form-control w-100 mb-2"
                     required
                     type="text"
@@ -1119,7 +1183,12 @@ const Jdash = () => {
                   />
                   <input
                     value={officerDetail?.circleofduty}
-                    onChange={(e)=>setOfficerDetail({...officerDetail,circleofduty:e.target.value})}
+                    onChange={(e) =>
+                      setOfficerDetail({
+                        ...officerDetail,
+                        circleofduty: e.target.value,
+                      })
+                    }
                     className="form-control w-100 mb-2"
                     required
                     type="text"
@@ -1127,7 +1196,12 @@ const Jdash = () => {
                   />
                   <input
                     value={officerDetail?.serviceperiod}
-                    onChange={(e)=>setOfficerDetail({...officerDetail,serviceperiod:e.target.value})}
+                    onChange={(e) =>
+                      setOfficerDetail({
+                        ...officerDetail,
+                        serviceperiod: e.target.value,
+                      })
+                    }
                     className="form-control w-100 mb-2"
                     required
                     type="number"
@@ -1143,7 +1217,9 @@ const Jdash = () => {
                   <Button variant="secondary" onClick={handleOfEditClose}>
                     Close
                   </Button>
-                  <Button variant="primary" onClick={onEditOfficer}>Add</Button>
+                  <Button variant="primary" onClick={onEditOfficer}>
+                    Add
+                  </Button>
                 </Modal.Footer>
               </Modal>
             </div>

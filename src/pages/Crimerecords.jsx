@@ -7,6 +7,7 @@ import { Button, Modal } from "react-bootstrap";
 import {
   AddCriminals,
   deleteCriminals,
+  editCriminals,
   getCriminals,
 } from "../Services/AllApis";
 import { toast } from "react-toastify";
@@ -18,6 +19,7 @@ const Crimerecords = () => {
 
   //state for storing crime records
   const [render, setRender] = useState("");
+  const [getCrimedata, setGetCrimeData] = useState([]);
 
   const [criminalDetails, setCriminalDetails] = useState({
     criminalimage: "",
@@ -93,9 +95,6 @@ const Crimerecords = () => {
 
   //gettingCriminals
 
-  const [getCrimedata, setGetCrimeData] = useState([]);
-  console.log(getCrimedata);
-
   const gettingAllCriminals = async () => {
     try {
       const Header = {
@@ -132,12 +131,45 @@ const Crimerecords = () => {
     }
   };
   //editing criminal
+  const[editData,setEditData]=useState({
+
+
+  })
 
   const [CEditshow, setOWCrEditShow] = useState(false);
 
   const handleCrEditClose = () => setOWCrEditShow(false);
 
-  const handleCrEditfShow = () => setOWCrEditShow(true);
+  const handleCrEditfShow = (data) => {
+    setEditData(data)
+    
+    setOWCrEditShow(true);
+  };
+
+  const onEditCriminals = async () => {
+    const reqHeader = {
+      Authorization: `bearer ${sessionStorage.getItem("token")}`,
+    };
+
+    try {
+      const apiResponse = await editCriminals(
+        editData._id,
+        editData,
+        reqHeader
+      );
+      console.log(editData);
+
+      if (apiResponse.status == 200) {
+        toast.success("success");
+        handleCrEditClose();
+        setRender("edited");
+      } else {
+        toast.error("try again");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div
@@ -308,12 +340,12 @@ const Crimerecords = () => {
               }}
             >
               <input
-                onChange={(e) => {
+                onChange={(e) =>
                   setCriminalDetails({
                     ...criminalDetails,
                     criminalimage: e.target.files[0],
-                  });
-                }}
+                  })
+                }
                 className="form-control w-100 mb-2"
                 required
                 type="file"
@@ -450,7 +482,7 @@ const Crimerecords = () => {
               </thead>
 
               <tbody>
-                {getCrimedata.length > 0
+                {getCrimedata?.length > 0
                   ? getCrimedata.map((data) => (
                       <tr style={{ backgroundColor: "#fff", fontSize: "16px" }}>
                         <td
@@ -487,7 +519,7 @@ const Crimerecords = () => {
                           </button>
                           <button
                             className="btn btn-primary mt-2"
-                            onClick={handleCrEditfShow}
+                            onClick={() => handleCrEditfShow(data)}
                           >
                             Review <i className="fa-solid fa-eye"></i>
                           </button>
@@ -515,6 +547,7 @@ const Crimerecords = () => {
                   Edit Criminal <i className="fa-solid fa-shield"></i>
                 </Modal.Title>
               </Modal.Header>
+
               <Modal.Body
                 style={{
                   background:
@@ -523,51 +556,101 @@ const Crimerecords = () => {
               >
                 <input
                   className="form-control w-100 mb-2"
+                  onChange={(e)=>setEditData({...editData,criminalimage:e.target.files[0]})}
                   required
                   type="file"
                   placeholder="Change  photo"
                 />
                 <input
+                  value={editData?.criminalname}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      criminalname: e.target.value,
+                    })
+                  }
                   className="form-control w-100 mb-2"
                   required
                   type="text"
                   placeholder="Change criminal name"
                 />
                 <input
+                  value={editData?.criminalfathersName}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      criminalfathersName: e.target.value,
+                    })
+                  }
                   className="form-control w-100 mb-2"
                   required
                   type="text"
                   placeholder="Change criminal fathers name"
                 />
                 <input
+                  value={editData?.CriminalIdentificationMark}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      CriminalIdentificationMark: e.target.value,
+                    })
+                  }
                   className="form-control w-100 mb-2"
                   required
-                  type="number"
+                  type="text"
                   placeholder="Change  criminal  identiFication mark "
                 />
 
                 <input
+                  value={editData?.CNumber}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      CNumber: e.target.value,
+                    })
+                  }
                   className="form-control w-100 mb-2"
                   required
                   type="text"
                   placeholder="Change  criminal C-number"
                 />
                 <input
+                  value={editData?.TotalYearsofSentence}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      TotalYearsofSentence: e.target.value,
+                    })
+                  }
                   className="form-control w-100 mb-2"
                   required
                   type="text"
                   placeholder="Change Total Years of Sentence"
                 />
                 <input
+                  value={editData?.AdmittedDate}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      AdmittedDate: e.target.value,
+                    })
+                  }
                   className="form-control w-100 mb-2"
                   required
                   type="text"
                   placeholder="Change Admitted Date	"
                 />
                 <input
+                  value={editData?.RelievingDate}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      RelievingDate: e.target.value,
+                    })
+                  }
                   className="form-control w-100 mb-2"
                   required
-                  type="number"
+                  type="text"
                   placeholder="Change Relieving Date	"
                 />
               </Modal.Body>
@@ -580,7 +663,9 @@ const Crimerecords = () => {
                 <Button variant="secondary" onClick={handleCrEditClose}>
                   Close
                 </Button>
-                <Button variant="primary">Save</Button>
+                <Button variant="primary" onClick={onEditCriminals}>
+                  Save
+                </Button>
               </Modal.Footer>
             </Modal>
           </div>

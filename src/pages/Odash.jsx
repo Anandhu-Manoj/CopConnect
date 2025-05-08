@@ -330,7 +330,7 @@ const Odash = () => {
                 </button>
 
                 <Overlay
-                  className="d-flex flex-column justify-content-center"
+                  className="d-flex flex-column w-100"
                   show={popshow}
                   target={poptarget}
                   placement="bottom"
@@ -339,12 +339,14 @@ const Odash = () => {
                 >
                   <Popover id="popover-contained">
                     <Popover.Header as="h3">Notifications</Popover.Header>
-                    <Popover.Body style={{ height: "300px", width: "300px" }}>
+                    <Popover.Body style={{ height: "300px" }}>
                       <ul>
                         {loggedOfficer?.Notification?.length > 0 ? (
                           loggedOfficer?.Notification?.map((data, index) => (
-                            <li className="mb-2" key={index}>
-                              {data.message}
+                            <li className="mb-2 w-100" key={index}>
+                              {data.message} <br />
+                              <Link className="w-100 text-primary" to={`http://localhost:3000/complaints/${data.link}`}>{data?.link?data.link:""}
+                              </Link>
                             </li>
                           ))
                         ) : (
@@ -903,15 +905,7 @@ const Odash = () => {
                   <span>Station Of Duty: </span>
                   {loggedOfficer?.circleofduty}
                 </p>
-                <p className="fs-5 fw-bold">
-                  <span>Casses Assigned : </span>
-                  <button
-                    className="btn  w-25 text-white"
-                    style={{ backgroundColor: "#6D6249" }}
-                  >
-                    View <i class="fa-solid fa-eye"></i>
-                  </button>
-                </p>
+                
                 <p className="fs-5 fw-bold">
                   <span>Service period: </span>
                   {loggedOfficer.serviceperiod}
