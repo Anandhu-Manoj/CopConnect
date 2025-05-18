@@ -5,6 +5,7 @@ import Footer from "../Components/Footer";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
+import Video from '../assets/cop.mp4'
 
 // Enhanced professional color palette
 const COLORS = {
@@ -209,7 +210,7 @@ const Home = () => {
       {/* Full-screen background video */}
       <div style={styles.videoOverlay}>
         <video
-          src="https://videocdn.cdnpk.net/videos/a6455936-56e8-4bdb-9e81-3daff506cb0d/horizontal/previews/clear/small.mp4?token=exp=1747589028~hmac=b7794d7791eb2fae3429b108a1d3ccd728341bef02eef967006e427ddfa34256"
+          src={Video}
           autoPlay
           loop
           muted
