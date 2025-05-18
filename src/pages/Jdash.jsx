@@ -9,16 +9,21 @@ import Modal from "react-bootstrap/Modal";
 import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
 import {
+  acceptingLeaves,
+  acceptingLocalService,
   AdddPoliceOfficer,
   assignCasses,
   deleteOfficers,
   deleteServices,
+  dismissedCasses,
   getAllLeaves,
   GetallOfficers,
   getPoliceServices,
   getServices,
   onAcceptingNotification,
+  onrejectingpoliceServ,
   onUpdateOfficer,
+  rejectingLeaves,
 } from "../Services/AllApis";
 import { toast } from "react-toastify";
 
@@ -149,13 +154,13 @@ const Jdash = () => {
   }, [render]);
 
   //delete services
-  const RejectService = async (id) => {
+  const RejectService = async (data) => {
     try {
       const Header = {
         Authorization: `bearer ${sessionStorage.getItem("token")}`,
       };
 
-      const Apiresponse = await deleteServices(id, Header);
+      const Apiresponse = await deleteServices(data._id, data, Header);
       if (Apiresponse.status == 200) {
         toast.success("ServiceRejected");
         setRender(Apiresponse);
@@ -165,16 +170,23 @@ const Jdash = () => {
     }
   };
   // delete Complaint
-  const onCaseDissmissal = async (id) => {
-    try {
-      const Apiresponse = await deleteServices(id);
+  const onCaseDissmissal = async (data) => {
+    const Header = {
+      Authorization: `bearer ${sessionStorage.getItem("token")}`,
+    };
+    const payLoad = {
+      serviceId: data._id,
+      userId: data.userId,
+    };
 
-      if (Apiresponse.status == 200) {
-        toast.success("ServiceRejected");
-        setRender(Apiresponse);
+    try {
+      const ApiResp = await dismissedCasses(payLoad, Header);
+      if (ApiResp.status == 200) {
+        console.log(ApiResp);
+        setRender("cleared");
       }
     } catch (error) {
-      toast.error("error deleting data", error);
+      console.log(error);
     }
   };
 
@@ -194,7 +206,7 @@ const Jdash = () => {
   };
   useEffect(() => {
     allLeaves();
-  }, []);
+  }, [render]);
   //policeServiceData
 
   const [policeService, setPoliceServices] = useState([]);
@@ -232,6 +244,28 @@ const Jdash = () => {
       if (serverResp.status == 200) {
         setRender("clear");
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //Deleting services
+
+  const onRejectService = async (data) => {
+    const Header = {
+      Authorization: `bearer ${sessionStorage.getItem("token")}`,
+    };
+    try {
+      const payload = {
+        serviceId: data._id,
+        userId: data.userId,
+        serviceType: data.serviceType,
+       
+      };
+      const serverResp = await onrejectingpoliceServ(payload, Header)
+      
+        setRender(serverResp);
+      
     } catch (error) {
       console.log(error);
     }
@@ -282,19 +316,63 @@ const Jdash = () => {
       };
 
       try {
-        const ApiResponse=await assignCasses(caseAssigment,PayLoad,Header)
-        if(ApiResponse.status==200){
-          toast.success('casses addigned successfully')
+        const ApiResponse = await assignCasses(caseAssigment, PayLoad, Header);
+        if (ApiResponse.status == 200) {
+          toast.success("casses addigned successfully");
         }
-        setRender('assigned')
-        
+        setRender("assigned");
       } catch (error) {
-        console.log(error)
-
-        
+        console.log(error);
       }
     } else {
       toast.error("Please assign a officer");
+    }
+  };
+
+  //onaccepting local request
+
+  const onLocalServiceAccept = async (data) => {
+    try {
+      const payload = { serviceId: data._id, userId: data.userId };
+      const Header = {
+        Authorization: `bearer ${sessionStorage.getItem("token")}`,
+      };
+      const ApiResponse = await acceptingLocalService(payload, Header);
+      if (ApiResponse.status == 200) {
+        setRender(ApiResponse);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //onAcceptingLeaves
+
+  const onAccepting = async (data) => {
+    console.log(data);
+    const Header = {
+      Authorization: `token ${sessionStorage.getItem("token")}`,
+    };
+
+    try {
+      const ApiResponse = await acceptingLeaves(data, Header);
+      setRender(ApiResponse);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //onDeletingLeaves
+  const onDeleting = async (data) => {
+    const Header = {
+      Authorization: `token ${sessionStorage.getItem("token")}`,
+    };
+
+    try {
+      const ApiResponse = await rejectingLeaves(data, Header);
+      setRender(ApiResponse);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -591,14 +669,15 @@ const Jdash = () => {
                                   </td>
                                   <td style={{ padding: "5px" }}>
                                     <button
+                                      onClick={() => onLocalServiceAccept(data)}
                                       className="btn btn-success"
                                       style={{ marginBottom: "2px" }}
                                     >
-                                      Accepted<i class="fa-solid fa-check"></i>
+                                      Accept<i class="fa-solid fa-check"></i>
                                     </button>{" "}
                                     <br />
                                     <button
-                                      onClick={() => RejectService(data._id)}
+                                      onClick={() => RejectService(data)}
                                       style={{ marginRight: "2px" }}
                                       className="btn btn-danger"
                                     >
@@ -667,6 +746,7 @@ const Jdash = () => {
                                   </button>{" "}
                                   <br />
                                   <button
+                                    onClick={() => onRejectService(data)}
                                     style={{ marginRight: "2px" }}
                                     className="btn btn-danger"
                                   >
@@ -830,7 +910,7 @@ const Jdash = () => {
                           </button>{" "}
                           <br />
                           <button
-                            onClick={() => onCaseDissmissal(data._id)}
+                            onClick={() => onCaseDissmissal(data)}
                             className="btn btn-warning p-2"
                           >
                             case dismmised{" "}
@@ -1285,10 +1365,16 @@ const Jdash = () => {
                             )}
                           </td>
                           <td className="p-3">
-                            <Button className="btn m-2 bg-success border-0">
+                            <Button
+                              className="btn m-2 bg-success border-0"
+                              onClick={() => onAccepting(leaves)}
+                            >
                               Approve <i className="fa-solid fa-check"></i>
                             </Button>
-                            <Button className="bg-danger border-0">
+                            <Button
+                              className="bg-danger border-0"
+                              onClick={() => onDeleting(leaves)}
+                            >
                               Reject{" "}
                               <i className="fa-solid fa-square-xmark"></i>
                             </Button>

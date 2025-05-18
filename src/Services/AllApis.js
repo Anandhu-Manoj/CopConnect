@@ -63,8 +63,8 @@ export const deleteCriminals = async (id, requestHeader) => {
 };
 
 //deleteServices
-export const deleteServices = async (id, requestHeader) => {
-  return await commonApi("delete", `/Services/${id}/delete`, {}, requestHeader);
+export const deleteServices = async (id, reqbody,requestHeader) => {
+  return await commonApi("delete", `/Services/${id}/delete`, reqbody, requestHeader);
 };
 
 //getLoggedOfficer
@@ -143,3 +143,42 @@ export const assignCasses = async (id, requestbody, requestHeader) => {
     requestHeader
   );
 };
+//dismmissed casses
+export const dismissedCasses=async(requestbody,requestHeader)=>{
+  return await commonApi('patch','/dismissedcassses',requestbody,requestHeader)
+
+};
+
+//getServicesNotifivcation
+export const getCivillanNotification=async(requestHeader)=>{
+  return await commonApi('get','/getServiceNotification','',requestHeader)
+}
+
+//clearingCivilianNotification
+
+export const clearNotify=async(requestHeader)=>{
+  return await commonApi('patch','/ClearingCivilianNotification',{},requestHeader)
+}
+
+
+//onaccepoting local services
+
+export const acceptingLocalService=async(reqBody,reqHeader)=>{
+  return await commonApi('patch','/onAcceptingLocalServices',reqBody,reqHeader)
+}
+
+
+//onAccepting leaves
+export const acceptingLeaves=async(reqBody,reqHeader)=>{
+  return await commonApi('patch','/onacceptingleaves',reqBody,reqHeader)
+}
+//ondeleting leaves
+export const rejectingLeaves=async(reqBody,reqHeader)=>{
+  return await commonApi('patch','/onrejectleaves',reqBody,reqHeader)
+}
+
+//ondeletingpoliceservice
+
+export const onrejectingpoliceServ=async(reqBody,reqHeader)=>{
+  return await commonApi('patch','/onRejectPoliceService',reqBody,reqHeader)
+}

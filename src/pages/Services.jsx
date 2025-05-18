@@ -8,9 +8,14 @@ import Popover from "react-bootstrap/Popover";
 
 import Modal from "react-bootstrap/Modal";
 import { Link } from "react-router-dom";
-import { onserviceApplication } from "../Services/AllApis";
+import {
+  clearNotify,
+  getCivillanNotification,
+  onserviceApplication,
+} from "../Services/AllApis";
 
 const Services = () => {
+  const [render, setRender] = useState("");
   const [ServiceApplication, setServiceApplication] = useState({
     name: "",
     fathersname: "",
@@ -49,7 +54,7 @@ const Services = () => {
       ServiceApplication.Date
     ) {
       const payload = new FormData();
-      payload.append('serviceType',"complaints")
+      payload.append("serviceType", "complaints");
 
       payload.append("name", ServiceApplication.name);
       payload.append("complaint", ServiceApplication.complaint);
@@ -57,7 +62,10 @@ const Services = () => {
       payload.append("Date", ServiceApplication.Date);
 
       try {
-        const requestHeader = { "Content-Type": "multipart/form-data",'Authorization':`bearer ${sessionStorage.getItem('token')}` };
+        const requestHeader = {
+          "Content-Type": "multipart/form-data",
+          Authorization: `bearer ${sessionStorage.getItem("token")}`,
+        };
         const apiResponse = await onserviceApplication(payload, requestHeader);
         if (apiResponse.status === 200) {
           alert("complainted registered");
@@ -92,8 +100,8 @@ const Services = () => {
           number: ServiceApplication.number,
           description: ServiceApplication.description,
         };
-        const apiResponse = await onserviceApplication(payload);
-        console.log(apiResponse);
+        const Header={Authorization :`bearer ${sessionStorage.getItem('token')}`}
+        const apiResponse = await onserviceApplication(payload,Header);
         if (apiResponse.status === 200) {
           alert("Request send");
           handleModalClose();
@@ -121,7 +129,7 @@ const Services = () => {
       ServiceApplication.criminalname
     ) {
       const payload = {
-        serviceType:"appointment",
+        serviceType: "appointment",
         name: ServiceApplication.name,
         fathersname: ServiceApplication.fathersname,
         number: ServiceApplication.number,
@@ -129,10 +137,11 @@ const Services = () => {
         relationship: ServiceApplication.relationship,
         visitingtime: ServiceApplication.visitingtime,
         criminalname: ServiceApplication.criminalname,
-        visitingreason:ServiceApplication.visitingreason
+        visitingreason: ServiceApplication.visitingreason,
       };
       try {
-        const apiResponse = await onserviceApplication(payload);
+        const Header={Authorization:`bearer ${sessionStorage.getItem('token')}`}
+        const apiResponse = await onserviceApplication(payload,Header);
         if (apiResponse.status === 200) {
           alert("Appointment request send");
           handleModClose();
@@ -144,6 +153,7 @@ const Services = () => {
       alert("fill all the required details");
     }
   };
+  //
 
   const [iseLoggedin, setIsLoggedin] = useState(false);
 
@@ -176,6 +186,38 @@ const Services = () => {
       setIsLoggedin(false);
     }
   }, [iseLoggedin]);
+
+  //getNotification
+  const [notification, setNotification] = useState([]);
+
+  const getServiceUPdate = async () => {
+    const Header = {
+      Authorization: `bearer ${sessionStorage.getItem("token")}`,
+    };
+    try {
+      const apiresp = await getCivillanNotification(Header);
+      setNotification(apiresp.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getServiceUPdate();
+  }, [render]);
+
+  const onClear = async () => {
+    const Header = {
+      Authorization: `bearer ${sessionStorage.getItem("token")}`,
+    };
+    try {
+      const apiresp = clearNotify(Header);
+      setRender(apiresp);
+      handlePopClick()
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="overflow-hidden">
@@ -216,12 +258,19 @@ const Services = () => {
               <Popover id="popover-contained">
                 <Popover.Header as="h3">Notifications</Popover.Header>
                 <Popover.Body style={{ height: "300px", width: "300px" }}>
-                  <strong>no notifications</strong> Check this info.
+                  <ul>
+                    {notification?.length > 0 ? (
+                      notification?.map((data) => <li>{data.message}</li>)
+                    ) : (
+                      <strong>no notifications</strong>
+                    )}
+                  </ul>
                 </Popover.Body>
 
                 <button
                   style={{ backgroundColor: "#796F57" }}
                   className="btn  text-white w-100  "
+                  onClick={onClear}
                 >
                   Clear all{" "}
                 </button>
@@ -439,7 +488,6 @@ const Services = () => {
                 type="text"
                 placeholder="Short discription of the required service "
               />
-              
             </Modal.Body>
             <Modal.Footer
               style={{

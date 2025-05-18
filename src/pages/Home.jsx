@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden" style={{backgroundColor:""}}>
       <Header />
       <div>
         <div className="">

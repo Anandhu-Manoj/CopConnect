@@ -220,9 +220,9 @@ const Odash = () => {
         const Header = {
           Authorization: `bearer ${sessionStorage.getItem("token")}`,
         };
-        const apiResponse = await bookSportsFacility(sportsData, Header);
+        const apiResponse = await bookSportsFacility(staticData, Header);
         if (apiResponse.status == 200) {
-          toast.success("Sports club booking request send");
+          toast.success("static data request send");
           handleStModalClose();
           handleClose();
         } else {
@@ -252,6 +252,15 @@ const Odash = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+  //profilePic
+  const [preview, setPreview] = useState("");
+  const [profilePic, setProfilePic] = useState("");
+  const onShowProfilePic = (e) => {
+    const file = e.target.files[0];
+    setProfilePic(file);
+
+    setPreview(URL.createObjectURL(file));
   };
 
   return (
@@ -345,7 +354,11 @@ const Odash = () => {
                           loggedOfficer?.Notification?.map((data, index) => (
                             <li className="mb-2 w-100" key={index}>
                               {data.message} <br />
-                              <Link className="w-100 text-primary" to={`http://localhost:3000/complaints/${data.link}`}>{data?.link?data.link:""}
+                              <Link
+                                className="w-100 text-primary"
+                                to={`http://localhost:3000/complaints/${data.link}`}
+                              >
+                                {data?.link ? data.link : ""}
                               </Link>
                             </li>
                           ))
@@ -851,6 +864,7 @@ const Odash = () => {
                 <label>
                   <input
                     type="file"
+                    onChange={onShowProfilePic}
                     name=""
                     id=""
                     className="form-control "
@@ -858,7 +872,11 @@ const Odash = () => {
                   />
                   <img
                     className="img-fluid"
-                    src="https://thumbs.dreamstime.com/b/monochromatic-minimalist-police-officer-profile-icon-blue-background-uniform-stands-against-vibrant-portrait-captures-290771348.jpg"
+                    src={
+                      preview
+                        ? preview
+                        : "https://thumbs.dreamstime.com/b/monochromatic-minimalist-police-officer-profile-icon-blue-background-uniform-stands-against-vibrant-portrait-captures-290771348.jpg"
+                    }
                     alt="Officer"
                     style={{
                       height: "100%",
@@ -905,7 +923,7 @@ const Odash = () => {
                   <span>Station Of Duty: </span>
                   {loggedOfficer?.circleofduty}
                 </p>
-                
+
                 <p className="fs-5 fw-bold">
                   <span>Service period: </span>
                   {loggedOfficer.serviceperiod}
