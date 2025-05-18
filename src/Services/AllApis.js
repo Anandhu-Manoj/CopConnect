@@ -189,3 +189,11 @@ export const onrejectingpoliceServ=async(reqBody,reqHeader)=>{
 export const onApointmentStatus=async(reqBody,reqHeader)=>{
   return await commonApi('patch','/notifyAppointmentStatus',reqBody,reqHeader)
 }
+
+
+//updateProfilePic
+
+export const uploadProPic=async(reqBody,reqHeader)=>{
+  return await commonApi('patch','/updataPropic',reqBody,reqHeader)
+
+}

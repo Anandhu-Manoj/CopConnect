@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import Footer from "../Components/Footer";
 import Logo from "../assets/sideLogo.png";
 import sideLogo from "../assets/logo.png";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
@@ -19,6 +19,7 @@ import {
   getServices,
   onApointmentStatus,
   onClearingNotification,
+  uploadProPic,
 } from "../Services/AllApis";
 import { toast } from "react-toastify";
 
@@ -264,6 +265,26 @@ const Odash = () => {
     setPreview(URL.createObjectURL(file));
   };
 
+  const updateProfile = async () => {
+    const Header = {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    };
+    const Form = new FormData();
+    Form.append("profileImg", profilePic);
+
+    try {
+     const apiRes= await uploadProPic(Form, Header);
+     if(apiRes.status==200){
+      setPreview('')
+      setRender('done ')
+      toast.success("Profile pic uploaded")
+     }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //appointmentBooking
   const handleAppointmentStatus = async (visitorData, status) => {
     try {
@@ -291,7 +312,6 @@ const Odash = () => {
       console.log(error);
     }
   };
-  
 
   return (
     <div className="m-0 overflow-hidden">
@@ -904,7 +924,7 @@ const Odash = () => {
                     className="img-fluid"
                     src={
                       preview
-                        ? preview
+                        ? preview:loggedOfficer.proImage?`http://localhost:3000/Media/${loggedOfficer.proImage}`
                         : "https://thumbs.dreamstime.com/b/monochromatic-minimalist-police-officer-profile-icon-blue-background-uniform-stands-against-vibrant-portrait-captures-290771348.jpg"
                     }
                     alt="Officer"
@@ -917,17 +937,19 @@ const Odash = () => {
                 </label>
               </div>
 
-              <button
+           { preview?  <button
                 className="btn text-white rounded-5"
                 style={{
                   position: "absolute",
                   left: "605px",
                   top: "220px",
                   backgroundColor: "#796F57",
+                  
                 }}
+                onClick={updateProfile}
               >
                 save <i className="fa-solid fa-pen"></i>
-              </button>
+              </button>:""}
               <div className="mt-3 text-dark" style={{ paddingLeft: "20px" }}>
                 <p className="fs-5 fw-bold">
                   <span>Name: </span>
