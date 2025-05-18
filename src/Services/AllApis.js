@@ -182,3 +182,10 @@ export const rejectingLeaves=async(reqBody,reqHeader)=>{
 export const onrejectingpoliceServ=async(reqBody,reqHeader)=>{
   return await commonApi('patch','/onRejectPoliceService',reqBody,reqHeader)
 }
+
+
+//apontmentStatus
+
+export const onApointmentStatus=async(reqBody,reqHeader)=>{
+  return await commonApi('patch','/notifyAppointmentStatus',reqBody,reqHeader)
+}

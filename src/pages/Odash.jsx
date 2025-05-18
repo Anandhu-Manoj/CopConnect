@@ -17,6 +17,7 @@ import {
   getCriminals,
   getLoggedOfficer,
   getServices,
+  onApointmentStatus,
   onClearingNotification,
 } from "../Services/AllApis";
 import { toast } from "react-toastify";
@@ -262,6 +263,35 @@ const Odash = () => {
 
     setPreview(URL.createObjectURL(file));
   };
+
+  //appointmentBooking
+  const handleAppointmentStatus = async (visitorData, status) => {
+    try {
+      const Header = {
+        Authorization: `bearer ${sessionStorage.getItem("token")}`,
+      };
+      const payload = {
+        userId: visitorData.userId,
+        appointmentId: visitorData._id,
+        status: status,
+        customMessage:
+          status === "booked"
+            ? "Your appointment to visit has been approved."
+            : "Your appointment has been rejected.",
+      };
+      const apiRes = await onApointmentStatus(payload, Header);
+      if (apiRes.status === 200) {
+        toast.success("User notified");
+        setRender("appointment-status-updated");
+      } else {
+        toast.error("Failed to notify user");
+      }
+    } catch (error) {
+      toast.error("Error notifying user");
+      console.log(error);
+    }
+  };
+  
 
   return (
     <div className="m-0 overflow-hidden">
@@ -1065,11 +1095,19 @@ const Odash = () => {
                       <td className="p-3"> {visitorData.visitingreason}</td>
                       <td className="p-3">{visitorData.visitingtime}</td>
                       <td className="p-3">
-                        <Button className="btn m-2 bg-success border-0">
+                        <Button
+                          className="btn m-2 bg-success border-0"
+                          onClick={() =>
+                            handleAppointmentStatus(visitorData, "booked")
+                          }
+                        >
                           Approve <i className="fa-solid fa-check"></i>
                         </Button>
                         <Button
-                          onClick={() => onDeleteAppointment(visitorData._id)}
+                          onClick={() => {
+                            onDeleteAppointment(visitorData._id);
+                            handleAppointmentStatus(visitorData, "rejected");
+                          }}
                           className="bg-danger border-0"
                         >
                           Reject <i className="fa-solid fa-square-xmark"></i>

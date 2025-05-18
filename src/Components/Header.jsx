@@ -4,9 +4,29 @@ import Button from "react-bootstrap/Button";
 import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
 import { Link } from "react-router-dom";
-import LogoL from "../assets/sideLogo.png"
-import LogoR from "../assets/logo.png"
-import Flogo from "../assets/Flogo.png"
+import LogoL from "../assets/sideLogo.png";
+import LogoR from "../assets/logo.png";
+import Flogo from "../assets/Flogo.png";
+
+// Glassmorphism and dark blue theme
+const DARK_BLUE = "#0a2540";
+const GLASS_BG = "rgba(13, 71, 161, 0.25)";
+const GLASS_BORDER = "1px solid rgba(255,255,255,0.18)";
+const GLASS_SHADOW = "0 8px 32px 0 rgba(31, 38, 135, 0.37)";
+const GLASS_BACKDROP = "blur(8px)";
+
+const glassButtonStyle = {
+  background: GLASS_BG,
+  border: GLASS_BORDER,
+  boxShadow: GLASS_SHADOW,
+  backdropFilter: GLASS_BACKDROP,
+  WebkitBackdropFilter: GLASS_BACKDROP,
+  color: "#fff",
+  fontWeight: 500,
+  borderRadius: "12px",
+  transition: "background 0.3s, box-shadow 0.3s",
+};
+
 const Header = () => {
   const [show, setShow] = useState(false);
   const [target, setTarget] = useState(null);
@@ -19,20 +39,16 @@ const Header = () => {
 
   const [popshow, setPopShow] = useState(false);
   const [poptarget, PopsetTarget] = useState(null);
-  const popoverRef = useRef(null); 
+  const popoverRef = useRef(null);
 
   const handlePopClick = (event) => {
     setPopShow(!popshow);
     PopsetTarget(event.target);
   };
 
-
-
-
   return (
-    <div style={{ margin: "0px",
-      padding: '0px',boxSizing:"border-box"}}>
-      <div style={{ height: "100px", width: "100%", backgroundColor: "white" }}>
+    <div style={{ margin: "0px", padding: "0px", boxSizing: "border-box" }}>
+      <div style={{ height: "100px", width: "100%", backgroundColor: "rgba(10,37,64,0.5)" }}>
         <img
           className="ms-5"
           height={"100px"}
@@ -40,7 +56,7 @@ const Header = () => {
           alt=""
         />
         <img
-          className="img-fluid mt-3 "
+          className="img-fluid mt-3"
           style={{ position: "absolute", right: "100px", height: "100px" }}
           src={LogoR}
           alt=""
@@ -53,73 +69,101 @@ const Header = () => {
           justifyContent: "space-between",
           alignItems: "center",
           padding: "16px 32px",
-          backgroundColor: "#796F57",
-
+          backgroundColor: DARK_BLUE,
           position: "sticky",
           top: 0,
           zIndex: 1000,
+          boxShadow: "0 2px 8px rgba(13,71,161,0.08)",
         }}
       >
         <h1
           style={{
             fontSize: "26px",
             fontWeight: "bold",
-            color: "#F1F1F1",
+            color: "#fff",
             letterSpacing: "1px",
+            marginBottom: 0,
           }}
         >
           CopConnect
-          <i className="fa-solid fa-bars-staggered"></i>
+          <i className="fa-solid fa-bars-staggered ms-3"></i>
         </h1>
         <div ref={popoverRef} className="mb-5">
-        <button onClick={handlePopClick}
-          className="btn btn-white text-white"
-          style={{
-            fontSize: "20px",
-            position: "absolute",
-            left: "300px",
-          
-            backgroundColor: "#6D6249",
-          }}
-        >
-          <i className="fa-solid fa-bell"></i>
-        </button>
-       
-  
-      <Overlay className="d-flex flex-column justify-content-center"
-        show={popshow}
-        target={poptarget}
-        placement="bottom"
-        container={popoverRef.current}
-        containerPadding={20}
-      >
-        <Popover id="popover-contained" >
-          <Popover.Header as="h3">Notifications</Popover.Header>
-          <Popover.Body style={{height:"300px",width:"300px"}}>
-            <strong>no notifications</strong> Check this info.
-          </Popover.Body>
+          <button
+            onClick={handlePopClick}
+            className="btn"
+            style={{
+              ...glassButtonStyle,
+              fontSize: "20px",
+              position: "absolute",
+              left: "300px",
+              padding: "8px 16px",
+            }}
+          >
+            <i className="fa-solid fa-bell"></i>
+          </button>
+          <Overlay
+            className="d-flex flex-column justify-content-center"
+            show={popshow}
+            target={poptarget}
+            placement="bottom"
+            container={popoverRef.current}
+            containerPadding={20}
+          >
+            <Popover id="popover-contained">
+              <Popover.Header as="h3" style={{ backgroundColor: DARK_BLUE, color: "#fff" }}>
+                Notifications
+              </Popover.Header>
+              <Popover.Body style={{ height: "300px", width: "300px" }}>
+                <strong>no notifications</strong> Check this info.
+              </Popover.Body>
+              <button
+                style={{
+                  ...glassButtonStyle,
+                  width: "100%",
+                  marginTop: "8px",
+                  background: "rgba(10,37,64,0.5)",
+                }}
+                className="btn"
+              >
+                Clear all
+              </button>
+            </Popover>
+          </Overlay>
+        </div>
 
-          <button style={{backgroundColor:"#796F57"}} className="btn  text-white w-100  ">Clear all </button>
-        </Popover>
-      </Overlay>
-    </div>
-
-
-
-       <Link to={'/localac'}> <button
-          className="btn-white rounded-3"
-          style={{ width: "300px", height: "45px" }}
-        >
-          <i className="fa-solid fa-fingerprint me-3"> </i> sign up with ID
-          Proof
-        </button></Link>
-
+        <Link to={"/localac"}>
+          <button
+            className="rounded-3"
+            style={{
+              ...glassButtonStyle,
+              width: "300px",
+              height: "45px",
+              marginLeft: "16px",
+              fontSize: "16px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+            }}
+          >
+            <i className="fa-solid fa-fingerprint me-3"></i> sign up with ID Proof
+          </button>
+        </Link>
 
         <div ref={ref}>
-          <Button className="m-0 border-0" style={{ backgroundColor: "#6D6249" }} onClick={handleClick}>
-          <i class="fa-solid fa-language"></i>  Languages  <i class="fa-solid fa-caret-down"></i>
+          <Button
+            className="m-0 border-0"
+            style={{
+              ...glassButtonStyle,
+              padding: "8px 20px",
+              fontSize: "16px",
+            }}
+            onClick={handleClick}
+          >
+            <i className="fa-solid fa-language"></i> Languages{" "}
+            <i className="fa-solid fa-caret-down"></i>
           </Button>
-
           <Overlay
             show={show}
             target={target}
@@ -128,7 +172,9 @@ const Header = () => {
             containerPadding={20}
           >
             <Popover id="popover-contained">
-              <Popover.Header as="h3">Languages</Popover.Header>
+              <Popover.Header as="h3" style={{ backgroundColor: DARK_BLUE, color: "#fff" }}>
+                Languages
+              </Popover.Header>
               <Popover.Body>
                 <strong>English</strong> Check this info.
               </Popover.Body>
@@ -148,29 +194,36 @@ const Header = () => {
               margin: 0,
               padding: 0,
               fontSize: "18px",
+              alignItems: "center",
             }}
           >
             <li
               style={{
                 cursor: "pointer",
-                color: "white",
+                color: "#fff",
                 transition: "color 0.3s",
+                fontWeight: "500",
               }}
             >
-              <button className="btn btn-white text-white m-0 ">
-                {" "}
-                Home <i class="fa-solid fa-house"></i>
+              <button
+                className="btn m-0"
+                style={{
+                  ...glassButtonStyle,
+                  padding: "8px 20px",
+                  fontSize: "16px",
+                }}
+              >
+                Home <i className="fa-solid fa-house"></i>
               </button>
             </li>
             <li
               className="mt-1"
               style={{
                 cursor: "pointer",
-                color: "#F1F1F1",
+                color: "#b3c6e0",
                 transition: "color 0.3s",
+                fontWeight: "500",
               }}
-              //   onMouseOver={(e) => e.target.style.color = "#FF4C29"}
-              //   onMouseOut={(e) => e.target.style.color = "#F1F1F1"}
             >
               About
             </li>
@@ -178,29 +231,33 @@ const Header = () => {
               className="mt-1"
               style={{
                 cursor: "pointer",
-                color: "#F1F1F1",
+                color: "#b3c6e0",
                 transition: "color 0.3s",
+                fontWeight: "500",
               }}
-              //   onMouseOver={(e) => e.target.style.color = "#FF4C29"}
-              //   onMouseOut={(e) => e.target.style.color = "#F1F1F1"}
             >
               Contact
             </li>
             <li
               style={{
                 cursor: "pointer",
-                color: "#F1F1F1",
+                color: "#b3c6e0",
                 transition: "color 0.3s",
+                fontWeight: "500",
               }}
-              //   onMouseOver={(e) => e.target.style.color = "#FF4C29"}
-              //   onMouseOut={(e) => e.target.style.color = "#F1F1F1"}
             >
-             <Link to={'/login'}> <button
-                style={{ backgroundColor: "#6D6249" }}
-                className="btn  text-white"
-              >
-                Login <i class="fa-solid fa-right-to-bracket"></i>
-              </button></Link>
+              <Link to={"/login"}>
+                <button
+                  style={{
+                    ...glassButtonStyle,
+                    padding: "8px 20px",
+                    fontSize: "16px",
+                  }}
+                  className="btn"
+                >
+                  Login <i className="fa-solid fa-right-to-bracket"></i>
+                </button>
+              </Link>
             </li>
           </ul>
         </nav>
