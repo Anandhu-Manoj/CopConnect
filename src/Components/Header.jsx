@@ -49,18 +49,18 @@ const Header = () => {
   return (
     <div style={{ margin: "0px", padding: "0px", boxSizing: "border-box" }}>
       <div style={{ height: "100px", width: "100%", backgroundColor: "rgba(10,37,64,0.5)" }}>
-        <img
+        {/* <img
           className="ms-5"
           height={"100px"}
           src={LogoL}
           alt=""
-        />
-        <img
+        /> */}
+        {/* <img
           className="img-fluid mt-3"
           style={{ position: "absolute", right: "100px", height: "100px" }}
           src={LogoR}
           alt=""
-        />
+        /> */}
       </div>
       <header
         style={{

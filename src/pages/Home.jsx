@@ -20,7 +20,6 @@ const COLORS = {
   gradientDark: "rgba(13,71,161,0.35)"
 };
 
-// Enhanced professional styles with subtle shadows and refined glassmorphism
 const styles = {
   pageContainer: {
     backgroundColor: COLORS.darkBlue,
@@ -29,7 +28,7 @@ const styles = {
     overflow: "hidden"
   },
   videoOverlay: {
-    position: "fixed", // Fixed to create a true background effect
+    position: "fixed", 
     top: 0,
     left: 0,
     width: "100%",
@@ -41,7 +40,7 @@ const styles = {
     width: "100%",
     height: "100%",
     objectFit: "cover",
-    opacity: 0.15 // Slightly reduced opacity for better contrast
+    opacity: 0.15 
   },
   contentContainer: {
     position: "relative",
@@ -207,7 +206,7 @@ const Home = () => {
 
   return (
     <div style={styles.pageContainer}>
-      {/* Full-screen background video */}
+    
       <div style={styles.videoOverlay}>
         <video
           src={Video}
@@ -221,8 +220,7 @@ const Home = () => {
 
       <div style={styles.contentContainer}>
         <Header />
-        
-        {/* Marquee announcement bar */}
+      
         <div className="container-xl">
           <div style={styles.marquee}>
             <span
