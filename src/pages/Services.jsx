@@ -6,6 +6,8 @@ import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
 import Modal from "react-bootstrap/Modal";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import {
   clearNotify,
   getCivillanNotification,
@@ -343,16 +345,16 @@ const Services = () => {
         };
         const apiResponse = await onserviceApplication(payload, requestHeader);
         if (apiResponse.status === 200) {
-          alert("Complaint registered successfully");
+          toast.success("Complaint registered successfully");
           handleClose();
         } else {
-          alert("Unable to send complaint. Please try again later.");
+          toast.error("Unable to send complaint. Please try again later.");
         }
       } catch (error) {
         console.log("API error:", error);
       }
     } else {
-      alert("Please fill all required fields");
+      toast.warning("Please fill all required fields");
     }
   };
 
@@ -375,16 +377,16 @@ const Services = () => {
         const Header = { Authorization: `bearer ${sessionStorage.getItem("token")}` };
         const apiResponse = await onserviceApplication(payload, Header);
         if (apiResponse.status === 200) {
-          alert("Request sent successfully");
+          toast.success("Request sent successfully");
           handleModalClose();
         } else {
-          alert("Request sending failed. Please try again later.");
+          toast.error("Request sending failed. Please try again later.");
         }
       } catch (error) {
         console.log(error, "Server error");
       }
     } else {
-      alert("Please fill all required details");
+      toast.warning("Please fill all required details");
     }
   };
 
@@ -415,16 +417,16 @@ const Services = () => {
         const Header = { Authorization: `bearer ${sessionStorage.getItem("token")}` };
         const apiResponse = await onserviceApplication(payload, Header);
         if (apiResponse.status === 200) {
-          alert("Appointment request sent successfully");
+          toast.success("Appointment request sent successfully");
           handleModClose();
         } else {
-          alert("Please try again later for booking");
+          toast.error("Please try again later for booking");
         }
       } catch (error) {
         console.log(error);
       }
     } else {
-      alert("Please fill all required details");
+      toast.warning("Please fill all required details");
     }
   };
 

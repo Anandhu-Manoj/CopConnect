@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../Components/Footer";
 import { CivilianRegister } from "../Services/AllApis";
+import { toast } from "react-toastify";
+
 
 // Import the video
 import justiceVideo from "../assets/justice.mp4";
@@ -55,17 +57,17 @@ const Localac = () => {
         let apiResponse = await CivilianRegister(payload, requestHeader);
         console.log(apiResponse);
         if (apiResponse.status === 201) {
-          alert("Registration successful");
+          toast("Registration successful");
           navigate("/local");
         } else {
-          alert("Registration failed. Please try again later.");
+          toast("Registration failed. Please try again later.");
         }
       } catch (error) {
         console.log(error);
-        alert("Registration failed");
+        toast("Registration failed");
       }
     } else {
-      alert("Please fill in all fields");
+      toast("Please fill in all fields");
     }
   };
 

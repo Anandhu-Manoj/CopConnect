@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/sideLogo.png";
-import sideLogo from "../assets/logo.png";
 import Footer from "../Components/Footer";
 import { Button, Modal } from "react-bootstrap";
 import {
@@ -11,6 +10,8 @@ import {
   getCriminals,
 } from "../Services/AllApis";
 import { toast } from "react-toastify";
+import justice from '../assets/justice.mp4';
+
 
 const Crimerecords = () => {
   const handleRevClose = () => setRevShow(false);
@@ -130,6 +131,36 @@ const Crimerecords = () => {
       console.log(error);
     }
   };
+
+    const COLORS = {
+    darkBlue: "#0a2540",
+    primary: "#1976d2",
+    primaryDark: "#0d47a1",
+    accent: "#3f51b5",
+    accentLight: "#7986cb",
+    light: "#ffffff",
+    lightBlue: "#e3f2fd",
+    gradientLight: "rgba(25,118,210,0.6)", // changed from 0.25
+    gradientDark: "rgba(1, 37, 91, 0.8)", // changed from 0.35
+  };
+
+  const Styles = {
+    marquee: {
+      background: `linear-gradient(90deg, ${COLORS.darkBlue} 0%, ${COLORS.gradientLight} 100%)`,
+      border: "1px solid rgba(255,255,255,0.18)",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+      backdropFilter: "blur(12px)",
+      WebkitBackdropFilter: "blur(12px)",
+      color: COLORS.light,
+      fontWeight: 600,
+      borderRadius: "12px",
+      padding: "16px 0",
+      margin: "24px 0",
+      textAlign: "center",
+      letterSpacing: "0.5px",
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+    },}
   //editing criminal
   const[editData,setEditData]=useState({
 
@@ -171,11 +202,35 @@ const Crimerecords = () => {
     }
   };
 
+  
+
   return (
     <div
       className="relative min-h-screen overflow-hidden "
-      style={{ height: "100%" }}
+      style={{ height: "100%",backgroundColor: "#0a2540" }}
+     
     >
+      
+               <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    style={{
+                      position: "fixed",
+                      top: 0,
+                      left: 0,
+                      minWidth: "100vw",
+                      minHeight: "100vh",
+                      objectFit: "cover",
+                      zIndex: 0,
+                      opacity: 0.04, 
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <source src={justice} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
       <div
         className="overflow-hidden"
         style={{
@@ -195,11 +250,12 @@ const Crimerecords = () => {
               style={{
                 height: "100px",
                 width: "100%",
-                backgroundColor: "white",
+                 background: "linear-gradient(135deg, #0a2540, #0d47a1)",
+              backdropFilter: "blur(12px)",
               }}
             >
-              <img className="ms-5" height={"100px"} src={Logo} alt="" />
-              <img
+              {/* <img className="ms-5" height={"100px"} src={Logo} alt="" /> */}
+              {/* <img
                 className="img-fluid mt-3"
                 style={{
                   position: "absolute",
@@ -208,7 +264,7 @@ const Crimerecords = () => {
                 }}
                 src={sideLogo}
                 alt=""
-              />
+              /> */}
             </div>
             <header
               style={{
@@ -218,7 +274,8 @@ const Crimerecords = () => {
                 justifyContent: "space-between",
                 alignItems: "center",
                 padding: "16px 32px",
-                backgroundColor: "#796F57",
+                 background: "linear-gradient(135deg, #0a2540, #0d47a1)",
+              backdropFilter: "blur(12px)",
                 position: "sticky",
                 top: 0,
                 zIndex: 1000,
@@ -228,7 +285,7 @@ const Crimerecords = () => {
                 style={{
                   fontSize: "26px",
                   fontWeight: "bold",
-                  color: "#F1F1F1",
+                  color: "#e3f2fd",
                   letterSpacing: "1px",
                 }}
               >
@@ -241,7 +298,7 @@ const Crimerecords = () => {
                   fontSize: "20px",
                   position: "absolute",
                   left: "300px",
-                  backgroundColor: "#6D6249",
+                  backgroundColor: "#1976d2",
                 }}
               >
                 <i className="fa-solid fa-bell"></i>
@@ -275,19 +332,19 @@ const Crimerecords = () => {
                       transition: "color 0.3s",
                     }}
                   >
-                    <button
-                      style={{ backgroundColor: "#6D6249" }}
+                    {/* <button
+                      style={{ backgroundColor: "#1976d2" }}
                       className="btn text-white"
                     >
                       {" "}
                       Punch in <i className="fa-solid fa-house"></i>
-                    </button>
+                    </button> */}
                   </li>
                   <li>
                     <Link to={"/jd"}>
                       {" "}
                       <button
-                        style={{ backgroundColor: "#6D6249" }}
+                        style={{ backgroundColor: "#1976d2" }}
                         className="btn text-white"
                       >
                         Back{""}
@@ -298,18 +355,47 @@ const Crimerecords = () => {
                 </ul>
               </nav>
             </header>
-            <marquee behavior="" direction="">
+            <div style={Styles.marquee}>
+            <span
+              style={{
+                display: "inline-block",
+                animation: "scroll-left 20s linear infinite",
+                minWidth: "100%",
+              }}
+            >
               Welcome to CopConnect - Your Digital Police Service Portal | File
               Complaints | Book Appointments | Manage Criminal Data | Secure &
-              Transparent Policing{" "}
-            </marquee>
+              Transparent Policing
+            </span>
+          </div>
+
+          {/* CSS for marquee animation */}
+          <style>
+            {`
+              @keyframes scroll-left {
+                0% { transform: translateX(100%); }
+                100% { transform: translateX(-100%); }
+              }
+              @keyframes pulse {
+                0% { box-shadow: 0 0 0 0 rgba(25,118,210,0.4); }
+                70% { box-shadow: 0 0 0 12px rgba(25,118,210,0); }
+                100% { box-shadow: 0 0 0 0 rgba(25,118,210,0); }
+              }
+              @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+              }
+            `}
+          </style>
+       
           </div>
         </div>
-        <section className="container mt-5 ">
+        <section className="container mt-5    ">
           <center>
             <h2
-              className="fw-bold text-white p-3 rounded-3"
-              style={{ backgroundColor: "#796F57" }}
+              className="fw-bold  p-3 rounded-3"
+              style={{ backgroundColor: "#0d47a1",color:"white" }}
             >
               Criminal Records
             </h2>

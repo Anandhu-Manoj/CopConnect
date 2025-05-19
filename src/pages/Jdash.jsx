@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import Logo from "../assets/sideLogo.png";
-import sideLogo from "../assets/logo.png";
 import Footer from "../Components/Footer";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -8,6 +7,7 @@ import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
+import justice from '../assets/justice.mp4';
 import {
   acceptingLeaves,
   acceptingLocalService,
@@ -260,12 +260,10 @@ const Jdash = () => {
         serviceId: data._id,
         userId: data.userId,
         serviceType: data.serviceType,
-       
       };
-      const serverResp = await onrejectingpoliceServ(payload, Header)
-      
-        setRender(serverResp);
-      
+      const serverResp = await onrejectingpoliceServ(payload, Header);
+
+      setRender(serverResp);
     } catch (error) {
       console.log(error);
     }
@@ -376,11 +374,63 @@ const Jdash = () => {
     }
   };
 
+  const COLORS = {
+    darkBlue: "#0a2540",
+    primary: "#1976d2",
+    primaryDark: "#0d47a1",
+    accent: "#3f51b5",
+    accentLight: "#7986cb",
+    light: "#ffffff",
+    lightBlue: "#e3f2fd",
+    gradientLight: "rgba(25,118,210,0.6)", // changed from 0.25
+    gradientDark: "rgba(1, 37, 91, 0.8)", // changed from 0.35
+  };
+
+  const Styles = {
+    marquee: {
+      background: `linear-gradient(90deg, ${COLORS.darkBlue} 0%, ${COLORS.gradientLight} 100%)`,
+      border: "1px solid rgba(255,255,255,0.18)",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+      backdropFilter: "blur(12px)",
+      WebkitBackdropFilter: "blur(12px)",
+      color: COLORS.light,
+      fontWeight: 600,
+      borderRadius: "12px",
+      padding: "16px 0",
+      margin: "24px 0",
+      textAlign: "center",
+      letterSpacing: "0.5px",
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+    },
+  };
+
   return (
     <div
       className="relative min-h-screen overflow-hidden "
-      style={{ height: "100%" }}
+      style={{ height: "100%", backgroundColor: "#0a2540" }}
     >
+
+         <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                minWidth: "100vw",
+                minHeight: "100vh",
+                objectFit: "cover",
+                zIndex: 0,
+                opacity: 0.04, 
+                pointerEvents: "none",
+              }}
+            >
+              <source src={justice} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
       {/* header  */}
       <div
         className="overflow-hidden"
@@ -393,169 +443,210 @@ const Jdash = () => {
           flexDirection: "column",
         }}
       >
-        <div>
+        <div
+          style={{
+            margin: 0,
+            padding: 0,
+            boxSizing: "border-box",
+            fontFamily: "sans-serif",
+          }}
+        >
           <div
-            style={{ margin: "0px", padding: "0px", boxSizing: "border-box" }}
+            style={{
+              background: "linear-gradient(135deg, #0a2540, #0d47a1)",
+              padding: "0 32px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              height: "100px",
+            }}
           >
-            <div
-              style={{
-                height: "100px",
-                width: "100%",
-                backgroundColor: "white",
-              }}
+            {/* <img className="ms-5" height="80px" src={Logo} alt="Main Logo" />
+            <img
+              className="img-fluid"
+              style={{ height: "90px" }}
+              src={sideLogo}
+              alt="Side Logo"
+            /> */}
+          </div>
+
+          <header
+            style={{
+              height: "80px",
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "0 32px",
+              background: "linear-gradient(135deg, #0a2540, #0d47a1)",
+              backdropFilter: "blur(12px)",
+              position: "sticky",
+              top: 0,
+              zIndex: 1000,
+              boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+            }}
+          >
+            <h1
+              style={{ fontSize: "24px", fontWeight: "bold", color: "#ffffff" }}
             >
-              <img className="ms-5" height={"100px"} src={Logo} alt="" />
-              <img
-                className="img-fluid mt-3"
+              CopConnect <i className="fa-solid fa-bars-staggered"></i>
+            </h1>
+
+            <div ref={popoverRef}>
+              <button
+                onClick={handlePopClick}
+                className="btn"
                 style={{
-                  position: "absolute",
-                  right: "100px",
-                  height: "100px",
+                  fontSize: "20px",
+                  backgroundColor: "#1976d2",
+                  color: "#ffffff",
+                  borderRadius: "12px",
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                 }}
-                src={sideLogo}
-                alt=""
-              />
+              >
+                <i className="fa-solid fa-bell"></i>
+              </button>
+
+              <Overlay
+                show={popshow}
+                target={poptarget}
+                placement="bottom"
+                container={popoverRef.current}
+                containerPadding={20}
+              >
+                <Popover
+                  style={{
+                    backdropFilter: "blur(10px)",
+                    border: "1px solid #ccc",
+                  }}
+                >
+                  <Popover.Header as="h3">Notifications</Popover.Header>
+                  <Popover.Body style={{ height: "300px", width: "300px" }}>
+                    <strong>No notifications</strong> — Check back later.
+                  </Popover.Body>
+                  <button
+                    style={{
+                      backgroundColor: "#1976d2",
+                      color: "#ffffff",
+                      borderRadius: "8px",
+                      width: "100%",
+                      padding: "8px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Clear All
+                  </button>
+                </Popover>
+              </Overlay>
             </div>
-            <header
-              style={{
-                height: "75px",
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "16px 32px",
-                backgroundColor: "#796F57",
-                position: "sticky",
-                top: 0,
-                zIndex: 1000,
-              }}
-            >
-              <h1
+
+            <div className="text-center ">
+              <h2 className="fs-2 fw-bolder"
                 style={{
-                  fontSize: "26px",
-                  fontWeight: "bold",
-                  color: "#F1F1F1",
-                  letterSpacing: "1px",
+                  color: "#ffffff",
+                  
+                  fontSize: "20px",
                 }}
               >
-                CopConnect
-                <i className="fa-solid fa-bars-staggered"></i>
-              </h1>
-              <div ref={popoverRef} className="mb-5">
-                <button
-                  onClick={handlePopClick}
-                  className="btn btn-white text-white"
-                  style={{
-                    fontSize: "20px",
-                    position: "absolute",
-                    left: "300px",
+                ADMINISTRATION PORTAL{" "}
+                <i className="fa-solid fa-scale-balanced"></i>
+              </h2>
+            </div>
 
-                    backgroundColor: "#6D6249",
-                  }}
-                >
-                  <i className="fa-solid fa-bell"></i>
-                </button>
-
-                <Overlay
-                  className="d-flex flex-column justify-content-center"
-                  show={popshow}
-                  target={poptarget}
-                  placement="bottom"
-                  container={popoverRef.current}
-                  containerPadding={20}
-                >
-                  <Popover id="popover-contained">
-                    <Popover.Header as="h3">Notifications</Popover.Header>
-                    <Popover.Body style={{ height: "300px", width: "300px" }}>
-                      <strong>no notifications</strong> Check this info.
-                    </Popover.Body>
-
-                    <button
-                      style={{ backgroundColor: "#796F57" }}
-                      className="btn  text-white w-100 mb-1 "
-                    >
-                      Clear all{" "}
-                    </button>
-                  </Popover>
-                </Overlay>
-              </div>
-
-              <div
-                className="d-flex align-content-center ms-5"
-                style={{ position: "absolute", left: "400px" }}
+            <nav>
+              <ul
+                style={{
+                  display: "flex",
+                  gap: "16px",
+                  listStyle: "none",
+                  margin: 0,
+                  padding: 0,
+                  fontSize: "16px",
+                }}
               >
-                <h2
-                  style={{ padding: "10px " }}
-                  className="fs-1 fw-bold text-white   "
-                >
-                  ADMINISTRATION PORTAL{" "}
-                  <i className="fa-solid fa-scale-balanced"></i>
-                </h2>
-              </div>
+                <li>
+                  {/* <button
+                    className="btn"
+                    style={{
+                      backgroundColor: "#1976d2",
+                      color: "#ffffff",
+                      borderRadius: "10px",
+                      boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    Punch In <i className="fa-solid fa-house"></i>
+                  </button> */}
+                </li>
 
-              <nav>
-                <ul
-                  style={{
-                    display: "flex",
-                    gap: "20px",
-                    listStyle: "none",
-                    margin: 0,
-                    padding: 0,
-                    fontSize: "18px",
-                  }}
-                >
-                  <li
-                    style={{
-                      cursor: "pointer",
-                      color: "white",
-                      transition: "color 0.3s",
-                    }}
-                  >
+                <li>
+                  <Link to="/login">
                     <button
-                      style={{ backgroundColor: "#6D6249" }}
-                      className="btn text-white"
+                      className="btn"
+                      style={{
+                        backgroundColor: "#1976d2",
+                        color: "#ffffff",
+                        borderRadius: "10px",
+                        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+                      }}
                     >
-                      {" "}
-                      Punch in <i className="fa-solid fa-house"></i>
-                    </button>
-                  </li>
-                  <Link
-                    to={"/login"}
-                    style={{
-                      cursor: "pointer",
-                      color: "white",
-                      transition: "color 0.3s",
-                    }}
-                  >
-                    <button
-                      style={{ backgroundColor: "#6D6249" }}
-                      className="btn text-white"
-                    >
-                      {" "}
-                      Log out <i class="fa-solid fa-door-open"></i>
+                      Log Out <i className="fa-solid fa-door-open"></i>
                     </button>
                   </Link>
-                  <li>
-                    <Link to={"/cr"}>
-                      {" "}
-                      <button
-                        style={{ backgroundColor: "#6D6249" }}
-                        className="btn text-white"
-                      >
-                        Crime Records{""}
-                        <i className="fa-solid fa-right-to-bracket"></i>
-                      </button>
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
-            </header>
-            <marquee behavior="" direction="">
+                </li>
+
+                <li>
+                  <Link to="/cr">
+                    <button
+                      className="btn"
+                      style={{
+                        backgroundColor: "#1976d2",
+                        color: "#ffffff",
+                        borderRadius: "10px",
+                        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+                      }}
+                    >
+                      Crime Records{" "}
+                      <i className="fa-solid fa-right-to-bracket"></i>
+                    </button>
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          </header>
+
+          <div style={Styles.marquee}>
+            <span
+              style={{
+                display: "inline-block",
+                animation: "scroll-left 20s linear infinite",
+                minWidth: "100%",
+              }}
+            >
               Welcome to CopConnect - Your Digital Police Service Portal | File
               Complaints | Book Appointments | Manage Criminal Data | Secure &
-              Transparent Policing{" "}
-            </marquee>
+              Transparent Policing
+            </span>
           </div>
+
+          {/* CSS for marquee animation */}
+          <style>
+            {`
+              @keyframes scroll-left {
+                0% { transform: translateX(100%); }
+                100% { transform: translateX(-100%); }
+              }
+              @keyframes pulse {
+                0% { box-shadow: 0 0 0 0 rgba(25,118,210,0.4); }
+                70% { box-shadow: 0 0 0 12px rgba(25,118,210,0); }
+                100% { box-shadow: 0 0 0 0 rgba(25,118,210,0); }
+              }
+              @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+              }
+            `}
+          </style>
         </div>
 
         <div>
@@ -567,10 +658,14 @@ const Jdash = () => {
                 width: "450px",
                 // position: "absolute",
                 // top: "250px",
-                background:
-                  "linear-gradient(135deg, #d9d9d9, #bfbfbf, #a6a6a6, #ffffff)",
+              background: "rgba(255, 255, 255, 0.15)",
+               borderRadius: "20px",
+   
               }}
             >
+              
+              
+              
               <div
                 style={{
                   height: "200px",
@@ -586,18 +681,18 @@ const Jdash = () => {
               </div>
               <h3
                 className="mb-5 fw-bold fs-2 ms-5  "
-                style={{ color: " #796F57" }}
+                style={{ color: " #1976d2" }}
               >
-                Welcome
+                WELCOME
               </h3>
               <button
                 onClick={handleShow}
                 className="btn text-white"
                 style={{
                   position: "absolute",
-                  left: "100px",
+                  left: "90px",
                   top: "390px",
-                  backgroundColor: "#796F57",
+                  backgroundColor: "#0d47a1 ",
                 }}
               >
                 service requests <i class="fa-solid fa-server"></i>
@@ -615,8 +710,8 @@ const Jdash = () => {
                     <table
                       className=" table-bordered text-center ms-3 me-5 mb-5"
                       style={{
-                        backgroundColor: "#d9d9d9",
-                        borderColor: "#796F57",
+                        backgroundColor: "#1976d2",
+                        borderColor: "#3f51b5 ",
                         overflow: "hidden",
 
                         borderCollapse: "collapse",
@@ -625,7 +720,7 @@ const Jdash = () => {
                       <thead
                         className="rounded-3 mb-4"
                         style={{
-                          backgroundColor: "#796F57",
+                          backgroundColor: "#3f51b5 ",
                           color: "white",
                           fontSize: "18px",
                           textTransform: "uppercase",
@@ -694,7 +789,7 @@ const Jdash = () => {
                       className=" table-bordered text-center ms-3 me-5 mb-5"
                       style={{
                         backgroundColor: "#d9d9d9",
-                        borderColor: "#796F57",
+                        borderColor: "#3f51b5 ",
                         overflow: "hidden",
 
                         borderCollapse: "collapse",
@@ -703,7 +798,7 @@ const Jdash = () => {
                       <thead
                         className="rounded-3 mb-4"
                         style={{
-                          backgroundColor: "#796F57",
+                          backgroundColor: "#3f51b5 ",
                           color: "white",
                           fontSize: "18px",
                           textTransform: "uppercase",
@@ -770,11 +865,12 @@ const Jdash = () => {
             </div>
             <div className="col-8 table-responsive me-2">
               {" "}
+              <h2 className="text-center fw-bold" style={{color:"#e3f2fd"}}>PETITIONS</h2>
               <table
                 className=" table-bordered text-center ms-3 me-5"
                 style={{
                   backgroundColor: "#d9d9d9",
-                  borderColor: "#796F57",
+                  borderColor: "#d9d9d9",
                   overflow: "hidden",
 
                   borderCollapse: "collapse",
@@ -783,7 +879,7 @@ const Jdash = () => {
                 <thead
                   className="rounded-3 mb-4"
                   style={{
-                    backgroundColor: "#796F57",
+                    backgroundColor: "#0d47a1",
                     color: "white",
                     fontSize: "18px",
                     textTransform: "uppercase",
@@ -928,7 +1024,7 @@ const Jdash = () => {
             <div className="text-center">
               <h2
                 className="fw-bold text-white p-3 rounded-3"
-                style={{ backgroundColor: "#796F57" }}
+                style={{ backgroundColor: "#0d47a1" }}
               >
                 OFFICERS RECORDS
               </h2>{" "}
@@ -1073,14 +1169,17 @@ const Jdash = () => {
               <table
                 className="table table-bordered text-center w-100"
                 style={{
-                  backgroundColor: "#796F57",
-                  borderColor: "#796F57",
+                  backgroundColor: "#0a2540",
+                  borderCollapse: "collapse",
+                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+                  borderRadius: "12px",
                   overflow: "hidden",
+                  fontFamily: "'Segoe UI', sans-serif",
                 }}
               >
                 <thead
                   style={{
-                    backgroundColor: "#796F57",
+                   background: "#0a2540",
                     color: "white",
                     fontSize: "18px",
                     textTransform: "uppercase",
@@ -1088,65 +1187,79 @@ const Jdash = () => {
                 >
                   <tr>
                     <th className="p-3">Name</th>
-                    <th className="p-3">Fathers Name</th>
+                    <th className="p-3">Father's Name</th>
                     <th className="p-3">Batch Number</th>
                     <th className="p-3">E-mail</th>
-                    <th className="p-3">password</th>
-                    <th className="p-3">Phone number</th>
+                    <th className="p-3">Password</th>
+                    <th className="p-3">Phone Number</th>
                     <th className="p-3">Designation</th>
                     <th className="p-3">Circle of Duty</th>
-                    <th className="p-3">Service period</th>
+                    <th className="p-3">Service Period</th>
                     <th className="p-3">Review</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {officerTable?.length > 0
-                    ? officerTable?.map((data, index) => (
-                        <tr
-                          key={index}
-                          style={{ backgroundColor: "#fff", fontSize: "16px" }}
+                  {officerTable?.length > 0 &&
+                    officerTable.map((data, index) => (
+                      <tr
+                        key={index}
+                        style={{ fontSize: "16px", color: "#333" }}
+                      >
+                        <td className="p-3">{data.username}</td>
+                        <td className="p-3">{data.fathersname}</td>
+                        <td className="p-3">{data.batchNo}</td>
+                        <td
+                          className="p-3"
+                          style={{
+                            wordBreak: "break-word",
+                            whiteSpace: "normal",
+                            maxWidth: "200px",
+                          }}
                         >
-                          <td className="p-3">{data.username}</td>
-                          <td className="p-3">{data.fathersname}</td>
-
-                          <td className="p-3">{data.batchNo}</td>
-                          <td
-                            className="p-3"
+                          {data.email}
+                        </td>
+                        <td className="p-3">{data.password}</td>
+                        <td className="p-3">{data.number}</td>
+                        <td className="p-3">{data.designation}</td>
+                        <td className="p-3">{data.circleofduty}</td>
+                        <td className="p-3">{data.serviceperiod}</td>
+                        <td className="p-3">
+                          <button
+                            onClick={() => onDelete(data._id)}
+                            className="btn"
                             style={{
-                              wordBreak: "break-word",
-                              whiteSpace: "normal",
-                              maxWidth: "200px",
+                              backgroundColor: "#d9534f",
+                              color: "#fff",
+                              marginBottom: "8px",
+                              padding: "6px 12px",
+                              borderRadius: "6px",
+                              border: "none",
+                              boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
                             }}
                           >
-                            {data.email}
-                          </td>
-                          <td className="p-3">{data.password}</td>
-                          <td className="p-3">{data.number}</td>
-                          <td className="p-3">{data.designation}</td>
-                          <td className="p-3">{data.circleofduty}</td>
-                          <td className="p-3">{data.serviceperiod}</td>
-                          <td className="p-3">
-                            {" "}
-                            <button
-                              onClick={() => onDelete(data._id)}
-                              style={{ marginRight: "5px" }}
-                              className="btn btn-danger"
-                            >
-                              Remove{" "}
-                              <i className="fa-solid fa-square-xmark"></i>
-                            </button>
-                            <button
-                              className="btn btn-primary mt-2"
-                              onClick={() => handleOEditfShow(data)}
-                            >
-                              Review <i className="fa-solid fa-eye"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    : ""}
+                            Remove <i className="fa-solid fa-square-xmark"></i>
+                          </button>
+                          <br />
+                          <button
+                            className="btn"
+                            onClick={() => handleOEditfShow(data)}
+                            style={{
+                              backgroundColor: "#1976d2",
+                              color: "white",
+                              padding: "6px 12px",
+                              borderRadius: "6px",
+                              border: "none",
+                              boxShadow: "0 2px 4px rgba(25,118,210,0.35)",
+                            }}
+                          >
+                            Review <i className="fa-solid fa-eye"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
+
               <Modal
                 centered
                 size="lg"
@@ -1309,7 +1422,7 @@ const Jdash = () => {
             <div className="text-center">
               <h2
                 className="fw-bold text-white p-3 rounded-3"
-                style={{ backgroundColor: "#796F57" }}
+                style={{ backgroundColor: "#0d47a1 " }}
               >
                 Leave Requests
               </h2>

@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Footer from "../Components/Footer";
 import Header from "../Components/Header";
 import { civilianLogin } from "../Services/AllApis";
+import { toast } from "react-toastify";
+
 
 // Import the video - assuming you're using the same video
 import justiceVideo from "../assets/justice.mp4";
@@ -21,13 +23,13 @@ const Local = () => {
       if (apiResponse.status == 200) {
         sessionStorage.setItem("user", apiResponse.data.user.email);
         sessionStorage.setItem("token", apiResponse.data.token);
-        alert("Login successful");
+        toast.success("Login successful");
         console.log(apiResponse.data);
 
         navigate("/services");
       } else {
         apiResponse.status == 404;
-        alert("Please enter correct credentials");
+        toast.error("Please enter correct credentials");
       }
     } catch (error) {
       console.log(error);

@@ -313,33 +313,35 @@ const Odash = () => {
     }
   };
   const COLORS = {
-  darkBlue: "#0a2540",
-  primary: "#1976d2",
-  primaryDark: "#0d47a1", 
-  accent: "#3f51b5",
-  accentLight: "#7986cb",
-  light: "#ffffff",
-  lightBlue: "#e3f2fd",
-  gradientLight: "rgba(25,118,210,0.25)",
-  gradientDark: "rgba(13,71,161,0.35)"
-};
+    darkBlue: "#0a2540",
+    primary: "#1976d2",
+    primaryDark: "#0d47a1",
+    accent: "#3f51b5",
+    accentLight: "#7986cb",
+    light: "#ffffff",
+    lightBlue: "#e3f2fd",
+    gradientLight: "rgba(25,118,210,0.25)",
+    gradientDark: "rgba(13,71,161,0.35)",
+  };
 
-  const Styles={marquee: {
-    background: `linear-gradient(90deg, ${COLORS.gradientDark} 0%, ${COLORS.gradientLight} 100%)`,
-    border: "1px solid rgba(255,255,255,0.18)",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
-    backdropFilter: "blur(12px)",
-    WebkitBackdropFilter: "blur(12px)",
-    color: COLORS.light,
-    fontWeight: 600,
-    borderRadius: "12px",
-    padding: "16px 0",
-    margin: "24px 0",
-    textAlign: "center",
-    letterSpacing: "0.5px",
-    overflow: "hidden",
-    whiteSpace: "nowrap"
-  },}
+  const Styles = {
+    marquee: {
+      background: `linear-gradient(90deg, ${COLORS.gradientDark} 0%, ${COLORS.gradientLight} 100%)`,
+      border: "1px solid rgba(255,255,255,0.18)",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+      backdropFilter: "blur(12px)",
+      WebkitBackdropFilter: "blur(12px)",
+      color: COLORS.light,
+      fontWeight: 600,
+      borderRadius: "12px",
+      padding: "16px 0",
+      margin: "24px 0",
+      textAlign: "center",
+      letterSpacing: "0.5px",
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+    },
+  };
 
   return (
     <div className="m-0 overflow-hidden" style={{ position: "relative" }}>
@@ -674,356 +676,414 @@ const Odash = () => {
                     `}</style>
                   </Modal>
 
-                <li
-  style={{
-    cursor: "pointer",
-    color: "white",
-    transition: "color 0.3s",
-  }}
->
-  <button
-    onClick={handleShow}
-    style={{
-      backgroundColor: "#1976d2",
-      borderRadius: "8px",
-      padding: "0.5rem 1rem",
-      boxShadow: "0 4px 8px rgba(25, 118, 210, 0.4)",
-      border: "none",
-      fontWeight: "600",
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      transition: "background-color 0.3s",
-    }}
-    className="btn text-white"
-    onMouseEnter={e => e.currentTarget.style.backgroundColor = "#0d47a1"}
-    onMouseLeave={e => e.currentTarget.style.backgroundColor = "#1976d2"}
-  >
-    Book services <i className="fa-solid fa-server"></i>
-  </button>
-</li>
+                  <li
+                    style={{
+                      cursor: "pointer",
+                      color: "white",
+                      transition: "color 0.3s",
+                    }}
+                  >
+                    <button
+                      onClick={handleShow}
+                      style={{
+                        backgroundColor: "#1976d2",
+                        borderRadius: "8px",
+                        padding: "0.5rem 1rem",
+                        boxShadow: "0 4px 8px rgba(25, 118, 210, 0.4)",
+                        border: "none",
+                        fontWeight: "600",
+                        fontFamily:
+                          "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        transition: "background-color 0.3s",
+                      }}
+                      className="btn text-white"
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#0d47a1")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#1976d2")
+                      }
+                    >
+                      Book services <i className="fa-solid fa-server"></i>
+                    </button>
+                  </li>
 
-<Modal size="lg" centered show={show} onHide={handleClose}>
-  <Modal.Header
-    closeButton
-    style={{
-      background:
-        "linear-gradient(135deg, rgba(25,118,210,0.2), rgba(13,71,161,0.3))",
-      backdropFilter: "blur(12px)",
-      borderBottom: "1px solid rgba(255, 255, 255, 0.15)",
-    }}
-  >
-    <Modal.Title
-      className="ms-5 fw-bold"
+                  <Modal size="lg" centered show={show} onHide={handleClose}>
+                    <Modal.Header
+                      closeButton
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(25,118,210,0.2), rgba(13,71,161,0.3))",
+                        backdropFilter: "blur(12px)",
+                        borderBottom: "1px solid rgba(255, 255, 255, 0.15)",
+                      }}
+                    >
+                      <Modal.Title
+                        className="ms-5 fw-bold"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, rgba(25,118,210,0.2), rgba(13,71,161,0.3))",
+                          backdropFilter: "blur(12px)",
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.15)",
+                          fontFamily:
+                            "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        }}
+                      >
+                        SERVICES <i className="fa-solid fa-server"></i>
+                      </Modal.Title>
+                    </Modal.Header>
 
-      style={{
-         background:
-        "linear-gradient(135deg, rgba(25,118,210,0.2), rgba(13,71,161,0.3))",
-      backdropFilter: "blur(12px)",
-      borderBottom: "1px solid rgba(255, 255, 255, 0.15)",
-        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      }}
-    >
-      SERVICES <i className="fa-solid fa-server"></i>
-    </Modal.Title>
-  </Modal.Header>
+                    <Modal.Body
+                      className="d-flex gap-4 justify-content-center align-items-center"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(25,118,210,0.15), rgba(13,71,161,0.15))",
+                        backdropFilter: "blur(12px)",
+                        minHeight: "320px",
+                      }}
+                    >
+                      {/* {[...Array of Cards...]}, */}
 
-  <Modal.Body
-    className="d-flex gap-4 justify-content-center align-items-center"
-    style={{
-      background:
-        "linear-gradient(135deg, rgba(25,118,210,0.15), rgba(13,71,161,0.15))",
-      backdropFilter: "blur(12px)",
-      minHeight: "320px",
-    }}
-  >
-    {/* {[...Array of Cards...]}, */}
+                      <Card
+                        className="d-flex flex-column justify-content-center align-items-center text-center shadow-sm"
+                        style={{
+                          width: "18rem",
+                          background:
+                            "linear-gradient(135deg, #0a2540, #1976d2, #3f51b5)",
+                          borderRadius: "12px",
+                          color: "white",
+                          boxShadow: "0 6px 12px rgba(25, 118, 210, 0.6)",
+                        }}
+                      >
+                        <Card.Body>
+                          <Card.Title style={{ fontSize: "50px" }}>
+                            <i className="fa-solid fa-volleyball"></i>
+                          </Card.Title>
+                          <h4 className="fw-semibold">
+                            Officers Club Facility Bookings
+                          </h4>
+                          <Button
+                            className="mt-3 px-4 py-2"
+                            style={{
+                              backgroundColor: "#1976d2",
+                              border: "none",
+                              borderRadius: "8px",
+                              boxShadow: "0 4px 8px rgba(25,118,210,0.6)",
+                              fontWeight: "600",
+                            }}
+                            onClick={handleSpModalShow}
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                "#0d47a1")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                "#1976d2")
+                            }
+                          >
+                            Apply
+                          </Button>
+                        </Card.Body>
+                      </Card>
 
-    <Card
-      className="d-flex flex-column justify-content-center align-items-center text-center shadow-sm"
-      style={{
-        width: "18rem",
-        background:
-          "linear-gradient(135deg, #0a2540, #1976d2, #3f51b5)",
-        borderRadius: "12px",
-        color: "white",
-        boxShadow: "0 6px 12px rgba(25, 118, 210, 0.6)",
-      }}
-    >
-      <Card.Body>
-        <Card.Title style={{ fontSize: "50px" }}>
-          <i className="fa-solid fa-volleyball"></i>
-        </Card.Title>
-        <h4 className="fw-semibold">Officers Club Facility Bookings</h4>
-        <Button
-          className="mt-3 px-4 py-2"
-          style={{
-            backgroundColor: "#1976d2",
-            border: "none",
-            borderRadius: "8px",
-            boxShadow: "0 4px 8px rgba(25,118,210,0.6)",
-            fontWeight: "600",
-          }}
-          onClick={handleSpModalShow}
-          onMouseEnter={e => e.currentTarget.style.backgroundColor = "#0d47a1"}
-          onMouseLeave={e => e.currentTarget.style.backgroundColor = "#1976d2"}
-        >
-          Apply
-        </Button>
-      </Card.Body>
-    </Card>
+                      <Card
+                        className="d-flex flex-column justify-content-center align-items-center text-center shadow-sm"
+                        style={{
+                          width: "18rem",
+                          background:
+                            "linear-gradient(135deg, #0a2540, #1976d2, #3f51b5)",
+                          borderRadius: "12px",
+                          color: "white",
+                          boxShadow: "0 6px 12px rgba(25, 118, 210, 0.6)",
+                        }}
+                      >
+                        <Card.Body>
+                          <Card.Title style={{ fontSize: "50px" }}>
+                            <i className="fa-solid fa-square-poll-vertical"></i>
+                          </Card.Title>
+                          <h4 className="fw-semibold">
+                            Request Statistics and Data
+                          </h4>
+                          <Button
+                            className="mt-3 px-4 py-2"
+                            style={{
+                              backgroundColor: "#1976d2",
+                              border: "none",
+                              borderRadius: "8px",
+                              boxShadow: "0 4px 8px rgba(25,118,210,0.6)",
+                              fontWeight: "600",
+                            }}
+                            onClick={handleStModalShow}
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                "#0d47a1")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                "#1976d2")
+                            }
+                          >
+                            Apply
+                          </Button>
+                        </Card.Body>
+                      </Card>
 
-    <Card
-      className="d-flex flex-column justify-content-center align-items-center text-center shadow-sm"
-      style={{
-        width: "18rem",
-        background:
-          "linear-gradient(135deg, #0a2540, #1976d2, #3f51b5)",
-        borderRadius: "12px",
-        color: "white",
-        boxShadow: "0 6px 12px rgba(25, 118, 210, 0.6)",
-      }}
-    >
-      <Card.Body>
-        <Card.Title style={{ fontSize: "50px" }}>
-          <i className="fa-solid fa-square-poll-vertical"></i>
-        </Card.Title>
-        <h4 className="fw-semibold">Request Statistics and Data</h4>
-        <Button
-          className="mt-3 px-4 py-2"
-          style={{
-            backgroundColor: "#1976d2",
-            border: "none",
-            borderRadius: "8px",
-            boxShadow: "0 4px 8px rgba(25,118,210,0.6)",
-            fontWeight: "600",
-          }}
-          onClick={handleStModalShow}
-          onMouseEnter={e => e.currentTarget.style.backgroundColor = "#0d47a1"}
-          onMouseLeave={e => e.currentTarget.style.backgroundColor = "#1976d2"}
-        >
-          Apply
-        </Button>
-      </Card.Body>
-    </Card>
+                      {/* Statistics Request Modal */}
+                      <Modal
+                        show={showStModal}
+                        onHide={handleStModalClose}
+                        centered
+                        style={{ color: "#0a2540" }}
+                      >
+                        <Modal.Header
+                          closeButton
+                          style={{
+                            background:
+                              "linear-gradient(135deg, rgba(25,118,210,0.25), rgba(13,71,161,0.35))",
+                            color: "white",
+                            backdropFilter: "blur(12px)",
+                          }}
+                        >
+                          <Modal.Title className="fw-bold text-dark">
+                            Request Case Data{" "}
+                            <i className="fa-solid fa-suitcase"></i>
+                          </Modal.Title>
+                        </Modal.Header>
 
-    {/* Statistics Request Modal */}
-    <Modal
-      show={showStModal}
-      onHide={handleStModalClose}
-      centered
-      style={{ color: "#0a2540" }}
-    >
-      <Modal.Header
-        closeButton
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(25,118,210,0.25), rgba(13,71,161,0.35))",
-          color: "white",
-          backdropFilter: "blur(12px)",
-        }}
-      >
-        <Modal.Title className="fw-bold text-dark">
-          Request Case Data <i className="fa-solid fa-suitcase"></i>
-        </Modal.Title>
-      </Modal.Header>
+                        <Modal.Body
+                          style={{
+                            background:
+                              "linear-gradient(135deg, rgba(25,118,210,0.1), rgba(13,71,161,0.1))",
+                            backdropFilter: "blur(12px)",
+                            color: "#0a2540",
+                          }}
+                        >
+                          <input
+                            type="text"
+                            placeholder="Enter your name"
+                            required
+                            className="form-control mb-4"
+                            onChange={(e) =>
+                              setStaticData({
+                                ...staticData,
+                                name: e.target.value,
+                              })
+                            }
+                            style={{
+                              borderRadius: "8px",
+                              borderColor: "#1976d2",
+                            }}
+                          />
+                          <input
+                            type="date"
+                            placeholder="Enter date of submission"
+                            required
+                            className="form-control mb-4"
+                            onChange={(e) =>
+                              setStaticData({
+                                ...staticData,
+                                Date: e.target.value,
+                              })
+                            }
+                            style={{
+                              borderRadius: "8px",
+                              borderColor: "#1976d2",
+                            }}
+                          />
+                          <input
+                            type="number"
+                            placeholder="Enter your contact number"
+                            required
+                            className="form-control mb-4"
+                            onChange={(e) =>
+                              setStaticData({
+                                ...staticData,
+                                number: e.target.value,
+                              })
+                            }
+                            style={{
+                              borderRadius: "8px",
+                              borderColor: "#1976d2",
+                            }}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Short description of the case data required"
+                            required
+                            className="form-control mb-4"
+                            onChange={(e) =>
+                              setStaticData({
+                                ...staticData,
+                                details: e.target.value,
+                              })
+                            }
+                            style={{
+                              borderRadius: "8px",
+                              borderColor: "#1976d2",
+                            }}
+                          />
+                        </Modal.Body>
 
-      <Modal.Body
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(25,118,210,0.1), rgba(13,71,161,0.1))",
-          backdropFilter: "blur(12px)",
-          color: "#0a2540",
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Enter your name"
-          required
-          className="form-control mb-4"
-          onChange={(e) =>
-            setStaticData({
-              ...staticData,
-              name: e.target.value,
-            })
-          }
-          style={{ borderRadius: "8px", borderColor: "#1976d2" }}
-        />
-        <input
-          type="date"
-          placeholder="Enter date of submission"
-          required
-          className="form-control mb-4"
-          onChange={(e) =>
-            setStaticData({
-              ...staticData,
-              Date: e.target.value,
-            })
-          }
-          style={{ borderRadius: "8px", borderColor: "#1976d2" }}
-        />
-        <input
-          type="number"
-          placeholder="Enter your contact number"
-          required
-          className="form-control mb-4"
-          onChange={(e) =>
-            setStaticData({
-              ...staticData,
-              number: e.target.value,
-            })
-          }
-          style={{ borderRadius: "8px", borderColor: "#1976d2" }}
-        />
-        <input
-          type="text"
-          placeholder="Short description of the case data required"
-          required
-          className="form-control mb-4"
-          onChange={(e) =>
-            setStaticData({
-              ...staticData,
-              details: e.target.value,
-            })
-          }
-          style={{ borderRadius: "8px", borderColor: "#1976d2" }}
-        />
-      </Modal.Body>
+                        <Modal.Footer
+                          style={{
+                            background:
+                              "linear-gradient(135deg, rgba(25,118,210,0.2), rgba(13,71,161,0.3))",
+                            backdropFilter: "blur(12px)",
+                            borderTop: "1px solid rgba(255,255,255,0.15)",
+                          }}
+                        >
+                          <Button
+                            variant="secondary"
+                            onClick={handleStModalClose}
+                            style={{
+                              borderRadius: "8px",
+                              fontWeight: "600",
+                              boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+                            }}
+                          >
+                            Close
+                          </Button>
+                          <Button
+                            variant="primary"
+                            onClick={staticDataApplication}
+                            style={{
+                              backgroundColor: "#1976d2",
+                              borderRadius: "8px",
+                              fontWeight: "600",
+                              boxShadow: "0 4px 8px rgba(25,118,210,0.6)",
+                              border: "none",
+                            }}
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                "#0d47a1")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                "#1976d2")
+                            }
+                          >
+                            Submit
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
+                    </Modal.Body>
 
-      <Modal.Footer
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(25,118,210,0.2), rgba(13,71,161,0.3))",
-          backdropFilter: "blur(12px)",
-          borderTop: "1px solid rgba(255,255,255,0.15)",
-        }}
-      >
-        <Button
-          variant="secondary"
-          onClick={handleStModalClose}
-          style={{
-            borderRadius: "8px",
-            fontWeight: "600",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
-          }}
-        >
-          Close
-        </Button>
-        <Button
-          variant="primary"
-          onClick={staticDataApplication}
-          style={{
-            backgroundColor: "#1976d2",
-            borderRadius: "8px",
-            fontWeight: "600",
-            boxShadow: "0 4px 8px rgba(25,118,210,0.6)",
-            border: "none",
-          }}
-          onMouseEnter={e => e.currentTarget.style.backgroundColor = "#0d47a1"}
-          onMouseLeave={e => e.currentTarget.style.backgroundColor = "#1976d2"}
-        >
-          Submit
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  </Modal.Body>
+                    <Modal.Footer
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(25,118,210,0.2), rgba(13,71,161,0.3))",
+                        backdropFilter: "blur(12px)",
+                        borderTop: "1px solid rgba(255,255,255,0.15)",
+                      }}
+                    >
+                      <Button
+                        variant="secondary"
+                        onClick={handleClose}
+                        style={{
+                          borderRadius: "8px",
+                          fontWeight: "600",
+                          boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+                        }}
+                      >
+                        Close
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
 
-  <Modal.Footer
-    style={{
-      background:
-        "linear-gradient(135deg, rgba(25,118,210,0.2), rgba(13,71,161,0.3))",
-      backdropFilter: "blur(12px)",
-      borderTop: "1px solid rgba(255,255,255,0.15)",
-    }}
-  >
-    <Button
-      variant="secondary"
-      onClick={handleClose}
-      style={{
-        borderRadius: "8px",
-        fontWeight: "600",
-        boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
-      }}
-    >
-      Close
-    </Button>
-  </Modal.Footer>
-</Modal>
-
-<Modal show={showSpModal} onHide={handleSpModalClose}>
-  <Modal.Header
-    style={{
-      background:
-        "linear-gradient(135deg, rgba(25,118,210,0.25), rgba(13,71,161,0.35))",
-      backdropFilter: "blur(12px)",
-      color: "white",
-    }}
-    closeButton
-  >
-    <Modal.Title className="text-dark">
-      Club Facility Booking <i className="fa-solid fa-suitcase fw-bold"></i>
-    </Modal.Title>
-  </Modal.Header>
-  <Modal.Body
-    style={{
-      background:
-        "linear-gradient(135deg, rgba(25,118,210,0.1), rgba(13,71,161,0.1))",
-      backdropFilter: "blur(12px)",
-      color: "#0a2540",
-    }}
-  >
-    {["name", "Date", "number", "details"].map((field, idx) => (
-      <input
-        key={idx}
-        onChange={(e) =>
-          setSportsData({ ...sportsData, [field]: e.target.value })
-        }
-        className="form-control w-100 mb-4"
-        required
-        type={field === "number" ? "number" : field === "Date" ? "date" : "text"}
-        placeholder={
-          field === "details"
-            ? "Short description booking purpose and time slot required"
-            : `enter your ${field.toLowerCase()}`
-        }
-        style={{ borderRadius: "8px", borderColor: "#1976d2" }}
-      />
-    ))}
-  </Modal.Body>
-  <Modal.Footer
-    style={{
-      background:
-        "linear-gradient(135deg, rgba(25,118,210,0.25), rgba(13,71,161,0.35))",
-      backdropFilter: "blur(12px)",
-    }}
-  >
-    <Button
-      variant="secondary"
-      onClick={handleSpModalClose}
-      style={{
-        borderRadius: "8px",
-        fontWeight: "600",
-        boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
-      }}
-    >
-      Close
-    </Button>
-    <Button
-      variant="primary"
-      onClick={clubFacility}
-      style={{
-        backgroundColor: "#1976d2",
-        borderRadius: "8px",
-        fontWeight: "600",
-        boxShadow: "0 4px 8px rgba(25,118,210,0.6)",
-        border: "none",
-      }}
-      onMouseEnter={e => e.currentTarget.style.backgroundColor = "#0d47a1"}
-      onMouseLeave={e => e.currentTarget.style.backgroundColor = "#1976d2"}
-    >
-      Submit
-    </Button>
-  </Modal.Footer>
-</Modal>
-
+                  <Modal show={showSpModal} onHide={handleSpModalClose}>
+                    <Modal.Header
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(25,118,210,0.25), rgba(13,71,161,0.35))",
+                        backdropFilter: "blur(12px)",
+                        color: "white",
+                      }}
+                      closeButton
+                    >
+                      <Modal.Title className="text-dark">
+                        Club Facility Booking{" "}
+                        <i className="fa-solid fa-suitcase fw-bold"></i>
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(25,118,210,0.1), rgba(13,71,161,0.1))",
+                        backdropFilter: "blur(12px)",
+                        color: "#0a2540",
+                      }}
+                    >
+                      {["name", "Date", "number", "details"].map(
+                        (field, idx) => (
+                          <input
+                            key={idx}
+                            onChange={(e) =>
+                              setSportsData({
+                                ...sportsData,
+                                [field]: e.target.value,
+                              })
+                            }
+                            className="form-control w-100 mb-4"
+                            required
+                            type={
+                              field === "number"
+                                ? "number"
+                                : field === "Date"
+                                ? "date"
+                                : "text"
+                            }
+                            placeholder={
+                              field === "details"
+                                ? "Short description booking purpose and time slot required"
+                                : `enter your ${field.toLowerCase()}`
+                            }
+                            style={{
+                              borderRadius: "8px",
+                              borderColor: "#1976d2",
+                            }}
+                          />
+                        )
+                      )}
+                    </Modal.Body>
+                    <Modal.Footer
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(25,118,210,0.25), rgba(13,71,161,0.35))",
+                        backdropFilter: "blur(12px)",
+                      }}
+                    >
+                      <Button
+                        variant="secondary"
+                        onClick={handleSpModalClose}
+                        style={{
+                          borderRadius: "8px",
+                          fontWeight: "600",
+                          boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+                        }}
+                      >
+                        Close
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={clubFacility}
+                        style={{
+                          backgroundColor: "#1976d2",
+                          borderRadius: "8px",
+                          fontWeight: "600",
+                          boxShadow: "0 4px 8px rgba(25,118,210,0.6)",
+                          border: "none",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.backgroundColor = "#0d47a1")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.backgroundColor = "#1976d2")
+                        }
+                      >
+                        Submit
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
 
                   <Link
                     to={"/login"}
@@ -1044,21 +1104,23 @@ const Odash = () => {
                 </ul>
               </nav>
             </header>
-           <div style={Styles.marquee}>
-            <span
-              style={{
-                display: "inline-block",
-                animation: "scroll-left 20s linear infinite",
-                minWidth: "100%"
-              }}
-            >
-              Welcome to CopConnect - Your Digital Police Service Portal | File Complaints | Book Appointments | Manage Criminal Data | Secure & Transparent Policing
-            </span>
-          </div>
+            <div style={Styles.marquee}>
+              <span
+                style={{
+                  display: "inline-block",
+                  animation: "scroll-left 20s linear infinite",
+                  minWidth: "100%",
+                }}
+              >
+                Welcome to CopConnect - Your Digital Police Service Portal |
+                File Complaints | Book Appointments | Manage Criminal Data |
+                Secure & Transparent Policing
+              </span>
+            </div>
 
-          {/* CSS for marquee animation */}
-          <style>
-            {`
+            {/* CSS for marquee animation */}
+            <style>
+              {`
               @keyframes scroll-left {
                 0% { transform: translateX(100%); }
                 100% { transform: translateX(-100%); }
@@ -1074,7 +1136,7 @@ const Odash = () => {
                 100% { transform: translateY(0px); }
               }
             `}
-          </style>
+            </style>
           </div>
         </div>
 
