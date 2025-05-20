@@ -37,8 +37,8 @@ export const AdddPoliceOfficer = async (requestbody, requestHeader) => {
 };
 
 //getting all officers in the table
-export const GetallOfficers = async (requestHeader) => {
-  return await commonApi("get", "/getPolice", "", requestHeader);
+export const GetallOfficers = async (requestHeader,SearchCircle) => {
+  return await commonApi("get", `/getPolice?search=${SearchCircle}`, "", requestHeader);
 };
 
 //delete officer details
@@ -52,8 +52,8 @@ export const AddCriminals = async (requestbody, requestHeader) => {
 };
 
 //gettingCriminals
-export const getCriminals = async (requestHeader) => {
-  return await commonApi("get", "/getAllCriminals", "", requestHeader);
+export const getCriminals = async (requestHeader,searchKey) => {
+  return await commonApi("get", `/getAllCriminals?search=${searchKey}`, "", requestHeader);
 };
 
 //deleteCriminals
@@ -94,7 +94,7 @@ export const bookSportsFacility = async (requestbody, requestHeader) => {
 
 //gettingPoliceServices
 
-export const getPoliceServices = async (requestHeader) => {
+export const getPoliceServices = async (requestHeader,) => {
   return await commonApi("get", "/getPoliceServices", "", requestHeader);
 };
 

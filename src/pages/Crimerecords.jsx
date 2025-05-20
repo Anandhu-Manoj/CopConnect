@@ -95,6 +95,7 @@ const Crimerecords = () => {
   };
 
   //gettingCriminals
+   const[searchKey,setSearchKey]=useState('');
 
   const gettingAllCriminals = async () => {
     try {
@@ -102,7 +103,7 @@ const Crimerecords = () => {
         Authorization: `nearer ${sessionStorage.getItem("token")}`,
       };
 
-      const apiResp = await getCriminals(Header);
+      const apiResp = await getCriminals(Header,searchKey);
       setGetCrimeData(apiResp.data);
     } catch (error) {
       console.log(error);
@@ -110,7 +111,7 @@ const Crimerecords = () => {
   };
   useEffect(() => {
     gettingAllCriminals();
-  }, [render]);
+  }, [render,searchKey]);
 
   //deleting criminals
   const onDeleteCriminals = async (id) => {
@@ -399,6 +400,7 @@ const Crimerecords = () => {
             >
               Criminal Records
             </h2>
+           
             <button
               className="btn btn-light shadow mt-2 "
               onClick={handleRevShow}
@@ -406,6 +408,20 @@ const Crimerecords = () => {
               ADD CRIMINALS
             </button>
           </center>
+           <div className="input-group w-25">
+  <span className="input-group-text" id="search-icon" style={{color: "#023eca"}}>
+    <i className="fa-solid fa-magnifying-glass"></i>
+  </span>
+  <input
+  onChange={(e)=>setSearchKey(e.target.value)}
+  
+    type="text"
+    className="form-control"
+    placeholder="Search criminal"
+    aria-label="Search"
+    aria-describedby="search-icon"
+  />
+</div>
           <Modal centered show={revshow} onHide={handleRevClose}>
             <Modal.Header
               style={{

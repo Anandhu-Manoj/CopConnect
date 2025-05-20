@@ -7,7 +7,7 @@ import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
-import justice from '../assets/justice.mp4';
+import justice from "../assets/justice.mp4";
 import {
   acceptingLeaves,
   acceptingLocalService,
@@ -87,6 +87,8 @@ const Jdash = () => {
   };
 
   //getting the added officers
+  const[SearchCircle,setSearchCircle]=useState("")
+  
   const [officerTable, setOfficerTable] = useState([]);
 
   const getOfficer = async () => {
@@ -94,7 +96,7 @@ const Jdash = () => {
       Authorization: `nearer ${sessionStorage.getItem("token")}`,
     };
     try {
-      const apiresp = await GetallOfficers(Header);
+      const apiresp = await GetallOfficers(Header,SearchCircle);
       if (apiresp.status == 200) {
         setOfficerTable(apiresp.data);
       }
@@ -105,7 +107,7 @@ const Jdash = () => {
 
   useEffect(() => {
     getOfficer();
-  }, [render]);
+  }, [render,SearchCircle]);
 
   const [oshow, setOShow] = useState(false);
 
@@ -410,27 +412,26 @@ const Jdash = () => {
       className="relative min-h-screen overflow-hidden "
       style={{ height: "100%", backgroundColor: "#0a2540" }}
     >
-
-         <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                minWidth: "100vw",
-                minHeight: "100vh",
-                objectFit: "cover",
-                zIndex: 0,
-                opacity: 0.04, 
-                pointerEvents: "none",
-              }}
-            >
-              <source src={justice} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          minWidth: "100vw",
+          minHeight: "100vh",
+          objectFit: "cover",
+          zIndex: 0,
+          opacity: 0.04,
+          pointerEvents: "none",
+        }}
+      >
+        <source src={justice} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
       {/* header  */}
       <div
         className="overflow-hidden"
@@ -541,10 +542,11 @@ const Jdash = () => {
             </div>
 
             <div className="text-center ">
-              <h2 className="fs-2 fw-bolder"
+              <h2
+                className="fs-2 fw-bolder"
                 style={{
                   color: "#ffffff",
-                  
+
                   fontSize: "20px",
                 }}
               >
@@ -658,14 +660,10 @@ const Jdash = () => {
                 width: "450px",
                 // position: "absolute",
                 // top: "250px",
-              background: "rgba(255, 255, 255, 0.15)",
-               borderRadius: "20px",
-   
+                background: "rgba(255, 255, 255, 0.15)",
+                borderRadius: "20px",
               }}
             >
-              
-              
-              
               <div
                 style={{
                   height: "200px",
@@ -865,7 +863,9 @@ const Jdash = () => {
             </div>
             <div className="col-8 table-responsive me-2">
               {" "}
-              <h2 className="text-center fw-bold" style={{color:"#e3f2fd"}}>PETITIONS</h2>
+              <h2 className="text-center fw-bold" style={{ color: "#e3f2fd" }}>
+                PETITIONS
+              </h2>
               <table
                 className=" table-bordered text-center ms-3 me-5"
                 style={{
@@ -1165,6 +1165,24 @@ const Jdash = () => {
               </Modal.Footer>
             </Modal>
 
+            <div className="input-group w-25">
+              <span
+                className="input-group-text"
+                id="search-icon"
+                style={{ color: "#023eca" }}
+              >
+                <i className="fa-solid fa-magnifying-glass"></i>
+              </span>
+              <input
+              onChange={(e)=>setSearchCircle(e.target.value)}
+                type="text"
+                className="form-control"
+                placeholder="Search officer with Circle of duty"
+                aria-label="Search"
+                aria-describedby="search-icon"
+              />
+            </div>
+
             <div className="table-responsive mt-4">
               <table
                 className="table table-bordered text-center w-100"
@@ -1179,7 +1197,7 @@ const Jdash = () => {
               >
                 <thead
                   style={{
-                   background: "#0a2540",
+                    background: "#0a2540",
                     color: "white",
                     fontSize: "18px",
                     textTransform: "uppercase",

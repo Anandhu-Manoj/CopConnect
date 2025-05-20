@@ -74,6 +74,9 @@ const Odash = () => {
     details: "",
   });
 
+      const[searchKey,setSearchKey]=useState('');
+
+
   const [getCrimedata, setGetCrimeData] = useState([]);
 
   const gettingAllCriminals = async () => {
@@ -82,16 +85,18 @@ const Odash = () => {
         Authorization: `nearer ${sessionStorage.getItem("token")}`,
       };
 
-      const apiResp = await getCriminals(Header);
+      const apiResp = await getCriminals(Header,searchKey);
       setGetCrimeData(apiResp.data);
     } catch (error) {
       console.log(error);
     }
   };
 
+     
+
   useEffect(() => {
     gettingAllCriminals();
-  }, [render]);
+  }, [render,searchKey]);
 
   //gettservices
   const handleAppontments = async () => {
@@ -342,6 +347,7 @@ const Odash = () => {
       whiteSpace: "nowrap",
     },
   };
+
 
   return (
     <div className="m-0 overflow-hidden" style={{ position: "relative" }}>
@@ -1319,7 +1325,20 @@ const Odash = () => {
               Criminal Records
             </h2>
           </center>
-
+<div className="input-group w-25">
+  <span className="input-group-text" id="search-icon" style={{color: "#023eca"}}>
+    <i className="fa-solid fa-magnifying-glass"></i>
+  </span>
+  <input
+  onChange={(e)=>setSearchKey(e.target.value)}
+  
+    type="text"
+    className="form-control"
+    placeholder="Search criminal"
+    aria-label="Search"
+    aria-describedby="search-icon"
+  />
+</div>
           <div
             className="table-responsive mt-4 p-3 rounded-4"
             style={{
