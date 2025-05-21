@@ -766,7 +766,7 @@ const Services = () => {
               backdropFilter: "blur(5px)",
               border: "1px solid rgba(255, 255, 255, 0.18)",
               borderRadius: "12px",
-              color: "#e3f2fd",
+              color: "black",
               padding: "12px 20px 12px 45px",
               boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
               transition: "all 0.3s ease",
