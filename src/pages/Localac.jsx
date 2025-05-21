@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../Components/Footer";
 import { CivilianRegister } from "../Services/AllApis";
@@ -7,8 +7,20 @@ import { toast } from "react-toastify";
 
 // Import the video
 import justiceVideo from "../assets/justice.mp4";
+import { addLoaderContext } from "../Contexts/LoaderContext";
 
 const Localac = () => {
+  const { setLoader } = useContext(addLoaderContext);
+
+  useEffect(() => {
+    setLoader(true); 
+    
+    setTimeout(() => {
+      setLoader(false); 
+    }, 1500);
+  }, [setLoader]);
+
+
   const navigate = useNavigate();
   const [onReg, setOnReg] = useState({
     adhaarImg: "",

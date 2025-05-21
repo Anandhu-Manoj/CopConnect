@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import Footer from "../Components/Footer";
 import Logo from "../assets/sideLogo.png";
 import { Button, Form } from "react-bootstrap";
@@ -22,8 +22,19 @@ import {
   uploadProPic,
 } from "../Services/AllApis";
 import { toast } from "react-toastify";
+import { addLoaderContext } from "../Contexts/LoaderContext";
 
 const Odash = () => {
+
+    const { setLoader } = useContext(addLoaderContext);
+  
+    useEffect(() => {
+      setLoader(true); 
+      
+      setTimeout(() => {
+        setLoader(false); 
+      }, 1500);
+    }, [setLoader]);
   const [showSpModal, setshowSpModal] = useState(false);
   const handleSpModalClose = () => setshowSpModal(false);
   const handleSpModalShow = () => setshowSpModal(true);

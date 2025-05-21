@@ -12,14 +12,22 @@ import Jdash from './pages/Jdash'
 import Crimerecords from './pages/Crimerecords'
 import Login from './pages/Login'
 import Services from './pages/Services'
+import { addLoaderContext } from "./Contexts/LoaderContext";
+import { useContext } from "react";
+import Spinner from "./Components/Spinner"; // Make sure path is correct
+
 
 
 
 function App() {
+   const {loader}=useContext(addLoaderContext)
   
   return (
     <>
+
+   
      <ToastContainer position="top-center" pauseOnHover />
+     {loader&&<Spinner/>}
      <Routes>
       <Route path='/' element={<Home/>}></Route>
       <Route path="/local" element={<Local/>}></Route>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import Logo from "../assets/sideLogo.png";
 import Footer from "../Components/Footer";
 import { Button } from "react-bootstrap";
@@ -26,8 +26,19 @@ import {
   rejectingLeaves,
 } from "../Services/AllApis";
 import { toast } from "react-toastify";
+import { addLoaderContext } from "../Contexts/LoaderContext";
 
 const Jdash = () => {
+
+    const { setLoader } = useContext(addLoaderContext);
+  
+    useEffect(() => {
+      setLoader(true); 
+      
+      setTimeout(() => {
+        setLoader(false); 
+      }, 1500);
+    }, [setLoader]);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);

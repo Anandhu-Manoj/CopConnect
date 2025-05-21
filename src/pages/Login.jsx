@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { onAdminlogin } from "../Services/AllApis";
 import { toast } from "react-toastify";
 import justice from "../assets/justice.mp4";
+import { addLoaderContext } from "../Contexts/LoaderContext";
 
 // Enhanced professional color palette from Home component
 const COLORS = {
@@ -178,6 +179,15 @@ const styles = {
 };
 
 const Login = () => {
+    const { setLoader } = useContext(addLoaderContext);
+  
+    useEffect(() => {
+      setLoader(true); 
+      
+      setTimeout(() => {
+        setLoader(false); 
+      }, 1500);
+    }, [setLoader]);
   const navigate = useNavigate();
   
   const [data, setData] = useState({

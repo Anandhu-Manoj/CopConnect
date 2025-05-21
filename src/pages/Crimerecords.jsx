@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/sideLogo.png";
 import Footer from "../Components/Footer";
@@ -11,9 +11,19 @@ import {
 } from "../Services/AllApis";
 import { toast } from "react-toastify";
 import justice from '../assets/justice.mp4';
+import { addLoaderContext } from "../Contexts/LoaderContext";
 
 
 const Crimerecords = () => {
+    const { setLoader } = useContext(addLoaderContext);
+  
+    useEffect(() => {
+      setLoader(true); 
+      
+      setTimeout(() => {
+        setLoader(false); 
+      }, 1500);
+    }, [setLoader]);
   const handleRevClose = () => setRevShow(false);
   const handleRevShow = () => setRevShow(true);
   const [revshow, setRevShow] = useState(false);

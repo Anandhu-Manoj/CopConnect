@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../Components/Footer";
 import Header from "../Components/Header";
 import { civilianLogin } from "../Services/AllApis";
 import { toast } from "react-toastify";
 
-
-// Import the video - assuming you're using the same video
 import justiceVideo from "../assets/justice.mp4";
+import { addLoaderContext } from "../Contexts/LoaderContext";
 
 const Local = () => {
+  const { setLoader } = useContext(addLoaderContext);
+
+  useEffect(() => {
+    setLoader(true); 
+    
+    setTimeout(() => {
+      setLoader(false); 
+    }, 1500);
+  }, [setLoader]);
+
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -37,14 +46,14 @@ const Local = () => {
   };
 
   return (
-    <div 
-      style={{ 
-        margin: 0, 
-        padding: 0, 
-        boxSizing: "border-box", 
-        position: "relative", 
-        minHeight: "100vh", 
-        backgroundColor: "#0a2540" 
+    <div
+      style={{
+        margin: 0,
+        padding: 0,
+        boxSizing: "border-box",
+        position: "relative",
+        minHeight: "100vh",
+        backgroundColor: "#0a2540",
       }}
     >
       {/* Background Video */}
@@ -76,7 +85,8 @@ const Local = () => {
           left: 0,
           width: "100vw",
           height: "100vh",
-          background: "linear-gradient(135deg, rgba(25,118,210,0.25) 0%, rgba(13,71,161,0.35) 100%)",
+          background:
+            "linear-gradient(135deg, rgba(25,118,210,0.25) 0%, rgba(13,71,161,0.35) 100%)",
           zIndex: 1,
         }}
       ></div>
@@ -120,94 +130,118 @@ const Local = () => {
                 boxShadow: "0 4px 15px rgba(25, 118, 210, 0.4)",
               }}
             >
-              <i className="fa-solid fa-fingerprint fs-1" style={{ color: "#ffffff" }}></i>
+              <i
+                className="fa-solid fa-fingerprint fs-1"
+                style={{ color: "#ffffff" }}
+              ></i>
             </div>
-            
-            <h2 style={{ color: "#ffffff", fontWeight: 700, marginBottom: "20px" }}>
+
+            <h2
+              style={{
+                color: "#ffffff",
+                fontWeight: 700,
+                marginBottom: "20px",
+              }}
+            >
               Sign Up
             </h2>
-            
+
             {/* Email Input */}
             <div className="input-group mb-3">
-              <span className="input-group-text" style={{ 
-                background: "rgba(121, 134, 203, 0.3)", 
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                borderRight: "none",
-                color: "#e3f2fd"
-              }}>
+              <span
+                className="input-group-text"
+                style={{
+                  background: "rgba(121, 134, 203, 0.3)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  borderRight: "none",
+                  color: "#e3f2fd",
+                }}
+              >
                 <i className="fa-solid fa-envelope"></i>
               </span>
               <input
-                onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                style={{ 
-                  height: "55px", 
-                  color: "#ffffff", 
-                  background: "rgba(255, 255, 255, 0.1)", 
+                onChange={(e) =>
+                  setLoginData({ ...loginData, email: e.target.value })
+                }
+                style={{
+                  height: "55px",
+                  color: "#ffffff",
+                  background: "rgba(255, 255, 255, 0.1)",
                   border: "1px solid rgba(255, 255, 255, 0.2)",
                   borderLeft: "none",
                   fontWeight: 500,
-                  paddingLeft: "10px"
+                  paddingLeft: "10px",
                 }}
                 className="form-control shadow"
                 type="email"
                 placeholder="Email"
               />
             </div>
-            
+
             {/* Password Input */}
             <div className="input-group mb-3">
-              <span className="input-group-text" style={{ 
-                background: "rgba(121, 134, 203, 0.3)", 
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                borderRight: "none",
-                color: "#e3f2fd"
-              }}>
+              <span
+                className="input-group-text"
+                style={{
+                  background: "rgba(121, 134, 203, 0.3)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  borderRight: "none",
+                  color: "#e3f2fd",
+                }}
+              >
                 <i className="fa-solid fa-lock"></i>
               </span>
               <input
-                onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                style={{ 
-                  height: "55px", 
-                  color: "#ffffff", 
-                  background: "rgba(255, 255, 255, 0.1)", 
+                onChange={(e) =>
+                  setLoginData({ ...loginData, password: e.target.value })
+                }
+                style={{
+                  height: "55px",
+                  color: "#ffffff",
+                  background: "rgba(255, 255, 255, 0.1)",
                   border: "1px solid rgba(255, 255, 255, 0.2)",
                   borderLeft: "none",
                   fontWeight: 500,
-                  paddingLeft: "10px"
+                  paddingLeft: "10px",
                 }}
                 className="form-control shadow"
                 type="password"
                 placeholder="Password"
               />
             </div>
-            
+
             {/* Aadhar Input */}
             <div className="input-group mb-4">
-              <span className="input-group-text" style={{ 
-                background: "rgba(121, 134, 203, 0.3)", 
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                borderRight: "none",
-                color: "#e3f2fd"
-              }}>
+              <span
+                className="input-group-text"
+                style={{
+                  background: "rgba(121, 134, 203, 0.3)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  borderRight: "none",
+                  color: "#e3f2fd",
+                }}
+              >
                 <i className="fa-solid fa-id-card"></i>
               </span>
               <input
-                onChange={(e) => setLoginData({ ...loginData, aadharNo: e.target.value })}
-                style={{ 
-                  height: "55px", 
-                  color: "#ffffff", 
-                  background: "rgba(255, 255, 255, 0.1)", 
+                onChange={(e) =>
+                  setLoginData({ ...loginData, aadharNo: e.target.value })
+                }
+                style={{
+                  height: "55px",
+                  color: "#ffffff",
+                  background: "rgba(255, 255, 255, 0.1)",
                   border: "1px solid rgba(255, 255, 255, 0.2)",
                   borderLeft: "none",
                   fontWeight: 500,
-                  paddingLeft: "10px"
+                  paddingLeft: "10px",
                 }}
                 className="form-control shadow"
                 type="text"
                 placeholder="Aadhar Number"
               />
             </div>
-            
+
             {/* Login Button */}
             <button
               onClick={onLogin}
@@ -222,16 +256,18 @@ const Local = () => {
               }}
               onMouseOver={(e) => {
                 e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+                e.currentTarget.style.boxShadow =
+                  "0 6px 12px rgba(0, 0, 0, 0.2)";
               }}
               onMouseOut={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
+                e.currentTarget.style.boxShadow =
+                  "0 4px 8px rgba(0, 0, 0, 0.1)";
               }}
             >
               LOGIN
             </button>
-            
+
             {/* Back Button */}
             <Link to={"/"} className="mt-3">
               <button
@@ -257,38 +293,42 @@ const Local = () => {
                 BACK
               </button>
             </Link>
-            
+
             {/* Registration Link */}
             <div className="mt-4">
               <p style={{ color: "#e3f2fd" }}>
                 Don't have an INDIAN PASS account?{" "}
-                <Link 
-                  to={"/localac"} 
-                  style={{ 
-                    color: "#7986cb", 
+                <Link
+                  to={"/localac"}
+                  style={{
+                    color: "#7986cb",
                     fontWeight: "bold",
                     textDecoration: "none",
                     position: "relative",
-                    display: "inline-block"
+                    display: "inline-block",
                   }}
                 >
-                  <span style={{
-                    position: "relative",
-                    zIndex: 1,
-                  }}>
+                  <span
+                    style={{
+                      position: "relative",
+                      zIndex: 1,
+                    }}
+                  >
                     Create new account
                   </span>
-                  <span style={{
-                    position: "absolute",
-                    bottom: "-2px",
-                    left: 0,
-                    width: "100%",
-                    height: "2px",
-                    background: "linear-gradient(to right, #7986cb, #1976d2)",
-                    transformOrigin: "right",
-                    transform: "scaleX(0)",
-                    transition: "transform 0.3s ease",
-                  }}></span>
+                  <span
+                    style={{
+                      position: "absolute",
+                      bottom: "-2px",
+                      left: 0,
+                      width: "100%",
+                      height: "2px",
+                      background: "linear-gradient(to right, #7986cb, #1976d2)",
+                      transformOrigin: "right",
+                      transform: "scaleX(0)",
+                      transition: "transform 0.3s ease",
+                    }}
+                  ></span>
                 </Link>
               </p>
             </div>
@@ -296,22 +336,22 @@ const Local = () => {
         </div>
       </div>
       <Footer />
-      
+
       {/* Add CSS for hover effects */}
       <style jsx>{`
         .input-group:focus-within .input-group-text {
           border-color: rgba(255, 255, 255, 0.5);
           background: rgba(121, 134, 203, 0.5);
         }
-        
+
         .input-group:focus-within input {
           border-color: rgba(255, 255, 255, 0.5);
           background: rgba(255, 255, 255, 0.15);
         }
-        
+
         a:hover span:last-child {
           transform: scaleX(1);
-          transformOrigin: left;
+          transformorigin: left;
         }
       `}</style>
     </div>

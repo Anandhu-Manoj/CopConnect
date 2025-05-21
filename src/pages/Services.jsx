@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Footer from "../Components/Footer";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -13,8 +13,8 @@ import {
   getCivillanNotification,
   onserviceApplication,
 } from "../Services/AllApis";
+import { addLoaderContext } from "../Contexts/LoaderContext";
 
-// Background video component
 const BackgroundVideo = () => {
   return (
     <div className="background-container">
@@ -233,6 +233,15 @@ const GlassModal = ({ show, onHide, title, icon, children, onSubmit }) => {
 };
 
 const Services = () => {
+    const { setLoader } = useContext(addLoaderContext);
+  
+    useEffect(() => {
+      setLoader(true); 
+      
+      setTimeout(() => {
+        setLoader(false); 
+      }, 1500);
+    }, [setLoader]);
   const [render, setRender] = useState("");
   const [ServiceApplication, setServiceApplication] = useState({
     name: "",
